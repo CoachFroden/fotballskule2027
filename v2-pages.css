@@ -1,0 +1,381 @@
+/* Fotballskule v2 — undersider med tydeleg fotballidentitet */
+body.v2-enabled.v2-subpage {
+  --page-accent: #24a36a;
+  --page-accent-2: #0d7c50;
+  --page-soft: #e8f8ef;
+  --page-ink: #0d5138;
+}
+
+body.v2-enabled.v2-subpage[data-v2-page="attendance"] { --page-accent:#1faf70; --page-accent-2:#087d4d; --page-soft:#e5f8ef; --page-ink:#07583a; }
+body.v2-enabled.v2-subpage[data-v2-page="program"] { --page-accent:#f59c3d; --page-accent-2:#bf6411; --page-soft:#fff2df; --page-ink:#81450a; }
+body.v2-enabled.v2-subpage[data-v2-page="plan"] { --page-accent:#7957e8; --page-accent-2:#5134bb; --page-soft:#efeaff; --page-ink:#4c3595; }
+body.v2-enabled.v2-subpage[data-v2-page="groups"] { --page-accent:#2f6df6; --page-accent-2:#194db9; --page-soft:#eaf2ff; --page-ink:#153d8b; }
+body.v2-enabled.v2-subpage[data-v2-page="exercises"] { --page-accent:#17a86b; --page-accent-2:#0c744b; --page-soft:#e4f8ee; --page-ink:#08583a; }
+body.v2-enabled.v2-subpage[data-v2-page="safety"] { --page-accent:#e33b4e; --page-accent-2:#ad1d31; --page-soft:#ffebee; --page-ink:#8f1d2e; }
+body.v2-enabled.v2-subpage[data-v2-page="feedback"] { --page-accent:#8a5ce6; --page-accent-2:#5d39bb; --page-soft:#f1eaff; --page-ink:#5636a5; }
+body.v2-enabled.v2-subpage[data-v2-page="admin"] { --page-accent:#4655c7; --page-accent-2:#29368d; --page-soft:#eceeff; --page-ink:#2a357f; }
+body.v2-enabled.v2-subpage[data-v2-page="instructions"] { --page-accent:#1c9b82; --page-accent-2:#0e6b5b; --page-soft:#e5f7f2; --page-ink:#0d5c4f; }
+body.v2-enabled.v2-subpage[data-v2-page="people"] { --page-accent:#2c82c9; --page-accent-2:#1d5f98; --page-soft:#e8f4ff; --page-ink:#1d527d; }
+body.v2-enabled.v2-subpage[data-v2-page="auth"] { --page-accent:#2f6df6; --page-accent-2:#163f9f; --page-soft:#eaf2ff; --page-ink:#153d8b; }
+
+body.v2-enabled.v2-subpage .container { padding-top: 16px; }
+
+/* Underside-hero som faktisk ser ut som ein fotballarena */
+body.v2-enabled.v2-subpage .page-intro .hero-card {
+  isolation: isolate;
+  min-height: 190px;
+  display: grid;
+  align-content: end;
+  gap: 5px;
+  padding: clamp(24px,5vw,38px);
+  border: 0;
+  border-radius: 28px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px) 0 0/72px 100%,
+    linear-gradient(0deg, rgba(255,255,255,.045) 1px, transparent 1px) 0 0/100% 46px,
+    radial-gradient(circle at 84% 18%, rgba(255,255,255,.14), transparent 26%),
+    linear-gradient(135deg, #082d20 0%, var(--page-accent-2) 50%, var(--page-accent) 100%);
+  box-shadow: 0 25px 70px rgba(6,43,34,.20);
+  overflow: hidden;
+}
+
+body.v2-enabled.v2-subpage .page-intro .hero-card::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: 34px;
+  top: 22px;
+  width: 210px;
+  height: 145px;
+  border: 2px solid rgba(255,255,255,.15);
+  border-radius: 8px;
+  box-shadow: inset 52px 0 0 -50px rgba(255,255,255,.16);
+  transform: perspective(320px) rotateY(-7deg);
+}
+
+body.v2-enabled.v2-subpage .page-intro .hero-card::after {
+  content: attr(data-v2-icon);
+  right: 28px;
+  bottom: 18px;
+  font-size: 72px;
+  opacity: .16;
+  filter: saturate(.7);
+  transform: rotate(-8deg);
+}
+
+body.v2-enabled.v2-subpage .hero-card h2 {
+  max-width: 690px;
+  font-size: clamp(29px,6vw,46px);
+  line-height: 1.02;
+  letter-spacing: -.045em;
+}
+body.v2-enabled.v2-subpage .hero-card > p { max-width: 700px; margin-top: 8px; font-size: 14px; line-height: 1.5; }
+body.v2-enabled.v2-subpage .hero-kicker { color: rgba(255,255,255,.72); }
+
+.v2-football-stamp {
+  position: relative;
+  z-index: 2;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 7px 10px;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 999px;
+  background: rgba(4,24,17,.18);
+  color: rgba(255,255,255,.88);
+  backdrop-filter: blur(10px);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.v2-football-stamp b { color: #fff; }
+
+.v2-pitch-ribbon {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 8px;
+  margin: 10px 4px 2px;
+}
+.v2-pitch-ribbon span {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 10px;
+  border: 1px solid rgba(37,107,73,.14);
+  border-radius: 999px;
+  background: rgba(255,255,255,.64);
+  color: #47617d;
+  backdrop-filter: blur(12px);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.v2-pitch-ribbon span:nth-child(2) { color: var(--page-ink); background: var(--page-soft); }
+
+/* Kontekstnavigasjon */
+body.v2-enabled.v2-subpage #mainMenu {
+  grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+  gap: 10px;
+  margin: 13px 0 16px;
+}
+body.v2-enabled.v2-subpage #mainMenu:has(.back-button:only-child) { display: flex; }
+body.v2-enabled.v2-subpage .back-button {
+  min-height: 42px;
+  padding: 0 15px;
+  border-color: rgba(40,73,115,.14);
+  background: rgba(255,255,255,.84);
+  color: #123664;
+  box-shadow: 0 7px 20px rgba(12,43,82,.07);
+  backdrop-filter: blur(12px);
+}
+body.v2-enabled.v2-subpage #mainMenu .menu-button {
+  min-height: 68px;
+  border-color: rgba(57,91,137,.14);
+  border-radius: 18px;
+  box-shadow: 0 9px 25px rgba(14,43,81,.07);
+}
+body.v2-enabled.v2-subpage #mainMenu .menu-button .menu-icon { background: var(--page-soft); color: var(--page-ink); }
+
+/* Hovudflater */
+body.v2-enabled.v2-subpage .welcome-box,
+body.v2-enabled.v2-subpage .panel {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(80,111,153,.16);
+  border-radius: 25px;
+  background: rgba(255,255,255,.88);
+  box-shadow: 0 16px 45px rgba(17,51,95,.09);
+  backdrop-filter: blur(18px);
+}
+body.v2-enabled.v2-subpage .welcome-box::before,
+body.v2-enabled.v2-subpage .panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: linear-gradient(var(--page-accent),var(--page-accent-2));
+}
+
+/* Programdagar som treningskort */
+body.v2-enabled.v2-subpage .day-grid { gap: 13px; }
+body.v2-enabled.v2-subpage .day-card {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  border: 1px solid rgba(63,99,142,.14);
+  border-radius: 20px;
+  background:
+    linear-gradient(100deg, rgba(255,255,255,.97), rgba(249,252,255,.92)),
+    #fff;
+  box-shadow: 0 10px 28px rgba(15,47,89,.065);
+}
+body.v2-enabled.v2-subpage .day-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: var(--page-accent);
+}
+body.v2-enabled.v2-subpage .day-card::after {
+  content: "⚽";
+  position: absolute;
+  right: 17px;
+  top: 14px;
+  font-size: 27px;
+  opacity: .09;
+}
+body.v2-enabled.v2-subpage .day-card > .section-label { color: var(--page-ink); margin-bottom: 7px; }
+body.v2-enabled.v2-subpage .day-card h3 { padding-right: 38px; }
+
+/* Knappar før/etter lunsj og andre handlingar */
+body.v2-enabled.v2-subpage .content-area .menu-button.compact,
+body.v2-enabled.v2-subpage .day-card .menu-button,
+body.v2-enabled.v2-subpage .day-card button {
+  border-color: rgba(42,116,79,.16);
+  background: linear-gradient(180deg,#fff,#f7fbf8);
+  box-shadow: none;
+}
+body.v2-enabled.v2-subpage[data-v2-page="attendance"] .day-card button,
+body.v2-enabled.v2-subpage[data-v2-page="attendance"] .day-card .menu-button {
+  background:
+    linear-gradient(rgba(255,255,255,.92),rgba(255,255,255,.92)),
+    repeating-linear-gradient(90deg,#1fa76d 0 32px,#18965f 32px 64px);
+  color: #0d5138;
+  border-color: rgba(18,130,81,.18);
+  font-weight: 900;
+}
+body.v2-enabled.v2-subpage[data-v2-page="attendance"] .day-card button:hover { border-color: rgba(18,130,81,.42); transform: translateY(-1px); }
+
+/* Oppmøte: stor, taktil og rask */
+body.v2-enabled.v2-subpage .attendance-counter {
+  position: sticky;
+  top: 84px;
+  z-index: 12;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: -4px 0 14px;
+  border-radius: 18px;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px) 0 0/44px 100%,
+    linear-gradient(135deg,#086940,#1caf70);
+  color: #fff;
+  box-shadow: 0 12px 30px rgba(8,105,64,.22);
+  font-size: 21px;
+  font-weight: 950;
+  letter-spacing: -.02em;
+}
+body.v2-enabled.v2-subpage .attendance-list { display: grid; gap: 9px; }
+body.v2-enabled.v2-subpage .attendance-card {
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 13px 15px;
+  border: 1px solid rgba(72,104,146,.14);
+  border-radius: 17px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(18,52,91,.055);
+  font-weight: 820;
+  cursor: pointer;
+}
+body.v2-enabled.v2-subpage .attendance-card:has(input:checked) {
+  border-color: rgba(27,166,103,.34);
+  background: linear-gradient(135deg,#f5fff9,#e9f9f0);
+  color: #0a6843;
+}
+body.v2-enabled.v2-subpage .attendance-card input[type="checkbox"] {
+  width: 28px;
+  height: 28px;
+  accent-color: #19a96b;
+  flex: 0 0 auto;
+}
+
+/* Grupper — fem tydelege lagfargar */
+body.v2-enabled.v2-subpage .instruction-section {
+  overflow: hidden;
+  border: 1px solid rgba(76,107,148,.13);
+  border-radius: 20px;
+  box-shadow: 0 9px 26px rgba(15,49,90,.06);
+}
+body.v2-enabled.v2-subpage .instruction-section::before { width: 6px; background: var(--page-accent); }
+body.v2-enabled.v2-subpage .instruction-section[data-v2-group="1"] { background:linear-gradient(135deg,#fff,#edf4ff); --page-accent:#4b7fe0; }
+body.v2-enabled.v2-subpage .instruction-section[data-v2-group="2"] { background:linear-gradient(135deg,#fff,#eaf9f0); --page-accent:#40a76c; }
+body.v2-enabled.v2-subpage .instruction-section[data-v2-group="3"] { background:linear-gradient(135deg,#fff,#fff7dd); --page-accent:#d8a729; }
+body.v2-enabled.v2-subpage .instruction-section[data-v2-group="4"] { background:linear-gradient(135deg,#fff,#f4edff); --page-accent:#8c67ca; }
+body.v2-enabled.v2-subpage .instruction-section[data-v2-group="5"] { background:linear-gradient(135deg,#fff,#ffedf1); --page-accent:#d45f78; }
+body.v2-enabled.v2-subpage .instruction-section ul { margin: 12px 0 0; padding-left: 20px; columns: 2; column-gap: 28px; }
+body.v2-enabled.v2-subpage .instruction-section li { break-inside: avoid; margin: 6px 0; }
+
+/* Instruktørplan */
+body.v2-enabled.v2-subpage .schedule-accordion {
+  border-color: rgba(77,92,169,.18);
+  border-radius: 19px;
+  box-shadow: 0 9px 25px rgba(46,41,107,.07);
+}
+body.v2-enabled.v2-subpage .schedule-accordion > summary {
+  min-height: 60px;
+  padding: 15px 17px;
+  background: linear-gradient(135deg,#fff,#f7f5ff);
+}
+body.v2-enabled.v2-subpage .schedule-accordion > summary::after { color: var(--page-accent); }
+body.v2-enabled.v2-subpage .schedule-mini-card {
+  border-radius: 16px;
+  background: linear-gradient(145deg,#fff,#fafbff);
+  box-shadow: 0 5px 16px rgba(34,45,94,.05);
+}
+body.v2-enabled.v2-subpage .compact-day-picker select,
+body.v2-enabled.v2-subpage .schedule-person-row select { border-color: rgba(98,88,188,.20); }
+
+/* Øvingsbank: meir treningskjensle */
+body.v2-enabled.v2-subpage .exercise-list { grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); }
+body.v2-enabled.v2-subpage .exercise-card {
+  min-height: 135px;
+  overflow: hidden;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 90% 13%,rgba(28,166,105,.10),transparent 34%),
+    linear-gradient(145deg,#fff,#f6fcf8);
+}
+body.v2-enabled.v2-subpage .exercise-card::before { width: 6px; background: #19a769; }
+body.v2-enabled.v2-subpage .exercise-card::after { content:"▲"; position:absolute; right:16px; top:13px; color:#ff9635; opacity:.45; transform:rotate(7deg); }
+
+/* Tryggleik/kontakt */
+body.v2-enabled.v2-subpage[data-v2-page="safety"] .contact-card {
+  border-color: rgba(209,51,71,.16);
+  box-shadow: 0 9px 28px rgba(114,28,41,.07);
+}
+body.v2-enabled.v2-subpage[data-v2-page="safety"] .contact-card::before { background:#dc3d50; }
+body.v2-enabled.v2-subpage .alert-box { border-radius: 16px; }
+
+/* Forms/admin skal kjennast som produkt, ikkje skjema frå 2008 */
+body.v2-enabled.v2-subpage .form-stack,
+body.v2-enabled.v2-subpage .form-grid { gap: 12px; }
+body.v2-enabled.v2-subpage .form-stack > label,
+body.v2-enabled.v2-subpage .form-grid > label {
+  padding: 12px;
+  border: 1px solid rgba(79,108,147,.14);
+  border-radius: 16px;
+  background: rgba(250,252,255,.86);
+}
+body.v2-enabled.v2-subpage input,
+body.v2-enabled.v2-subpage select,
+body.v2-enabled.v2-subpage textarea {
+  border-color: rgba(78,105,144,.22) !important;
+  border-radius: 13px !important;
+}
+body.v2-enabled.v2-subpage input:focus,
+body.v2-enabled.v2-subpage select:focus,
+body.v2-enabled.v2-subpage textarea:focus {
+  border-color: var(--page-accent) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb,var(--page-accent) 13%,transparent) !important;
+}
+body.v2-enabled.v2-subpage .participant-table {
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 26px rgba(19,53,94,.06);
+}
+body.v2-enabled.v2-subpage .participant-table th { background: linear-gradient(180deg,#f4f8fe,#edf3fa); color:#163b6a; }
+body.v2-enabled.v2-subpage .participant-table tbody tr:hover { background: #f8fbff; }
+
+/* Statuskort */
+body.v2-enabled.v2-subpage .status-box,
+body.v2-enabled.v2-subpage .important-box,
+body.v2-enabled.v2-subpage .alert-box {
+  border-radius: 16px;
+  box-shadow: none;
+}
+body.v2-enabled.v2-subpage .detail-card {
+  border-radius: 17px;
+  background: linear-gradient(145deg,#fbfdff,#f5f9fc);
+}
+body.v2-enabled.v2-subpage .contact-card { border-radius: 19px; }
+
+/* Mobil */
+@media (max-width:700px) {
+  body.v2-enabled.v2-subpage .container { padding: 12px 12px 106px; }
+  body.v2-enabled.v2-subpage .page-intro .hero-card { min-height: 170px; border-radius: 24px; padding: 22px; }
+  body.v2-enabled.v2-subpage .page-intro .hero-card::before { right:-28px; top:20px; width:175px; height:118px; }
+  body.v2-enabled.v2-subpage .page-intro .hero-card::after { right:18px; bottom:15px; font-size:54px; }
+  .v2-pitch-ribbon { grid-template-columns:1fr 1fr; }
+  .v2-pitch-ribbon span:last-child { grid-column:1 / -1; }
+  body.v2-enabled.v2-subpage #mainMenu { grid-template-columns:1fr; }
+  body.v2-enabled.v2-subpage .welcome-box,
+  body.v2-enabled.v2-subpage .panel { padding:17px; border-radius:21px; }
+  body.v2-enabled.v2-subpage .day-card { padding:17px; border-radius:18px; }
+  body.v2-enabled.v2-subpage .instruction-section ul { columns:1; }
+  body.v2-enabled.v2-subpage .attendance-counter { top:76px; }
+  body.v2-enabled.v2-subpage .quick-grid,
+  body.v2-enabled.v2-subpage .contact-grid,
+  body.v2-enabled.v2-subpage .exercise-list { grid-template-columns:1fr; }
+}

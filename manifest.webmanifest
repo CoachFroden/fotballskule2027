@@ -1,0 +1,11 @@
+{
+  "name": "TINE Fotballskule · Samnanger IL",
+  "short_name": "Fotballskule",
+  "description": "Trygt arbeidsverktøy for instruktørar og ansvarlege under TINE Fotballskule.",
+  "lang": "nn-NO",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#071a3d"
+}

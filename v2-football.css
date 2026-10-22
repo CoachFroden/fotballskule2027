@@ -1,0 +1,137 @@
+/* Ekstra fotballidentitet for v2 */
+.v2-home .v2-hero { overflow: hidden; }
+
+.v2-home-football {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.v2-home-football .pitch-outline {
+  position: absolute;
+  right: clamp(18px,6vw,72px);
+  top: 28px;
+  width: clamp(170px,28vw,290px);
+  height: clamp(135px,21vw,205px);
+  border: 2px solid rgba(255,255,255,.16);
+  border-radius: 12px;
+  transform: perspective(620px) rotateY(-9deg) rotateZ(-2deg);
+}
+.v2-home-football .pitch-outline::before {
+  content:"";
+  position:absolute;
+  left:50%; top:0; bottom:0;
+  border-left:2px solid rgba(255,255,255,.13);
+}
+.v2-home-football .pitch-outline::after {
+  content:"";
+  position:absolute;
+  left:50%; top:50%;
+  width:56px; height:56px;
+  border:2px solid rgba(255,255,255,.14);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+}
+.v2-home-football .goal-box {
+  position:absolute;
+  right: clamp(18px,6vw,72px);
+  top: clamp(73px,9vw,96px);
+  width: clamp(46px,7vw,72px);
+  height: clamp(68px,10vw,104px);
+  border:2px solid rgba(255,255,255,.13);
+  border-right:0;
+  border-radius:8px 0 0 8px;
+  transform:rotate(-2deg);
+}
+.v2-home-football .ball {
+  position:absolute;
+  right: clamp(74px,12vw,138px);
+  bottom: 28px;
+  font-size: clamp(38px,6vw,66px);
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.18));
+  transform: rotate(-13deg);
+  opacity:.92;
+}
+.v2-home-football .cone {
+  position:absolute;
+  color:#ffad43;
+  font-size: clamp(18px,3vw,30px);
+  text-shadow:0 6px 14px rgba(0,0,0,.18);
+  opacity:.90;
+}
+.v2-home-football .cone.c1 { right:clamp(150px,22vw,260px); bottom:27px; transform:rotate(-6deg); }
+.v2-home-football .cone.c2 { right:clamp(202px,29vw,340px); bottom:45px; transform:rotate(5deg); }
+.v2-home-football .cone.c3 { right:clamp(250px,35vw,410px); bottom:23px; transform:rotate(-3deg); }
+
+.v2-school-tag {
+  position:absolute;
+  z-index:2;
+  right: clamp(22px,4vw,42px);
+  top: 24px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  max-width:260px;
+  padding:10px 12px;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:16px;
+  background:rgba(4,18,42,.19);
+  color:#fff;
+  backdrop-filter:blur(12px);
+}
+.v2-school-tag > span { font-size:22px; }
+.v2-school-tag div { display:grid; gap:2px; }
+.v2-school-tag strong { font-size:11px; letter-spacing:.08em; text-transform:uppercase; }
+.v2-school-tag small { color:rgba(255,255,255,.68); font-size:9px; font-weight:700; }
+
+/* Fotballspor gjennom kort og lister */
+body.v2-enabled .v2-action::after {
+  content:"";
+  position:absolute;
+  width:58px; height:58px;
+  right:-27px; bottom:-28px;
+  border:1px solid rgba(47,109,246,.09);
+  border-radius:50%;
+  box-shadow:0 0 0 12px rgba(47,109,246,.025);
+}
+body.v2-enabled.v2-subpage .contact-card::after,
+body.v2-enabled.v2-subpage .exercise-card::after {
+  pointer-events:none;
+}
+
+/* Krysselister får uttrykk som kamp-/treningsøkter */
+body.v2-enabled.v2-subpage[data-v2-page="attendance"] .day-card {
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.965),rgba(248,255,251,.93)),
+    repeating-linear-gradient(90deg,#118a58 0 54px,#0d7d4e 54px 108px);
+}
+body.v2-enabled.v2-subpage[data-v2-page="attendance"] .day-card::after {
+  content:"⚽";
+  opacity:.13;
+  font-size:34px;
+}
+body.v2-enabled.v2-subpage[data-v2-page="attendance"] .day-card h3::before {
+  content:"🏟️";
+  margin-right:8px;
+  font-size:.9em;
+}
+
+/* Programkort: kjegle som treningsmarkør */
+body.v2-enabled.v2-subpage[data-v2-page="program"] .day-card::after {
+  content:"▲";
+  color:#ff9739;
+  opacity:.28;
+  transform:rotate(8deg);
+}
+
+@media (max-width:700px) {
+  .v2-school-tag { top:18px; right:18px; max-width:185px; padding:8px 9px; }
+  .v2-school-tag small { display:none; }
+  .v2-school-tag strong { font-size:9px; }
+  .v2-home-football .pitch-outline { right:-54px; top:35px; width:205px; height:155px; opacity:.78; }
+  .v2-home-football .goal-box { right:-4px; top:72px; opacity:.7; }
+  .v2-home-football .ball { right:27px; bottom:24px; font-size:45px; }
+  .v2-home-football .cone.c1 { right:92px; bottom:24px; }
+  .v2-home-football .cone.c2 { right:129px; bottom:42px; }
+  .v2-home-football .cone.c3 { display:none; }
+}
