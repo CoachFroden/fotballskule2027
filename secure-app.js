@@ -192,6 +192,22 @@
     ]);
 
     state.participants = participantsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })).sort(sortByName);
+    // Påmeldingar frå Google Forms blir viste saman med eksisterande deltakarar.
+    // Berre administrator får lese kontakt- og helseopplysningar.
+    if (isAdmin() && String(state.yearId) === '2027') {
+      const formsSnap = await db.collection('pameldingar2027').get();
+      for (const doc of formsSnap.docs) {
+        const f = doc.data();
+        const group = Number(f.manuellGruppe || f.standardGruppe);
+        const id = 'forms-' + doc.id;
+        state.participants.push({ id, name: f.namn || '', group, birthYear: f.fodselsar || null, tshirt: f.tSkjorte || '', formsId: doc.id });
+      }
+      state.participants.sort(sortByName);
+      state.formsPrivate = new Map(formsSnap.docs.map(doc => [doc.id, doc.data()]));
+    } else {
+      state.formsPrivate = new Map();
+    }
+
     state.instructors = instructorsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })).sort(sortByName);
     state.adults = adultsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })).sort(sortByName);
     state.days = daysSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })).sort((a, b) => String(a.date || a.id).localeCompare(String(b.date || b.id)));
@@ -207,6 +223,13 @@
         yearPath('adultPrivate').get()
       ]);
       pPriv.docs.forEach(doc => state.participantPrivate.set(doc.id, doc.data()));
+      if (state.formsPrivate) for (const [id, f] of state.formsPrivate) {
+        state.participantPrivate.set('forms-' + id, {
+          allergy: f.harAllergiar ? (f.allergiar || 'Ja') : '',
+          guardian: [f.kontakt1Namn, f.kontakt1Telefon, f.kontakt2Namn, f.kontakt2Telefon].filter(Boolean).join(' · '),
+          notes: f.andreOmsyn || ''
+        });
+      }
       iPriv.docs.forEach(doc => state.instructorPrivate.set(doc.id, doc.data()));
       aPriv.docs.forEach(doc => state.adultPrivate.set(doc.id, doc.data()));
     }
@@ -599,7 +622,21 @@
     const q = (el('participantSearch')?.value || '').toLowerCase();
     const group = Number(el('participantGroup')?.value || 0);
     const rows = state.participants.filter(p => (!q || String(p.name).toLowerCase().includes(q)) && (!group || Number(p.group) === group));
-    el('adminParticipantList').innerHTML = `<div class="contact-grid">${rows.map(p => { const priv = state.participantPrivate.get(p.id) || {}; return `<div class="contact-card"><h3>${escapeHtml(p.name)}</h3><p>Gruppe ${escapeHtml(p.group || '-')} · født ${escapeHtml(p.birthYear || '-')}</p><p>T-skjorte: ${escapeHtml(p.tshirt || '-')}</p>${priv.allergy ? `<div class="alert-box"><strong>Allergi/mat:</strong> ${escapeHtml(priv.allergy)}</div>` : ''}${priv.guardian ? `<p><strong>Foresatt:</strong> ${escapeHtml(priv.guardian)}</p>` : ''}${priv.notes ? `<p><strong>Merknad:</strong> ${escapeHtml(priv.notes)}</p>` : ''}</div>`; }).join('') || '<p>Ingen treff.</p>'}</div>`;
+    el('adminParticipantList').innerHTML = `<div class="contact-grid">${rows.map(p => { const priv = state.participantPrivate.get(p.id) || {}; return `<div class="contact-card"><h3>${escapeHtml(p.name)}</h3><p>Gruppe ${escapeHtml(p.group || '-')} · født ${escapeHtml(p.birthYear || '-')}</p><p>T-skjorte: ${escapeHtml(p.tshirt || '-')}</p>${priv.allergy ? `<div class="alert-box"><strong>Allergi/mat:</strong> ${escapeHtml(priv.allergy)}</div>` : ''}${priv.guardian ? `<p><strong>Foresatt:</strong> ${escapeHtml(priv.guardian)}</p>` : ''}${priv.notes ? `<p><strong>Merknad:</strong> ${escapeHtml(priv.notes)}</p>` : ''}${p.formsId ? `<label>Flytt til gruppe <select onchange="changeFormsGroup2027('${escapeHtml(p.formsId)}', this.value)">${[1,2,3,4,5].map(g => `<option value="${g}" ${Number(p.group) === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>` : ''}</div>`; }).join('') || '<p>Ingen treff.</p>'}</div>`;
+  };
+
+  window.changeFormsGroup2027 = async function (formsId, value) {
+    if (!isAdmin() || String(state.yearId) !== '2027') return;
+    const group = Number(value);
+    if (!Number.isInteger(group) || group < 1 || group > 5) return;
+    try {
+      await db.collection('pameldingar2027').doc(formsId).set({ manuellGruppe: group }, { merge: true });
+      await loadYear('2027');
+      showAdminParticipants();
+    } catch (error) {
+      console.error(error);
+      alert('Kunne ikkje endre gruppe. Prøv igjen.');
+    }
   };
 
   window.showAdminInstructors = function () {
