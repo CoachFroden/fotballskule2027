@@ -11,6 +11,8 @@ service cloud.firestore {
     function admin() { return signedIn() && (request.auth.uid == 'aVBlrvavoZbUcELpcIDXuyImuy92'); }
     function instructor() { return role() == 'instructor'; }
     function responsible() { return role() == 'responsible'; }
+    function annualRole(year) { return signedIn() && exists(/databases/$(database)/documents/years/$(year)/staffAccess/$(request.auth.uid)) ? get(/databases/$(database)/documents/years/$(year)/staffAccess/$(request.auth.uid)).data.role : ''; }
+    function staffYear(year) { return admin() || annualRole(year) in ['instructor','responsible']; }
     function staff() { return admin() || instructor() || responsible(); }
 
     match /accessRequests/{uid} {
@@ -28,42 +30,48 @@ service cloud.firestore {
       allow read, write: if admin();
     }
     match /years/{year} {
-      allow read: if staff();
+      allow read: if staffYear(year);
       allow write: if admin();
+      match /staffAccess/{uid} { allow read: if admin() || (signedIn() && request.auth.uid == uid); allow write: if admin(); }
+      match /accessRequests/{uid} {
+        allow get: if admin() || (signedIn() && request.auth.uid == uid);
+        allow list, update, delete: if admin();
+        allow create: if signedIn() && request.auth.uid == uid && request.resource.data.uid == uid && request.resource.data.year == year && request.resource.data.status == 'pending' && request.resource.data.requestedRole in ['instructor','responsible'] && request.resource.data.keys().hasOnly(['uid','year','name','email','requestedRole','status','createdAt']);
+      }
 
       match /participants/{id} {
-        allow read: if staff();
+        allow read: if staffYear(year);
         allow write: if admin();
       }
       match /participantPrivate/{id} {
-        allow read: if admin() || responsible();
+        allow read: if admin() || annualRole(year) == 'responsible';
         allow write: if admin();
       }
       match /instructors/{id} {
-        allow read: if staff();
+        allow read: if staffYear(year);
         allow write: if admin();
       }
       match /instructorPrivate/{id} {
         allow read, write: if admin();
       }
       match /adults/{id} {
-        allow read: if staff();
+        allow read: if staffYear(year);
         allow write: if admin();
       }
       match /adultPrivate/{id} {
         allow read, write: if admin();
       }
       match /days/{id} {
-        allow read: if staff();
+        allow read: if staffYear(year);
         allow write: if admin();
       }
       match /instructorPlans/{id} {
-        allow read: if staff();
+        allow read: if staffYear(year);
         allow write: if admin();
       }
       match /attendance/{session}/entries/{id} {
-        allow read: if admin() || instructor();
-        allow write: if admin() || instructor();
+        allow read: if admin() || annualRole(year) == 'instructor';
+        allow write: if admin() || annualRole(year) == 'instructor';
       }
       match /{document=**} {
         allow read, write: if admin();
