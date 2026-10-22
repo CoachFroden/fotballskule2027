@@ -120,7 +120,7 @@
       <div class="welcome-box auth-card">
         <h2>Logg inn</h2>
         ${error ? status(error, 'error') : ''}
-        <button class="menu-button compact" type="button" onclick="loginGoogle()">Logg inn med Google</button>
+        <button class="menu-button compact" type="button" onclick="loginGoogle()">Logg inn med Google</button><button class="menu-button compact" type="button" onclick="staffAuthForm('login')">Logg inn med e-post / opprett konto</button>
         <p class="muted">Berre godkjende administratorar og medarbeidarar får tilgang til deltakaropplysningar.</p>
       </div>`;
   }
