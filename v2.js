@@ -531,25 +531,17 @@
     window.showHome = function () {
       // The legacy home is kept for login/setup only; never render its
       // obsolete cards while the new dashboard is loading.
-      const signedIn = Boolean(auth.currentUser);
-      let result;
-      if (signedIn) {
-        document.body.classList.add('v2-enabled');
-        const intro = document.getElementById('pageIntro');
-        const menu = document.getElementById('mainMenu');
-        const content = document.getElementById('content');
-        if (intro) intro.innerHTML = '';
-        if (menu) menu.innerHTML = '';
-        if (content) content.innerHTML = '<div class="match-loading" role="status">Lastar Fotballskule …</div>';
-      } else {
-        result = renderV2Home();
-      }
-      if (homeRenderTimer !== null) window.clearTimeout(homeRenderTimer);
-      homeRenderTimer = window.setTimeout(() => {
+      renderToken++;
+      if (homeRenderTimer !== null) {
+        clearTimeout(homeRenderTimer);
         homeRenderTimer = null;
-        renderV2Home();
-      }, 140);
-      return result;
+      }
+      document.body.classList.add('v2-enabled');
+      document.getElementById('pageIntro')?.replaceChildren();
+      document.getElementById('mainMenu')?.replaceChildren();
+      const content = document.getElementById('content');
+      if (content) content.innerHTML = '<div class="match-loading" role="status">Lastar Fotballskule …</div>';
+      return renderV2Home();
     };
     window.goHome = window.showHome;
   }
