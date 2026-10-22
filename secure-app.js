@@ -153,6 +153,12 @@
       state.user = user;
       state.profile = { id: profileDoc.id, ...profileDoc.data() };
       await loadYears();
+      if (!isAdmin()) {
+        const year = state.years.find(y => y.status === 'active')?.id || state.years[0]?.id || '2027';
+        const access = await db.collection('years').doc(year).collection('staffAccess').doc(user.uid).get();
+        if (!access.exists) { await window.staffAccessPending(user, year); return; }
+        state.profile.role = access.data().role;
+      }
       await chooseInitialYear();
       showHome();
     } catch (error) {
