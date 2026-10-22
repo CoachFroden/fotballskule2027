@@ -197,7 +197,7 @@
     menu.innerHTML = backButton();
 
     if (!data.days.length) {
-      content.innerHTML = '<div class="welcome-box"><div class="status-box info">Ingen programdagar er registrerte.</div></div>';
+      content.innerHTML = '<section class="match-empty-state" role="status"><span class="match-empty-eyebrow">BEMANNING · ' + esc(data.year) + '</span><h3>Her kjem laget for kvar dag.</h3><p>Ingen programdagar er lagde inn enno. Når dagane er klare, får du oversikt over ansvarlege, roller og kontaktinformasjon her.</p><button type="button" class="match-empty-back" onclick="showHome()">Tilbake til oversikta <span aria-hidden="true">↗</span></button></section>';
       return;
     }
 
