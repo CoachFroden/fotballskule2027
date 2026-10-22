@@ -29,8 +29,27 @@
      const items=results.flat();
      screen('<h2>Tilgangssøknader ('+items.length+')</h2><p class="staff-help">Godkjenninga gjeld berre den valde årgangen.</p>'+
        (items.map(v=>'<div class="contact-card"><h3>'+safe(v.name)+'</h3><p>'+safe(v.email)+'</p><p>'+safe(v.year)+' · '+(v.requestedRole==='responsible'?'Ansvarleg':'Instruktør')+'</p><button class="menu-button compact" onclick="staffDecide('+JSON.stringify(v.year)+','+JSON.stringify(v.uid)+',true)">Godkjenn</button><button class="text-button" onclick="staffDecide('+JSON.stringify(v.year)+','+JSON.stringify(v.uid)+',false)">Avslå</button></div>').join('')||'<p>Ingen ventande søknader.</p>')+
-       '<button class="text-button" onclick="showAdmin()">Tilbake</button>');
+       '<button class="text-button" onclick="staffMigrate2027()">Overfør tidlegare godkjende til 2027</button><button class="text-button" onclick="showAdmin()">Tilbake</button>');
    }catch(e){console.error(e);screen('<h2>Tilgangssøknader</h2><p>Kunne ikkje hente søknader.</p>');}
+ };
+ window.staffMigrate2027=async()=>{
+   const user=auth.currentUser;if(!user)return;
+   const profile=await db.collection('users').doc(user.uid).get();if(profile.data()?.role!=='admin')return;
+   if(!confirm('Legg tidlegare godkjende instruktørar og ansvarlege til i 2027?'))return;
+   try{
+     const snap=await db.collection('accessRequests').get();let count=0;
+     for(const doc of snap.docs){
+       const v=doc.data();
+       if(v.status!=='approved'||!['instructor','responsible'].includes(v.requestedRole))continue;
+       const ref=db.collection('years').doc('2027').collection('staffAccess').doc(doc.id);
+       if((await ref.get()).exists)continue;
+       const batch=db.batch(),list=v.requestedRole==='instructor'?'instructors':'adults';
+       batch.set(ref,{role:v.requestedRole,name:v.name||'',email:v.email||'',approvedBy:user.uid,approvedAt:ts(),migratedFromLegacy:true});
+       batch.set(db.collection('years').doc('2027').collection(list).doc(doc.id),{name:v.name||'',email:v.email||'',...(list==='adults'?{role:'Ansvarleg'}:{})},{merge:true});
+       await batch.commit();count++;
+     }
+     alert(count+' tidlegare godkjende overførte til 2027.');await window.staffAccessAdmin();
+   }catch(e){console.error(e);alert('Overføring mislukkast: '+(e.code||''));}
  };
  window.staffDecide=async(year,uid,approve)=>{
    const user=auth.currentUser;if(!user||!/^20\d\d$/.test(year))return;
