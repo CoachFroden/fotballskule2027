@@ -313,6 +313,17 @@
       : `<div class="v2-preview-buttons"><span>Test visning:</span><button type="button" onclick="v2PreviewRole('responsible')">Sjå som ansvarleg</button><button type="button" onclick="v2PreviewRole('instructor')">Sjå som instruktør</button></div>`;
   }
 
+  function sidebar(role, year) {
+    const items = role === 'admin' ? [
+      ['⌂','Hovudside','showHome'],['▦','Program','showAdminDays'],['♙','Deltakarar','showAdminParticipants'],['♧','Instruktørar','showAdminInstructors'],['♟','Vaksne','showAdminAdults'],['✉','Tilbakemeldingar','showSimpleFeedbackAdmin'],['⚙','Administrasjon','showAdmin']
+    ] : role === 'responsible' ? [
+      ['⌂','Hovudside','showHome'],['▦','Program','showDays'],['✚','Tryggleik','showResponsibleSafety'],['♙','Grupper','showGroups'],['♧','Vaksne','showResponsibleAdults']
+    ] : [
+      ['⌂','Hovudside','showHome'],['▦','Program','showDays'],['✓','Krysselister','showChecklists'],['♙','Grupper','showGroups'],['⚽','Øvingar','showExercises'],['↻','Instruktørplan','showInstructorSchedule']
+    ];
+    return '<aside class="match-sidebar"><div class="match-side-logo"><span>SAMNANGER IL</span><strong>FOTBALLSKULE <em>'+esc(year)+'</em></strong></div><nav aria-label="Fotballskule-meny">'+items.map(([icon,label,handler],i)=>'<button type="button" class="match-side-link'+(i===0?' current':'')+'" onclick="'+handler+'()"><span aria-hidden="true">'+icon+'</span>'+esc(label)+'</button>').join('')+'</nav><div class="match-side-footer"><strong>MEIR ENN FOTBALL</strong><small>Samhald · Glede · Meistring</small></div></aside>';
+  }
+
   function renderHero(role, data) {
     const archived = data.yearData?.status === 'archived';
     return `<section class="v2-hero">
@@ -358,7 +369,7 @@
 
       intro.innerHTML = '';
       menu.innerHTML = '';
-      content.innerHTML = `<div class="v2-home">
+      content.innerHTML = `<div class="match-shell">${sidebar(role, data.year)}<div class="v2-home">
         ${previewControls()}
         ${renderHero(role, data)}
         ${roleNotice(role, data)}
@@ -376,7 +387,7 @@
             ${todayCard(data, role)}
           </section>
         </div>
-      </div>`;
+      </div></div>`;
 
       renderDock(role, 'home');
     } catch (error) {
