@@ -1,0 +1,44 @@
+/* Tydeligare instruktørvisning */
+.instructor-chip-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.instructor-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 10px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 850;
+  line-height: 1.15;
+}
+
+.instructor-chip.group-tone-1 { background: #e8f1ff; color: #174ea6; border-color: #bfd4ff; }
+.instructor-chip.group-tone-2 { background: #e9f7ef; color: #176b3a; border-color: #bfe6cf; }
+.instructor-chip.group-tone-3 { background: #fff4d9; color: #805500; border-color: #f0d798; }
+.instructor-chip.group-tone-4 { background: #f2eaff; color: #6840a0; border-color: #d8c3f4; }
+.instructor-chip.group-tone-5 { background: #ffe9ee; color: #9e2942; border-color: #f2bdc8; }
+
+.schedule-mini-card.group-card-1 { border-left: 4px solid #6d9ee8; }
+.schedule-mini-card.group-card-2 { border-left: 4px solid #62b781; }
+.schedule-mini-card.group-card-3 { border-left: 4px solid #d8a72d; }
+.schedule-mini-card.group-card-4 { border-left: 4px solid #9a73cc; }
+.schedule-mini-card.group-card-5 { border-left: 4px solid #d7657b; }
+
+.instructor-editor-row {
+  border-radius: 12px;
+  padding-inline: 10px !important;
+}
+.instructor-editor-row.group-tone-1 { background: #f3f7ff; }
+.instructor-editor-row.group-tone-2 { background: #f1faf5; }
+.instructor-editor-row.group-tone-3 { background: #fffaf0; }
+.instructor-editor-row.group-tone-4 { background: #f8f4ff; }
+.instructor-editor-row.group-tone-5 { background: #fff4f6; }
+.instructor-editor-row.group-tone-0 { background: #f7f8fa; }
