@@ -145,9 +145,11 @@
     try {
       const profileDoc = await db.collection('users').doc(user.uid).get();
       if (!profileDoc.exists) {
-        renderLogin('Google-innlogging er registrert, men kontoen er ikkje godkjend som administrator enno.');
+        state.user = user;
+        await window.staffAccessPending(user);
         return;
       }
+      if (!['admin','instructor','responsible'].includes(profileDoc.data().role)) { state.user = user; await window.staffAccessPending(user); return; }
       state.user = user;
       state.profile = { id: profileDoc.id, ...profileDoc.data() };
       await loadYears();
@@ -415,6 +417,7 @@
     if (!isAdmin()) return showHome();
     setIntro('Administrasjon', 'Persondata, import og årgangar er berre synleg for administrator.', `Fotballskule ${state.yearId || ''}`);
     setMenu([
+      card('🔐', 'Tilgangssøknader', 'Godkjenn nye medarbeidarar', 'staffAccessAdmin()'),
       card('📥', 'Importer Excel/CSV', 'Deltakarar, instruktørar eller vaksne', 'showImport()'),
       card('👟', 'Deltakarar', 'Søk og sjå nødvendige private opplysningar', 'showAdminParticipants()'),
       ...(String(state.yearId) === '2027' && state.year?.status !== 'archived' ? [card('➕', 'Legg til deltakar', 'Etterpåmelding direkte i Firebase', 'showManualRegistration2027()')] : []),
