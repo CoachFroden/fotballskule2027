@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="nn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#071a3d">
+  <meta name="color-scheme" content="light">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com https://apis.google.com https://cdn.sheetjs.com; connect-src 'self' https://www.gstatic.com https://apis.google.com https://*.googleapis.com https://securetoken.googleapis.com https://identitytoolkit.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.firebaseapp.com; frame-src 'self' https://*.firebaseapp.com; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="no-referrer">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Fotballskule">
+  <meta name="description" content="Trygt arbeidsverktøy for TINE Fotballskule i Samnanger IL.">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>TINE Fotballskule · Samnanger IL</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="secure.css">
+  <link rel="stylesheet" href="instructor-colors.css">
+  <link rel="stylesheet" href="v2.css">
+  <link rel="stylesheet" href="v2-pages.css">
+  <link rel="stylesheet" href="v2-football.css">
+  <link rel="stylesheet" href="v2-account.css">
+  <link rel="stylesheet" href="checklists-smart.css">
+  <link rel="stylesheet" href="admin-days-compact.css">
+  <link rel="stylesheet" href="v2-day-picker.css">
+  <link rel="stylesheet" href="responsible-daily.css">
+  <link rel="stylesheet" href="responsible-staff.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <button class="brand" type="button" onclick="goHome()" aria-label="Gå til framsida">
+        <span class="brand-mark"><img src="logo.png" alt="" class="brand-logo"></span>
+        <span class="brand-copy">
+          <span class="brand-kicker">Samnanger IL</span>
+          <strong>TINE Fotballskule</strong>
+          <span id="currentYearLabel">Fotballskule</span>
+        </span>
+      </button>
+      <button class="icon-button" type="button" onclick="goHome()" aria-label="Framside" title="Framside"><span aria-hidden="true">⌂</span></button>
+    </header>
+
+    <main class="container">
+      <section id="pageIntro" class="page-intro" aria-live="polite"></section>
+      <nav id="mainMenu" class="button-container" aria-label="Hovudmeny"></nav>
+      <section id="content" class="content-area" aria-live="polite"></section>
+    </main>
+
+    <footer class="app-footer">
+      <span>Samnanger IL · <span id="footerYear">Fotballskule</span></span>
+      <span class="footer-dot" aria-hidden="true">•</span>
+      <span id="connectionStatus">Klar</span>
+    </footer>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" referrerpolicy="no-referrer"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCqJ7v1KO58AwX2hJ89mgnHB55Lc6B0QHA",
+      authDomain: "tine-fotballskule.firebaseapp.com",
+      projectId: "tine-fotballskule",
+      storageBucket: "tine-fotballskule.firebasestorage.app",
+      messagingSenderId: "613603264043",
+      appId: "1:613603264043:web:47dcec3d1dfe4e19304c6e"
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  <script src="app.js"></script>
+  <script src="secure-app.js"></script>
+  <script src="import-fix.js"></script>
+  <script src="checklists-feedback.js"></script>
+  <script src="admin-quick-tools.js"></script>
+  <script src="instructor-mode.js"></script>
+  <script src="instructor-schedule.js"></script>
+  <script src="instructor-legacy-prefill.js"></script>
+  <script src="instructor-save-feedback.js"></script>
+  <script src="instructor-schedule-compact.js"></script>
+  <script src="instructor-schedule-cleanup.js"></script>
+  <script src="responsible-mode.js"></script>
+  <script src="v2.js"></script>
+  <script src="v2-pages.js"></script>
+  <script src="v2-football.js"></script>
+  <script src="v2-account.js"></script>
+  <script src="checklists-smart.js"></script>
+  <script src="admin-days-compact.js"></script>
+  <script src="v2-program-full.js"></script>
+  <script src="responsible-daily.js"></script>
+  <script src="responsible-staff.js"></script>
+</body>
+</html>
