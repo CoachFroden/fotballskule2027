@@ -164,7 +164,7 @@
   }
 
   window.showResponsibleSafety = async function () {
-    if (await getRole() !== 'responsible') return window.showHome();
+    if (await getRole() !== 'responsible' && !window.v2IsPreviewRole?.('responsible')) return window.showHome();
 
     const year = currentYear();
     const intro = document.getElementById('pageIntro');
@@ -252,7 +252,7 @@
   };
 
   window.showResponsibleInstructions = async function () {
-    if (await getRole() !== 'responsible') return window.showHome();
+    if (await getRole() !== 'responsible' && !window.v2IsPreviewRole?.('responsible')) return window.showHome();
     const { year, days } = await loadResponsibleData();
     const intro = document.getElementById('pageIntro');
     const menu = document.getElementById('mainMenu');
@@ -283,7 +283,7 @@
   };
 
   window.showResponsibleAdults = async function () {
-    if (await getRole() !== 'responsible') return window.showHome();
+    if (await getRole() !== 'responsible' && !window.v2IsPreviewRole?.('responsible')) return window.showHome();
     const { year, adults } = await loadResponsibleData();
     const intro = document.getElementById('pageIntro');
     const menu = document.getElementById('mainMenu');
