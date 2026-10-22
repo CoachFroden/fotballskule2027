@@ -527,7 +527,7 @@
     window.showHome = function () {
       // The legacy home is kept for login/setup only; never render its
       // obsolete cards while the new dashboard is loading.
-      const signedIn = Boolean(auth.currentUser && currentYear());
+      const signedIn = Boolean(auth.currentUser);
       let result;
       if (signedIn) {
         document.body.classList.add('v2-enabled');
@@ -538,7 +538,7 @@
         if (menu) menu.innerHTML = '';
         if (content) content.innerHTML = '<div class="match-loading" role="status">Lastar Fotballskule …</div>';
       } else {
-        result = previousShowHome.apply(this, arguments);
+        result = renderV2Home();
       }
       if (homeRenderTimer !== null) window.clearTimeout(homeRenderTimer);
       homeRenderTimer = window.setTimeout(() => {
