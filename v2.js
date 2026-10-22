@@ -419,6 +419,8 @@
     }
   }
 
+  window.renderModernHome = renderV2Home;
+
   function dockItems(role) {
     if (role === 'admin') return [
       ['home', '⌂', 'Heim', 'showHome'],
