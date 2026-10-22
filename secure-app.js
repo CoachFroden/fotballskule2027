@@ -673,7 +673,7 @@
     if (!isAdmin()) return;
     setIntro('Deltakarar', 'Sensitive opplysningar er skilde frå data instruktørane kan lese.', `Fotballskule ${state.yearId}`);
     setMenu([], back('Administrasjon', 'showAdmin()'));
-    content().innerHTML = `<div class="welcome-box">${String(state.yearId) === '2027' && state.year?.status !== 'archived' ? '<button class="menu-button compact success" onclick="showManualRegistration2027()">＋ Legg til deltakar</button>' : ''}<div class="toolbar"><input id="participantSearch" type="search" placeholder="Søk namn…" oninput="renderAdminParticipants()"><select id="participantGroup" onchange="renderAdminParticipants()"><option value="">Alle grupper</option>${[1,2,3,4,5,6,7,8].map(g => `<option value="${g}">Gruppe ${g}</option>`).join('')}</select></div><div id="adminParticipantList"></div></div>`;
+    content().innerHTML = `<div class="welcome-box participant-admin-page">${String(state.yearId) === '2027' && state.year?.status !== 'archived' ? '<button class="menu-button compact success" onclick="showManualRegistration2027()">＋ Legg til deltakar</button>' : ''}<div class="toolbar"><input id="participantSearch" type="search" placeholder="Søk namn…" oninput="renderAdminParticipants()"><select id="participantGroup" onchange="renderAdminParticipants()"><option value="">Alle grupper</option>${[1,2,3,4,5,6,7,8].map(g => `<option value="${g}">Gruppe ${g}</option>`).join('')}</select></div><div id="adminParticipantList"></div></div>`;
     renderAdminParticipants();
   };
 
@@ -681,10 +681,25 @@
     const q = (el('participantSearch')?.value || '').toLowerCase();
     const group = Number(el('participantGroup')?.value || 0);
     const rows = state.participants.filter(p => (!q || String(p.name).toLowerCase().includes(q)) && (!group || Number(p.group) === group));
-    el('adminParticipantList').innerHTML = `<div class="contact-grid">${rows.map(p => { const priv = state.participantPrivate.get(p.id) || {}; return `<div class="contact-card"><h3>${escapeHtml(p.name)}</h3><p>Gruppe ${escapeHtml(p.group || '-')} · født ${escapeHtml(p.birthYear || '-')}</p><p>T-skjorte: ${escapeHtml(p.tshirt || '-')}</p>${priv.allergy ? `<div class="alert-box"><strong>Allergi/mat:</strong> ${escapeHtml(priv.allergy)}</div>` : ''}${priv.guardian ? `<p><strong>Foresatt:</strong> ${escapeHtml(priv.guardian)}</p>` : ''}${priv.notes ? `<p><strong>Merknad:</strong> ${escapeHtml(priv.notes)}</p>` : ''}${p.formsId ? `<button class="menu-button compact" style="margin-top:12px" onclick="editFormsParticipant2027('${escapeHtml(p.formsId)}')">Rediger opplysningar</button><div style="margin-top:18px;padding-top:14px;border-top:1px solid #dce4ef"><label style="display:block;font-weight:600;margin-bottom:8px">Flytt til gruppe</label><select style="display:block;width:100%;margin-top:0" aria-label="Flytt deltakar til gruppe" onchange="changeFormsGroup2027('${escapeHtml(p.formsId)}', this.value)">${[1,2,3,4,5].map(g => `<option value="${g}" ${Number(p.group) === g ? 'selected' : ''}>${g}</option>`).join('')}</select></div>` : ''}</div>`; }).join('') || '<p>Ingen treff.</p>'}</div>`;
+    el('adminParticipantList').innerHTML = `<div class="participant-admin-grid">${rows.map(p => {
+      const priv = state.participantPrivate.get(p.id) || {};
+      return `<article class="participant-admin-card">
+        <div class="participant-admin-heading"><h3>${escapeHtml(p.name)}</h3><span>Gruppe ${escapeHtml(p.group || '-')}</span></div>
+        <p class="participant-admin-meta">Født ${escapeHtml(p.birthYear || '-')} · T-skjorte ${escapeHtml(p.tshirt || '-')}</p>
+        <div class="participant-admin-info">
+          ${priv.allergy ? `<div class="participant-admin-allergy"><strong>Allergi/mat:</strong> ${escapeHtml(priv.allergy)}</div>` : ''}
+          ${priv.guardian ? `<p><strong>Føresett:</strong> ${escapeHtml(priv.guardian)}</p>` : ''}
+          ${priv.notes ? `<p><strong>Merknad:</strong> ${escapeHtml(priv.notes)}</p>` : ''}
+        </div>
+        ${p.formsId ? `<div class="participant-admin-actions">
+          <button type="button" class="participant-admin-edit" onclick="editFormsParticipant2027('${escapeHtml(p.formsId)}')">Rediger opplysningar</button>
+          <label>Flytt til gruppe<select aria-label="Flytt ${escapeHtml(p.name)} til gruppe" onchange="changeFormsGroup2027('${escapeHtml(p.formsId)}', this.value)">${[1,2,3,4,5].map(g => `<option value="${g}" ${Number(p.group) === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>
+        </div>` : ''}
+      </article>`;
+    }).join('') || '<p>Ingen treff.</p>'}</div>`;
   };
 
-  window.editFormsParticipant2027 = function (id) {
+    window.editFormsParticipant2027 = function (id) {
     if (!isAdmin() || String(state.yearId) !== '2027') return;
     const f = state.formsPrivate?.get(id);
     if (!f) return;
