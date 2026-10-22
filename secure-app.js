@@ -66,6 +66,13 @@
 
   function setIntro(title, text = '', kicker = '') {
     if (!intro()) return;
+    const name = String(title || '').toLowerCase();
+    document.body.dataset.matchPage = /deltakar|påmelding|gruppe/.test(name) ? 'participants'
+      : /instruktør|øving|plan/.test(name) ? 'instructors'
+      : /program|dag|meny/.test(name) ? 'program'
+      : /vaksne|ansvar|trygg|helse/.test(name) ? 'adults'
+      : /tilbakemelding|svar/.test(name) ? 'feedback'
+      : /administrasjon|årgang|import|tilgang/.test(name) ? 'admin' : 'general';
     intro().innerHTML = `
       <div class="hero-card">
         ${kicker ? `<p class="hero-kicker">${escapeHtml(kicker)}</p>` : ''}
