@@ -113,6 +113,21 @@
 
     const yearDoc = common[0];
     const participants = common[1].docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    // 2027 registrations live in the authoritative Firebase signup collection.
+    // Read it only for administrators: instructor/responsible roles must not
+    // receive personal registration details from this private collection.
+    if (role === 'admin' && String(year) === '2027') {
+      try {
+        const registrations = await db.collection('pameldingar2027').get();
+        const knownIds = new Set(participants.map(item => String(item.formsId || item.registrationId || item.id)));
+        registrations.docs.forEach(doc => {
+          if (knownIds.has(doc.id) || knownIds.has('forms-' + doc.id)) return;
+          participants.push({ id: 'forms-' + doc.id });
+        });
+      } catch (error) {
+        console.warn('Kunne ikkje hente talet på påmeldingar for 2027', error);
+      }
+    }
     const instructors = common[2].docs.map(doc => ({ id: doc.id, ...doc.data() }));
     const adults = common[3].docs.map(doc => ({ id: doc.id, ...doc.data() }));
     const days = common[4].docs
