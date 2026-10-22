@@ -1,0 +1,37 @@
+/* Konto/Meir i v2 */
+body.v2-enabled .v2-dock.has-admin-more {
+  width: min(calc(100% - 24px), 600px);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+body.v2-enabled .v2-dock [data-v2-admin-more] .v2-dock-icon {
+  font-size: 17px;
+  letter-spacing: .08em;
+  transform: translateY(-1px);
+}
+
+/* Gamle admin-sider skal ikkje skyve årgangsveljaren ut til høgre. */
+body.v2-enabled .year-switcher {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+body.v2-enabled .year-switcher label {
+  width: min(100%, 260px);
+  min-width: 0;
+}
+
+@media (max-width: 520px) {
+  body.v2-enabled .v2-dock.has-admin-more {
+    width: calc(100% - 14px);
+    gap: 3px;
+    padding-inline: 5px;
+  }
+  body.v2-enabled .v2-dock.has-admin-more .v2-dock-button {
+    min-height: 56px;
+    padding-inline: 3px;
+  }
+  body.v2-enabled .v2-dock.has-admin-more .v2-dock-label {
+    font-size: 8px;
+  }
+}

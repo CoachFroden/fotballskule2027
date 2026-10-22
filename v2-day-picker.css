@@ -1,0 +1,74 @@
+/* Programdagveljar på v2-forsida */
+.v2-dashboard-day-picker {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: -2px 0 12px;
+  padding: 2px 1px 4px;
+  scrollbar-width: thin;
+}
+
+.v2-dashboard-day-button {
+  flex: 0 0 auto;
+  min-width: 138px;
+  min-height: 52px;
+  display: grid;
+  gap: 2px;
+  align-content: center;
+  padding: 9px 12px;
+  border: 1px solid rgba(35,79,132,.13);
+  border-radius: 16px;
+  background: rgba(255,255,255,.9);
+  color: #16335f;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color .16s ease, background .16s ease, transform .16s ease, box-shadow .16s ease;
+}
+
+.v2-dashboard-day-button span {
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: capitalize;
+}
+
+.v2-dashboard-day-button small {
+  max-width: 170px;
+  overflow: hidden;
+  color: #74849b;
+  font-size: 10px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.v2-dashboard-day-button.is-active {
+  border-color: rgba(28,116,214,.48);
+  background: linear-gradient(135deg,#eef6ff,#f7fbff);
+  box-shadow: 0 7px 18px rgba(27,93,167,.10);
+}
+
+.v2-dashboard-day-button.is-active span {
+  color: #0d4f9d;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .v2-dashboard-day-button:hover {
+    transform: translateY(-1px);
+    border-color: rgba(28,116,214,.30);
+  }
+}
+
+@media (max-width: 700px) {
+  .v2-dashboard-day-picker {
+    margin-inline: -2px;
+    padding-bottom: 5px;
+    scroll-snap-type: x proximity;
+  }
+
+  .v2-dashboard-day-button {
+    min-width: min(44vw, 165px);
+    min-height: 50px;
+    scroll-snap-align: start;
+  }
+}
