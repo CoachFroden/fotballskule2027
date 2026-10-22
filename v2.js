@@ -412,6 +412,10 @@
       renderDock(role, 'home');
     } catch (error) {
       console.error('V2-dashboard:', error);
+      if (token === renderToken) {
+        const content = document.getElementById('content');
+        if (content) content.innerHTML = '<div class="welcome-box" role="alert"><h2>Kunne ikkje laste forsida</h2><p>Prøv å oppdatere sida. Dersom feilen held fram, må vi kontrollere Firebase-tilgangen.</p></div>';
+      }
     }
   }
 
@@ -519,7 +523,21 @@
 
   if (previousShowHome) {
     window.showHome = function () {
-      const result = previousShowHome.apply(this, arguments);
+      // The legacy home is kept for login/setup only; never render its
+      // obsolete cards while the new dashboard is loading.
+      const signedIn = Boolean(auth.currentUser && currentYear());
+      let result;
+      if (signedIn) {
+        document.body.classList.add('v2-enabled');
+        const intro = document.getElementById('pageIntro');
+        const menu = document.getElementById('mainMenu');
+        const content = document.getElementById('content');
+        if (intro) intro.innerHTML = '';
+        if (menu) menu.innerHTML = '';
+        if (content) content.innerHTML = '<div class="match-loading" role="status">Lastar Fotballskule …</div>';
+      } else {
+        result = previousShowHome.apply(this, arguments);
+      }
       if (homeRenderTimer !== null) window.clearTimeout(homeRenderTimer);
       homeRenderTimer = window.setTimeout(() => {
         homeRenderTimer = null;
