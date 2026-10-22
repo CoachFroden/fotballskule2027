@@ -279,45 +279,7 @@
     setIntro('Fotballskule ' + (state.yearId || '2027'), 'Lastar forsida …', 'Samnanger IL');
     setMenu([]);
     content().innerHTML = '<div class="match-loading" role="status">Lastar ny forside …</div>';
-    return;
-    const archived = state.year?.status === 'archived';
-    setIntro(
-      state.yearId ? `Fotballskule ${state.yearId}` : 'Fotballskule',
-      archived ? 'Arkivert årgang – historikken kan lesast utan at du blandar han med neste års drift.' : 'Arbeidsverktøy for trygg og oversiktleg gjennomføring.',
-      state.profile?.role === 'admin' ? 'Administrator' : 'Instruktør'
-    );
 
-    if (!state.yearId) {
-      setMenu(isAdmin() ? [card('＋', 'Opprett første årgang', 'Start med 2027 eller ein annan årgang', 'showYearAdmin()')] : []);
-      content().innerHTML = `<div class="welcome-box">${yearSelector()}<p>Ingen årgang er oppretta enno.</p></div>`;
-      return;
-    }
-
-    const instructorItems = [
-      card('📅', 'Dagsprogram & meny', 'Tidspunkt, lunsj, frukt og beskjedar', 'showDays()'),
-      card('✅', 'Oppmøte', 'Registrer gruppa før og etter lunsj', 'showAttendanceStart()', 'success'),
-      card('🎯', 'Øvingar', 'Søk i øvingsbanken', 'showExercises()'),
-      card('👥', 'Grupper', 'Deltakarar og instruktørfordeling', 'showGroups()'),
-      card('🧑', 'Vaksne', 'Kven er på plass og kva rolle dei har', 'showAdults()')
-    ];
-
-    const adminItems = [
-      card('🛡️', 'Administrasjon', 'Import, årgangar, deltakarar og kontaktdata', 'showAdmin()', 'danger')
-    ];
-
-    setMenu([...instructorItems, ...(isAdmin() ? adminItems : [])]);
-    content().innerHTML = `
-      <div class="welcome-box">
-        ${yearSelector()}
-        <div class="quick-grid">
-          <div class="contact-card"><h3>${state.participants.length}</h3><p>Deltakarar</p></div>
-          <div class="contact-card"><h3>${state.instructors.length}</h3><p>Instruktørar</p></div>
-          <div class="contact-card"><h3>${state.adults.length}</h3><p>Vaksne</p></div>
-          <div class="contact-card"><h3>${state.days.length}</h3><p>Dagar i programmet</p></div>
-        </div>
-        ${archived ? status('Denne årgangen er arkivert. Adminfunksjonar er skrivebeskytta i appen.', 'warning') : ''}
-        <button class="text-button" type="button" onclick="logout()">Logg ut</button>
-      </div>`;
   };
 
   window.goHome = window.showHome;
