@@ -30,7 +30,8 @@ service cloud.firestore {
       allow read, write: if admin();
     }
     match /years/{year} {
-      allow read: if staffYear(year);
+      allow list: if signedIn();
+      allow get: if staffYear(year);
       allow write: if admin();
       match /staffAccess/{uid} { allow read: if admin() || (signedIn() && request.auth.uid == uid); allow write: if admin(); }
       match /accessRequests/{uid} {
