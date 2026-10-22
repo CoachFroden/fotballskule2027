@@ -120,38 +120,17 @@
       <div class="welcome-box auth-card">
         <h2>Logg inn</h2>
         ${error ? status(error, 'error') : ''}
-        <form onsubmit="login(event)" class="form-stack">
-          <label>E-post<input id="loginEmail" type="email" autocomplete="username" required></label>
-          <label>Passord<input id="loginPassword" type="password" autocomplete="current-password" required></label>
-          <button class="menu-button compact" type="submit">Logg inn</button>
-        </form>
-        <button class="text-button" type="button" onclick="resetPassword()">Gløymt passord?</button>
-        <p class="muted">Kontoar blir oppretta av administrator. Det finst ikkje open registrering.</p>
+        <button class="menu-button compact" type="button" onclick="loginGoogle()">Logg inn med Google</button>
+        <p class="muted">Berre godkjende administratorar og medarbeidarar får tilgang til deltakaropplysningar.</p>
       </div>`;
   }
 
-  window.login = async function (event) {
-    event.preventDefault();
-    const email = el('loginEmail').value.trim();
-    const password = el('loginPassword').value;
+  window.loginGoogle = async function () {
     try {
-      await auth.signInWithEmailAndPassword(email, password);
+      await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
     } catch (error) {
-      renderLogin('Innlogginga mislukkast. Kontroller e-post og passord.');
-    }
-  };
-
-  window.resetPassword = async function () {
-    const email = el('loginEmail')?.value.trim();
-    if (!email) {
-      alert('Skriv inn e-postadressa først.');
-      return;
-    }
-    try {
-      await auth.sendPasswordResetEmail(email);
-      alert('E-post for å nullstille passord er sendt.');
-    } catch (_) {
-      alert('Kunne ikkje sende e-post. Kontroller adressa.');
+      console.error(error);
+      renderLogin('Google-innlogging mislukkast: ' + (error.code || 'ukjend feil'));
     }
   };
 
@@ -166,8 +145,7 @@
     try {
       const profileDoc = await db.collection('users').doc(user.uid).get();
       if (!profileDoc.exists) {
-        await auth.signOut();
-        renderLogin('Kontoen er ikkje godkjend for Fotballskule-appen.');
+        renderLogin('Google-innlogging er registrert, men kontoen er ikkje godkjend som administrator enno.');
         return;
       }
       state.user = user;
