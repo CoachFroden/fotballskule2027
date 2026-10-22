@@ -29,7 +29,7 @@
     scheduled = false;
     const onHome = Boolean(content.querySelector('.match-shell'));
     const onSubpage = Boolean(intro.querySelector('.hero-card'));
-    const active = document.body.classList.contains('v2-enabled') && onSubpage && !onHome;
+    const active = document.body.classList.contains('v2-enabled') && document.body.dataset.v2Role === 'admin' && onSubpage && !onHome;
     document.body.classList.toggle('match-subpage', active);
     if (!active) return;
     const label = intro.querySelector('h2')?.textContent?.toLowerCase() || '';
