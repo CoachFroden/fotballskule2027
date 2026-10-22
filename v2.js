@@ -5,6 +5,7 @@
   const db = firebase.firestore();
   const previousShowHome = window.showHome;
   let renderToken = 0;
+  let homeRenderTimer = null;
   let cachedRole = null;
   let cachedUid = null;
   let previewRole = null;
@@ -468,6 +469,13 @@
       console.error(`Manglar funksjon: ${fnName}`);
       return;
     }
+    // Cancel any home render still waiting for Firebase. Otherwise it can
+    // overwrite a subpage after the user has already navigated there.
+    renderToken++;
+    if (homeRenderTimer !== null) {
+      window.clearTimeout(homeRenderTimer);
+      homeRenderTimer = null;
+    }
     setDockActive(active);
     return fn();
   };
@@ -512,7 +520,11 @@
   if (previousShowHome) {
     window.showHome = function () {
       const result = previousShowHome.apply(this, arguments);
-      window.setTimeout(renderV2Home, 140);
+      if (homeRenderTimer !== null) window.clearTimeout(homeRenderTimer);
+      homeRenderTimer = window.setTimeout(() => {
+        homeRenderTimer = null;
+        renderV2Home();
+      }, 140);
       return result;
     };
     window.goHome = window.showHome;
