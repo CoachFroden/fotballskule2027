@@ -622,7 +622,38 @@
     const q = (el('participantSearch')?.value || '').toLowerCase();
     const group = Number(el('participantGroup')?.value || 0);
     const rows = state.participants.filter(p => (!q || String(p.name).toLowerCase().includes(q)) && (!group || Number(p.group) === group));
-    el('adminParticipantList').innerHTML = `<div class="contact-grid">${rows.map(p => { const priv = state.participantPrivate.get(p.id) || {}; return `<div class="contact-card"><h3>${escapeHtml(p.name)}</h3><p>Gruppe ${escapeHtml(p.group || '-')} · født ${escapeHtml(p.birthYear || '-')}</p><p>T-skjorte: ${escapeHtml(p.tshirt || '-')}</p>${priv.allergy ? `<div class="alert-box"><strong>Allergi/mat:</strong> ${escapeHtml(priv.allergy)}</div>` : ''}${priv.guardian ? `<p><strong>Foresatt:</strong> ${escapeHtml(priv.guardian)}</p>` : ''}${priv.notes ? `<p><strong>Merknad:</strong> ${escapeHtml(priv.notes)}</p>` : ''}${p.formsId ? `<div style="margin-top:18px;padding-top:14px;border-top:1px solid #dce4ef"><label style="display:block;font-weight:600;margin-bottom:8px">Flytt til gruppe</label><select style="display:block;width:100%;margin-top:0" aria-label="Flytt deltakar til gruppe" onchange="changeFormsGroup2027('${escapeHtml(p.formsId)}', this.value)">${[1,2,3,4,5].map(g => `<option value="${g}" ${Number(p.group) === g ? 'selected' : ''}>${g}</option>`).join('')}</select></div>` : ''}</div>`; }).join('') || '<p>Ingen treff.</p>'}</div>`;
+    el('adminParticipantList').innerHTML = `<div class="contact-grid">${rows.map(p => { const priv = state.participantPrivate.get(p.id) || {}; return `<div class="contact-card"><h3>${escapeHtml(p.name)}</h3><p>Gruppe ${escapeHtml(p.group || '-')} · født ${escapeHtml(p.birthYear || '-')}</p><p>T-skjorte: ${escapeHtml(p.tshirt || '-')}</p>${priv.allergy ? `<div class="alert-box"><strong>Allergi/mat:</strong> ${escapeHtml(priv.allergy)}</div>` : ''}${priv.guardian ? `<p><strong>Foresatt:</strong> ${escapeHtml(priv.guardian)}</p>` : ''}${priv.notes ? `<p><strong>Merknad:</strong> ${escapeHtml(priv.notes)}</p>` : ''}${p.formsId ? `<button class="menu-button compact" style="margin-top:12px" onclick="editFormsParticipant2027('${escapeHtml(p.formsId)}')">Rediger opplysningar</button><div style="margin-top:18px;padding-top:14px;border-top:1px solid #dce4ef"><label style="display:block;font-weight:600;margin-bottom:8px">Flytt til gruppe</label><select style="display:block;width:100%;margin-top:0" aria-label="Flytt deltakar til gruppe" onchange="changeFormsGroup2027('${escapeHtml(p.formsId)}', this.value)">${[1,2,3,4,5].map(g => `<option value="${g}" ${Number(p.group) === g ? 'selected' : ''}>${g}</option>`).join('')}</select></div>` : ''}</div>`; }).join('') || '<p>Ingen treff.</p>'}</div>`;
+  };
+
+  window.editFormsParticipant2027 = function (id) {
+    if (!isAdmin() || String(state.yearId) !== '2027') return;
+    const f = state.formsPrivate?.get(id);
+    if (!f) return;
+    const fields = [['namn','Namn'],['fodselsar','Fødselsår'],['tSkjorte','T-skjortestorleik'],['kontakt1Namn','Føresett 1'],['kontakt1Telefon','Telefon 1'],['kontakt2Namn','Føresett 2'],['kontakt2Telefon','Telefon 2'],['allergiar','Allergiar'],['andreOmsyn','Andre omsyn']];
+    el('adminParticipantList').innerHTML = '<div class="welcome-box"><h3>Rediger deltakar</h3><div class="form-grid">' +
+      fields.map(([key,label]) => '<label>' + escapeHtml(label) + '<input data-edit-field="' + key + '" value="' + escapeHtml(f[key] ?? '') + '"></label>').join('') +
+      '</div><p class="muted">Endringane blir ikkje synkroniserte tilbake til Google Forms eller Sheets.</p><div class="toolbar"><button id="saveParticipantEdit" class="menu-button compact success">Lagre</button><button class="menu-button compact" onclick="renderAdminParticipants()">Avbryt</button></div></div>';
+    el('saveParticipantEdit').onclick = () => saveFormsParticipant2027(id);
+  };
+
+  window.saveFormsParticipant2027 = async function (id) {
+    if (!isAdmin() || String(state.yearId) !== '2027' || !state.formsPrivate?.has(id)) return;
+    const values = {};
+    document.querySelectorAll('[data-edit-field]').forEach(input => { values[input.dataset.editField] = input.value.trim(); });
+    const year = Number(values.fodselsar);
+    if (!values.namn || !Number.isInteger(year) || year < 2013 || year > 2022) { alert('Skriv inn namn og gyldig fødselsår (2013–2022).'); return; }
+    values.fodselsar = year;
+    values.harAllergiar = Boolean(values.allergiar);
+    try {
+      el('saveParticipantEdit').disabled = true;
+      await db.collection('pameldingar2027').doc(id).update(values);
+      await loadYear('2027');
+      showAdminParticipants();
+    } catch (error) {
+      console.error(error);
+      alert('Kunne ikkje lagre. Prøv igjen.');
+      if (el('saveParticipantEdit')) el('saveParticipantEdit').disabled = false;
+    }
   };
 
   window.changeFormsGroup2027 = async function (formsId, value) {
