@@ -362,18 +362,20 @@
         ${previewControls()}
         ${renderHero(role, data)}
         ${roleNotice(role, data)}
-        <section class="v2-section">
-          <div class="v2-section-head"><div><h2>${esc(data.dayRelation || 'Program')}</h2><p>Det viktigaste først — resten er eitt trykk unna.</p></div></div>
-          ${todayCard(data, role)}
-        </section>
-        <section class="v2-section">
-          <div class="v2-section-head"><div><h2>Hurtigtilgang</h2><p>Bygd rundt det du faktisk gjer i løpet av dagen.</p></div></div>
+        <section class="v2-section match-actions">
+          <div class="v2-section-head"><div><h2>På laget</h2><p>Alt du treng, eitt trykk unna</p></div></div>
           <div class="v2-action-grid">${actionsFor(role).join('')}</div>
         </section>
-        <section class="v2-section">
-          <div class="v2-section-head"><div><h2>Oversikt</h2><p>${esc(ROLE[role].label)} · ${esc(data.year)}</p></div></div>
-          ${renderStats(role, data)}
-        </section>
+        <div class="match-bottom">
+          <section class="v2-section match-overview">
+            <div class="v2-section-head"><div><h2>Oversikt ${esc(data.year)}</h2></div></div>
+            ${renderStats(role, data)}
+          </section>
+          <section class="v2-section match-program">
+            <div class="v2-section-head"><div><h2>${esc(data.dayRelation || 'Program')}</h2></div></div>
+            ${todayCard(data, role)}
+          </section>
+        </div>
       </div>`;
 
       renderDock(role, 'home');
