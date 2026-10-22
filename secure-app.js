@@ -417,6 +417,7 @@
     setMenu([
       card('📥', 'Importer Excel/CSV', 'Deltakarar, instruktørar eller vaksne', 'showImport()'),
       card('👟', 'Deltakarar', 'Søk og sjå nødvendige private opplysningar', 'showAdminParticipants()'),
+      ...(String(state.yearId) === '2027' && state.year?.status !== 'archived' ? [card('➕', 'Legg til deltakar', 'Etterpåmelding direkte i Firebase', 'showManualRegistration2027()')] : []),
       card('🧑‍🏫', 'Instruktørar', 'Gruppe, dagar og kontaktinformasjon', 'showAdminInstructors()'),
       card('🧑', 'Vaksne', 'Ansvarlege, kjøkken, førstehjelp og andre roller', 'showAdminAdults()'),
       card('📅', 'Dagar, program og meny', 'Legg inn det instruktørane skal sjå', 'showAdminDays()'),
@@ -610,11 +611,69 @@
     }
   }
 
+  window.showManualRegistration2027 = function () {
+    if (!isAdmin() || String(state.yearId) !== '2027' || state.year?.status === 'archived') return;
+    setIntro('Legg til deltakar', 'Etterpåmelding blir lagra direkte i Firebase og kjem med i Google Sheets ved neste synkronisering.', 'Administrator · 2027');
+    setMenu([], back('Deltakarar', 'showAdminParticipants()'));
+    const fields = [
+      ['namn', 'Namn på deltakar', true],
+      ['fodselsar', 'Fødselsår (2013–2022)', true, 'number'],
+      ['kontakt1Namn', 'Kontaktperson 1 – namn', true],
+      ['kontakt1Telefon', 'Kontaktperson 1 – telefon', true, 'tel'],
+      ['kontakt2Namn', 'Kontaktperson 2 – namn'],
+      ['kontakt2Telefon', 'Kontaktperson 2 – telefon', false, 'tel'],
+      ['allergiar', 'Allergiar'],
+      ['andreOmsyn', 'Andre omsyn']
+    ];
+    content().innerHTML = '<div class="welcome-box"><form id="manualRegistration2027" class="form-grid">' +
+      fields.map(([key, label, required, type]) => '<label>' + escapeHtml(label) + '<input name="' + key + '" type="' + (type || 'text') + '" ' + (required ? 'required ' : '') + (key === 'fodselsar' ? 'min="2013" max="2022" ' : '') + '></label>').join('') +
+      '<label>T-skjortestorleik<select name="tSkjorte" required>' +
+      ['110/116','122/128','134/140','146/152','158/164','XS','S','M','L','XL'].map(x => '<option value="' + x + '">' + x + '</option>').join('') +
+      '</select></label><p class="muted">Kontroller opplysningane med føresett før du lagrar.</p>' +
+      '<button id="manualRegistrationSave2027" class="menu-button compact success" type="submit">Lagre deltakar</button>' +
+      '<button class="menu-button compact" type="button" onclick="showAdminParticipants()">Avbryt</button></form></div>';
+    el('manualRegistration2027').onsubmit = saveManualRegistration2027;
+  };
+
+  async function saveManualRegistration2027(event) {
+    event.preventDefault();
+    if (!isAdmin() || String(state.yearId) !== '2027' || state.year?.status === 'archived') return;
+    const form = event.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries());
+    Object.keys(data).forEach(k => { if (typeof data[k] === 'string') data[k] = data[k].trim(); });
+    const year = Number(data.fodselsar);
+    if (!data.namn || !data.kontakt1Namn || !data.kontakt1Telefon || !Number.isInteger(year) || year < 2013 || year > 2022) {
+      alert('Fyll ut namn, fødselsår og kontaktperson.'); return;
+    }
+    const standardGruppe = year >= 2020 ? 1 : year === 2019 ? 2 : year === 2018 ? 3 : year === 2017 ? 4 : 5;
+    const existing = state.participants.find(p => String(p.name || '').trim().toLocaleLowerCase('no') === data.namn.toLocaleLowerCase('no') && Number(p.birthYear) === year);
+    if (existing && !confirm('Ein deltakar med same namn og fødselsår finst allereie. Vil du likevel registrere ein ny?')) return;
+    if (!confirm('Registrere ' + data.namn + ' som ny deltakar i 2027?')) return;
+    const button = el('manualRegistrationSave2027');
+    button.disabled = true;
+    try {
+      await db.collection('pameldingar2027').add({
+        ...data, fodselsar: year, standardGruppe,
+        harAllergiar: Boolean(data.allergiar),
+        utanforOrdinarAlder: year < 2015 || year > 2020,
+        kjelde: 'manuell-admin-2027',
+        opprettaAv: state.user.uid,
+        opprettaDato: serverTimestamp()
+      });
+      await loadYear('2027');
+      showAdminParticipants();
+    } catch (error) {
+      console.error(error);
+      alert('Kunne ikkje lagre deltakar. Prøv igjen.');
+      button.disabled = false;
+    }
+  }
+
   window.showAdminParticipants = function () {
     if (!isAdmin()) return;
     setIntro('Deltakarar', 'Sensitive opplysningar er skilde frå data instruktørane kan lese.', `Fotballskule ${state.yearId}`);
     setMenu([], back('Administrasjon', 'showAdmin()'));
-    content().innerHTML = `<div class="welcome-box"><div class="toolbar"><input id="participantSearch" type="search" placeholder="Søk namn…" oninput="renderAdminParticipants()"><select id="participantGroup" onchange="renderAdminParticipants()"><option value="">Alle grupper</option>${[1,2,3,4,5,6,7,8].map(g => `<option value="${g}">Gruppe ${g}</option>`).join('')}</select></div><div id="adminParticipantList"></div></div>`;
+    content().innerHTML = `<div class="welcome-box">${String(state.yearId) === '2027' && state.year?.status !== 'archived' ? '<button class="menu-button compact success" onclick="showManualRegistration2027()">＋ Legg til deltakar</button>' : ''}<div class="toolbar"><input id="participantSearch" type="search" placeholder="Søk namn…" oninput="renderAdminParticipants()"><select id="participantGroup" onchange="renderAdminParticipants()"><option value="">Alle grupper</option>${[1,2,3,4,5,6,7,8].map(g => `<option value="${g}">Gruppe ${g}</option>`).join('')}</select></div><div id="adminParticipantList"></div></div>`;
     renderAdminParticipants();
   };
 
