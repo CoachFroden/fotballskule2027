@@ -8,11 +8,18 @@ service cloud.firestore {
     function role() {
       return signedIn() && profile().data.role is string ? profile().data.role : '';
     }
-    function admin() { return signedIn() && (request.auth.uid == 'aVBlrvavoZbUcELpcIDXuyImuy92' || role() == 'admin'); }
+    function admin() { return signedIn() && (request.auth.uid == 'aVBlrvavoZbUcELpcIDXuyImuy92'); }
     function instructor() { return role() == 'instructor'; }
     function responsible() { return role() == 'responsible'; }
     function staff() { return admin() || instructor() || responsible(); }
 
+    match /accessRequests/{uid} {
+      allow get: if signedIn() && (request.auth.uid == uid || admin());
+      allow list: if admin();
+      allow create: if signedIn() && request.auth.uid == uid && request.resource.data.uid == uid && request.resource.data.status == 'pending' && request.resource.data.requestedRole in ['instructor','responsible'] && request.resource.data.keys().hasOnly(['uid','name','email','requestedRole','status','createdAt']);
+      allow update: if admin();
+      allow delete: if admin();
+    }
     match /users/{uid} {
       allow read: if signedIn() && (request.auth.uid == uid || admin());
       allow write: if admin();
