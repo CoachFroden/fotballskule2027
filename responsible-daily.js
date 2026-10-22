@@ -176,7 +176,7 @@
   }
 
   window.showResponsibleDaily = async function () {
-    if (await getRole() !== 'responsible') return window.showHome?.();
+    if (await getRole() !== 'responsible' && !window.v2IsPreviewRole?.('responsible')) return window.showHome?.();
     const year = currentYear();
     if (!year) return;
 
