@@ -185,7 +185,7 @@
 
   window.showResponsibleAdults = async function () {
     const data = await loadStaffData();
-    if (data.role !== 'responsible') return window.showHome();
+    if (data.role !== 'responsible' && !window.v2IsPreviewRole?.('responsible')) return window.showHome();
     staffState = { ...data, selectedDayId: '' };
 
     const intro = document.getElementById('pageIntro');
