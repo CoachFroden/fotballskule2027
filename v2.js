@@ -90,6 +90,10 @@
     return previewRole && cachedRole === 'admin' ? previewRole : cachedRole;
   }
 
+  window.v2IsPreviewRole = function (role) {
+    return cachedRole === 'admin' && previewRole === role && auth.currentUser?.uid === cachedUid;
+  };
+
   window.v2PreviewRole = async function (role) {
     const user = auth.currentUser;
     if (!user) return;
