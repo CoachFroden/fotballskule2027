@@ -1,0 +1,32 @@
+/* Fotballskule 2027 — energisk stadiondesign. Visuell endring, ingen funksjonsendring. */
+:root{--v2-bg:#edf5ef;--v2-text:#102c2b;--v2-border:rgba(16,91,62,.13);--v2-shadow:0 10px 28px rgba(7,64,47,.10);--v2-shadow-lg:0 24px 55px rgba(5,57,43,.22)}
+body,body.v2-enabled{background:radial-gradient(circle at 95% 6%,rgba(186,240,86,.22),transparent 27rem),radial-gradient(circle at 0% 35%,rgba(40,183,145,.12),transparent 28rem),linear-gradient(180deg,#f8fcf4,#e9f4ee 70%,#f8faf6);color:#12352f}
+body.v2-enabled::before{background-image:radial-gradient(rgba(15,111,72,.16) .7px,transparent .7px);opacity:.34}
+.app-header,body.v2-enabled .app-header{background:linear-gradient(108deg,#053c31 0%,#096b49 62%,#12845c 100%);border-bottom:2px solid #a6e858;box-shadow:0 8px 26px rgba(0,65,43,.18)}
+.brand-kicker,body.v2-enabled .brand-kicker{color:#c6f69d}
+.brand-mark,body.v2-enabled .brand-mark{background:linear-gradient(145deg,#e7ffb4,#fff);border-radius:15px}
+.container,body.v2-enabled .container{max-width:1120px}
+.hero-card,.v2-hero,body[data-v2-role="admin"] .v2-hero,body[data-v2-role="responsible"] .v2-hero{position:relative;isolation:isolate;background:radial-gradient(circle at 85% 10%,rgba(188,255,102,.46),transparent 27%),linear-gradient(123deg,#063f35 0%,#08764d 55%,#16ad69 100%);border:1px solid rgba(255,255,255,.2);box-shadow:0 20px 48px rgba(6,99,66,.24);overflow:hidden}
+.hero-card::before,.v2-hero::before{content:"";position:absolute;inset:auto -65px -145px auto;width:330px;height:330px;border:2px solid rgba(255,255,255,.24);border-radius:50%;box-shadow:0 0 0 35px rgba(255,255,255,.07),0 0 0 80px rgba(255,255,255,.04);pointer-events:none;z-index:-1}
+.hero-card::after{content:"⚽";position:absolute;right:25px;bottom:-35px;font-size:clamp(130px,23vw,240px);opacity:.22;transform:rotate(-22deg);filter:drop-shadow(0 15px 12px rgba(0,0,0,.2));pointer-events:none}
+.v2-hero::after{content:"⚽";position:absolute;right:5%;bottom:-30px;width:auto;height:auto;border:0;transform:rotate(-20deg);font-size:clamp(120px,19vw,210px);line-height:1;opacity:.22;filter:drop-shadow(0 12px 10px rgba(0,0,0,.2));pointer-events:none;z-index:-1}
+.hero-kicker,.v2-eyebrow{color:#d8ffac}
+.hero-card h1,.hero-card h2,.v2-hero h1{letter-spacing:-.04em}
+.v2-home .v2-hero{min-height:280px}
+.v2-home-football .pitch-outline{border-color:rgba(210,255,178,.36);background:repeating-linear-gradient(90deg,transparent 0 36px,rgba(255,255,255,.04) 36px 72px)}
+.v2-home-football .ball{filter:drop-shadow(0 12px 15px rgba(0,0,0,.3))}
+.v2-school-tag{background:rgba(4,53,40,.42);border-color:rgba(206,255,168,.34)}
+.menu-button,.dashboard-card,.v2-action{position:relative;overflow:hidden;border:1px solid rgba(19,119,80,.13);box-shadow:0 9px 23px rgba(4,73,48,.08);background:linear-gradient(145deg,#fff,#f7fff9);transition:transform .18s,box-shadow .18s,border-color .18s}
+.menu-button:hover,.dashboard-card:hover,.v2-action:hover{transform:translateY(-3px);box-shadow:0 16px 28px rgba(4,73,48,.15);border-color:#68cfa1}
+.menu-button .menu-icon,.dashboard-card .menu-icon{background:linear-gradient(145deg,#caff97,#e6ffe0);color:#09633c}
+.menu-button:nth-child(4n+2) .menu-icon{background:#d9edff;color:#165da0}
+.menu-button:nth-child(4n+3) .menu-icon{background:#ffebce;color:#b45c0b}
+.menu-button:nth-child(4n+4) .menu-icon{background:#f2ddff;color:#773eaa}
+.welcome-box,.panel,.contact-card,.exercise-card{border-color:rgba(13,109,75,.12);box-shadow:0 8px 25px rgba(5,68,46,.07)}
+.welcome-box h1,.welcome-box h2,.welcome-box h3,.panel h1,.panel h2,.panel h3{color:#07513d}
+.contact-card::before,.exercise-card::before,.instruction-section::before{background:linear-gradient(#a8e95b,#00a66b)}
+.hero-badge,.v2-role-pill,.v2-state-pill{border-color:rgba(222,255,196,.3);background:rgba(3,62,43,.24)}
+.home-button,.back-button{border-color:#b9ddc8;color:#075b42}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline-color:#6ed39c}
+@media(max-width:700px){.v2-home .v2-hero{min-height:230px}.v2-hero::after{right:-12px;bottom:-10px;font-size:125px;opacity:.17}.hero-card::after{right:-12px;bottom:-10px;font-size:125px;opacity:.17}.hero-card,.v2-hero{border-radius:23px}.menu-button,.dashboard-card{min-height:68px;padding:13px 15px}.v2-school-tag{background:rgba(4,53,40,.58)}}
+@media(prefers-reduced-motion:reduce){.menu-button,.dashboard-card,.v2-action{transition:none}}
