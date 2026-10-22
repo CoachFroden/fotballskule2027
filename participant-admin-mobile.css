@@ -1,0 +1,21 @@
+/* Deltakaradministrasjon – kompakt og mobiltilpassa */
+.participant-admin-page{padding:clamp(14px,2.5vw,24px)!important}
+.participant-admin-page>.menu-button{margin:0 0 14px;min-height:42px;width:auto;display:inline-flex}
+.participant-admin-page>.toolbar{display:grid;grid-template-columns:minmax(0,2fr) minmax(150px,1fr);gap:10px;margin:0 0 14px}
+.participant-admin-page>.toolbar input,.participant-admin-page>.toolbar select{width:100%;min-width:0;margin:0;min-height:44px}
+.participant-admin-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:stretch}
+.participant-admin-card{display:flex;flex-direction:column;min-width:0;padding:15px;border:1px solid #dbe4f0;border-left:3px solid #2861ec;border-radius:15px;background:#fff;box-sizing:border-box}
+.participant-admin-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.participant-admin-heading h3{font-size:1rem;line-height:1.3;margin:0;overflow-wrap:anywhere;color:#071b42}
+.participant-admin-heading span{white-space:nowrap;font-size:.75rem;font-weight:700;color:#365b86;background:#edf3ff;border-radius:20px;padding:4px 8px}
+.participant-admin-meta{font-size:.83rem;color:#61718a;margin:7px 0 9px}
+.participant-admin-info{flex:1;min-height:0;font-size:.84rem;line-height:1.4;overflow-wrap:anywhere}
+.participant-admin-info p{margin:5px 0}
+.participant-admin-allergy{background:#fff0f1;color:#9d1724;border:1px solid #ffc8cf;border-radius:9px;padding:8px 10px;margin:0 0 8px}
+.participant-admin-actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:end;border-top:1px solid #e1e8f1;padding-top:11px;margin-top:12px}
+.participant-admin-edit{width:100%;min-height:43px;border:1px solid #cfe1da;border-radius:11px;background:#f9fdfb;color:#071b42;font-weight:700;font-size:.82rem;cursor:pointer;padding:7px}
+.participant-admin-actions label{font-size:.75rem;font-weight:700;color:#253958;min-width:0}
+.participant-admin-actions select{display:block;width:100%;min-width:0;min-height:43px;margin:4px 0 0;border:1px solid #d1dbea;border-radius:10px;background:white;font-size:16px;padding:6px}
+@media(max-width:1000px){.participant-admin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.participant-admin-page{padding:12px!important}.participant-admin-grid{grid-template-columns:minmax(0,1fr);gap:10px}.participant-admin-page>.toolbar{grid-template-columns:minmax(0,1fr);gap:8px}.participant-admin-card{padding:13px}.participant-admin-actions{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+@media(max-width:360px){.participant-admin-actions{grid-template-columns:minmax(0,1fr)}}
