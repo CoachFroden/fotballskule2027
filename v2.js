@@ -7,6 +7,7 @@
   let renderToken = 0;
   let cachedRole = null;
   let cachedUid = null;
+  let previewRole = null;
 
   const ROLE = {
     admin: { label: 'Administrator', short: 'Admin' },
@@ -79,14 +80,25 @@
   }
 
   async function getRole() {
+    if (previewRole && auth.currentUser && cachedRole === 'admin' && cachedUid === auth.currentUser.uid) return previewRole;
     const user = auth.currentUser;
     if (!user) return null;
-    if (cachedUid === user.uid && cachedRole) return cachedRole;
+    if (cachedUid === user.uid && cachedRole) return previewRole && cachedRole === 'admin' ? previewRole : cachedRole;
     const doc = await db.collection('users').doc(user.uid).get();
     cachedUid = user.uid;
     cachedRole = doc.exists ? doc.data().role || null : null;
-    return cachedRole;
+    return previewRole && cachedRole === 'admin' ? previewRole : cachedRole;
   }
+
+  window.v2PreviewRole = async function (role) {
+    const user = auth.currentUser;
+    if (!user) return;
+    const profile = await db.collection('users').doc(user.uid).get();
+    if (!profile.exists || profile.data().role !== 'admin') return;
+    cachedRole = 'admin'; cachedUid = user.uid;
+    previewRole = ['instructor', 'responsible'].includes(role) ? role : null;
+    window.showHome();
+  };
 
   async function loadDashboardData(role, year) {
     const yearRef = db.collection('years').doc(year);
@@ -294,6 +306,13 @@
     ];
   }
 
+  function previewControls() {
+    if (cachedRole !== 'admin') return '';
+    return previewRole
+      ? `<div class="v2-preview-banner"><strong>Førehandsvising: ${esc(ROLE[previewRole].label)}</strong><span>Du er framleis innlogga som administrator. Tilgangar blir ikkje simulerte.</span><button type="button" onclick="v2PreviewRole(null)">← Tilbake til administrator</button></div>`
+      : `<div class="v2-preview-buttons"><span>Test visning:</span><button type="button" onclick="v2PreviewRole('responsible')">Sjå som ansvarleg</button><button type="button" onclick="v2PreviewRole('instructor')">Sjå som instruktør</button></div>`;
+  }
+
   function renderHero(role, data) {
     const archived = data.yearData?.status === 'archived';
     return `<section class="v2-hero">
@@ -340,6 +359,7 @@
       intro.innerHTML = '';
       menu.innerHTML = '';
       content.innerHTML = `<div class="v2-home">
+        ${previewControls()}
         ${renderHero(role, data)}
         ${roleNotice(role, data)}
         <section class="v2-section">
@@ -450,7 +470,7 @@
       ['📝', 'Tilbakemelding', 'showInstructorFeedback']
     ];
 
-    content.innerHTML = `<div class="welcome-box"><div class="v2-more-sheet">${rows.map(([icon, title, fn]) => `<button class="v2-more-row" type="button" onclick="v2Open('${fn}','more')"><span>${icon}</span><span>${esc(title)}</span></button>`).join('')}<button class="v2-more-row" type="button" onclick="logout()"><span>↪</span><span>Logg ut</span></button></div></div>`;
+    content.innerHTML = `${previewRole ? previewControls() : ''}<div class="welcome-box"><div class="v2-more-sheet">${rows.map(([icon, title, fn]) => `<button class="v2-more-row" type="button" onclick="v2Open('${fn}','more')"><span>${icon}</span><span>${esc(title)}</span></button>`).join('')}<button class="v2-more-row" type="button" onclick="logout()"><span>↪</span><span>Logg ut</span></button></div></div>`;
     renderDock(role, 'more');
   };
 
@@ -467,6 +487,7 @@
     if (!user) {
       cachedRole = null;
       cachedUid = null;
+      previewRole = null;
       renderToken++;
       document.body.classList.remove('v2-enabled');
       delete document.body.dataset.v2Role;
