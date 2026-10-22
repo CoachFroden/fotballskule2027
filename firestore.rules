@@ -1,12 +1,69 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    function isAdmin() {
-      return request.auth != null
-        && request.auth.uid == 'aVBlrvavoZbUcELpcIDXuyImuy92';
+    function signedIn() { return request.auth != null; }
+    function profile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+    function role() {
+      return signedIn() && profile().data.role is string ? profile().data.role : '';
+    }
+    function admin() { return signedIn() && (request.auth.uid == 'aVBlrvavoZbUcELpcIDXuyImuy92' || role() == 'admin'); }
+    function instructor() { return role() == 'instructor'; }
+    function responsible() { return role() == 'responsible'; }
+    function staff() { return admin() || instructor() || responsible(); }
+
+    match /users/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || admin());
+      allow write: if admin();
+    }
+    match /pameldingar2027/{id} {
+      allow read, write: if admin();
+    }
+    match /years/{year} {
+      allow read: if staff();
+      allow write: if admin();
+
+      match /participants/{id} {
+        allow read: if staff();
+        allow write: if admin();
+      }
+      match /participantPrivate/{id} {
+        allow read: if admin() || responsible();
+        allow write: if admin();
+      }
+      match /instructors/{id} {
+        allow read: if staff();
+        allow write: if admin();
+      }
+      match /instructorPrivate/{id} {
+        allow read, write: if admin();
+      }
+      match /adults/{id} {
+        allow read: if staff();
+        allow write: if admin();
+      }
+      match /adultPrivate/{id} {
+        allow read, write: if admin();
+      }
+      match /days/{id} {
+        allow read: if staff();
+        allow write: if admin();
+      }
+      match /instructorPlans/{id} {
+        allow read: if staff();
+        allow write: if admin();
+      }
+      match /attendance/{session}/entries/{id} {
+        allow read: if admin() || instructor();
+        allow write: if admin() || instructor();
+      }
+      match /{document=**} {
+        allow read, write: if admin();
+      }
     }
     match /{document=**} {
-      allow read, write: if isAdmin();
+      allow read, write: if admin();
     }
   }
 }
