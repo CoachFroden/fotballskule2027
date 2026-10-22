@@ -272,6 +272,14 @@
 
   window.showHome = function () {
     if (!state.user) return renderLogin();
+    // Never show the retired dashboard. The new dashboard is the sole home UI.
+    if (typeof window.renderModernHome === 'function') {
+      return window.renderModernHome();
+    }
+    setIntro('Fotballskule ' + (state.yearId || '2027'), 'Lastar forsida …', 'Samnanger IL');
+    setMenu([]);
+    content().innerHTML = '<div class="match-loading" role="status">Lastar ny forside …</div>';
+    return;
     const archived = state.year?.status === 'archived';
     setIntro(
       state.yearId ? `Fotballskule ${state.yearId}` : 'Fotballskule',
