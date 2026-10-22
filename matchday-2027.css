@@ -1,0 +1,80 @@
+/* MATCHDAY / Samnanger Fotballskule — design system 2027
+   All views: navigation, forms, tables, schedules, dashboards and login. */
+:root{--ink:#102822;--navy-950:#102822;--navy-900:#15382f;--navy-800:#176347;--blue-600:#097f65;--v2-text:#102822;--v2-bg:#f6f7f0;--v2-subtle:#64766b;--v2-border:#dfe8d9;--line:#dfe8d9;--surface-soft:#f6f7f0;--shadow-sm:0 6px 24px #153c2610;--shadow-md:0 20px 60px #153c2620}
+html{background:#f6f7f0}
+body,body.v2-enabled{font-family:Inter,"Segoe UI",system-ui,sans-serif;color:#142d27;background:#f6f7f0;letter-spacing:-.012em}
+body.v2-enabled::before{display:none}
+body .app-header,body.v2-enabled .app-header{min-height:76px;background:#092b24;border-bottom:3px solid #d4f46d;box-shadow:none;padding-inline:max(22px,calc((100vw - 1300px)/2))}
+.brand-mark,body.v2-enabled .brand-mark{background:#d4f46d;border-radius:50%;width:42px;height:42px;box-shadow:none}
+.brand-copy strong,body.v2-enabled .brand-copy strong{font-size:16px;letter-spacing:-.035em}
+.brand-kicker,body.v2-enabled .brand-kicker{font-size:10px;letter-spacing:.18em;color:#d4f46d}
+body .container,body.v2-enabled .container{width:min(100%,1240px);padding:26px 24px 115px}
+body .app-footer{background:#092b24;color:#c9d8d1}
+body .page-intro .hero-card,body.v2-enabled.v2-subpage .page-intro .hero-card{position:relative;isolation:isolate;min-height:220px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:10px;padding:36px clamp(25px,5vw,64px);border-radius:5px 58px 5px 5px;overflow:hidden;background:linear-gradient(110deg,#092d25 0%,#096947 69%,#0d9d63 100%);border:0;box-shadow:0 22px 48px #07543b20}
+body .page-intro .hero-card::before,body.v2-enabled.v2-subpage .page-intro .hero-card::before{content:"";position:absolute;inset:-40% -3% -40% auto;width:47%;height:auto;border:2px solid #dcffc04a;border-radius:50%;box-shadow:0 0 0 48px #dcffc012,0 0 0 98px #dcffc00b;background:none;transform:rotate(-17deg);z-index:-1}
+body .page-intro .hero-card::after,body.v2-enabled.v2-subpage .page-intro .hero-card::after{content:"";position:absolute;right:5%;top:10%;width:21%;height:77%;border:2px solid #e7ffd04d;border-radius:2px;background:linear-gradient(90deg,transparent 49%,#e7ffd04d 49%,#e7ffd04d 50%,transparent 50%);transform:skewY(-8deg);opacity:.65;z-index:-1}
+body .page-intro .hero-card h2{font-size:clamp(33px,5vw,61px);font-weight:850;letter-spacing:-.065em;line-height:1.02;max-width:65%;margin:0}
+body .page-intro .hero-card>p{font-size:14px;max-width:55%;line-height:1.55;margin:0;color:#e1f8e9}
+body .page-intro .hero-kicker{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#d5fb85}
+body .page-intro .hero-card .hero-badges{margin-top:12px}
+body .v2-pitch-ribbon{display:none!important}
+body.v2-enabled .v2-home .v2-hero{border-radius:5px 58px 5px 5px;min-height:330px;background:linear-gradient(115deg,#092b24,#096b46 65%,#0aa767);box-shadow:0 24px 60px #063c302e}
+body.v2-enabled .v2-hero::before{width:420px;height:420px;right:-80px;bottom:-220px;border:2px solid #d6fca44a;box-shadow:0 0 0 40px #c3ff7418,0 0 0 100px #c3ff740b}
+body.v2-enabled .v2-hero::after{content:"";right:5%;bottom:12%;width:27%;height:60%;border:2px solid #e7ffd04d;border-radius:0;opacity:.75;transform:perspective(500px) rotateY(-18deg);filter:none;background:linear-gradient(90deg,transparent 49.6%,#e7ffd04d 50%,transparent 50%);z-index:-1}
+body.v2-enabled .v2-hero h1{font-weight:850;max-width:70%;font-size:clamp(44px,7vw,88px)}
+body.v2-enabled .v2-hero-copy{max-width:500px;font-size:16px}
+body.v2-enabled .v2-school-tag{background:#082b24aa}
+body .v2-home-football .ball{font-size:clamp(50px,8vw,100px);right:10%;bottom:7%;opacity:1;filter:drop-shadow(0 16px 10px #00271b77)}
+body.v2-enabled #mainMenu,body.v2-enabled.v2-subpage #mainMenu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:16px 0 20px}
+body.v2-enabled #mainMenu>.menu-button,body.v2-enabled #mainMenu>.dashboard-card{position:relative;min-height:132px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px;border:0;border-radius:4px 28px 4px 4px;background:#e8f1dc;color:#103c2b;box-shadow:none;text-align:left;transition:transform .2s,filter .2s}
+body.v2-enabled #mainMenu>.menu-button:nth-child(6n+2){background:#d9eaff}
+body.v2-enabled #mainMenu>.menu-button:nth-child(6n+3){background:#ffe4bc}
+body.v2-enabled #mainMenu>.menu-button:nth-child(6n+4){background:#e8dcff}
+body.v2-enabled #mainMenu>.menu-button:nth-child(6n+5){background:#ffdbe0}
+body.v2-enabled #mainMenu>.menu-button:nth-child(6n+6){background:#d5f4e7}
+body.v2-enabled #mainMenu>.menu-button:first-child{grid-column:span 2;min-height:185px;background:#d1f26b}
+body.v2-enabled #mainMenu>.menu-button:first-child .menu-icon{width:64px;height:64px;font-size:37px}
+body.v2-enabled #mainMenu>.menu-button:hover{transform:translateY(-4px);filter:saturate(1.15);box-shadow:0 16px 24px #103c2b18}
+body.v2-enabled #mainMenu .menu-icon{width:45px;height:45px;display:grid;place-items:center;background:#ffffff8c;color:inherit;border-radius:13px;font-size:24px}
+body.v2-enabled #mainMenu .menu-copy{gap:5px}
+body.v2-enabled #mainMenu .menu-copy>span{font-size:clamp(15px,1.6vw,21px);line-height:1.1;letter-spacing:-.04em;font-weight:800}
+body.v2-enabled #mainMenu .menu-copy small{font-size:12px;color:#34564b;line-height:1.4;font-weight:500}
+body.v2-enabled #mainMenu>.back-button{grid-column:1/-1;min-height:40px;border:0;background:transparent;padding:0;color:#096b46;justify-self:start}
+body.v2-enabled #mainMenu>.home-button{grid-column:1/-1}
+body.v2-enabled .welcome-box,body.v2-enabled .panel{border:1px solid #e2e9dd;border-radius:6px 32px 6px 6px;background:#fff;padding:clamp(18px,3vw,30px);box-shadow:none}
+body.v2-enabled .welcome-box:has(>.year-switcher){border-left:4px solid #0c9a62}
+body.v2-enabled .welcome-box h2,body.v2-enabled .panel h2{font-size:clamp(21px,2.5vw,29px);letter-spacing:-.045em;font-weight:800}
+body.v2-enabled .contact-grid,body.v2-enabled .quick-grid,body.v2-enabled .exercise-list{gap:10px}
+body.v2-enabled .contact-card,body.v2-enabled .exercise-card,body.v2-enabled .day-card,body.v2-enabled .schedule-mini-card{background:#f9fbf6;border:1px solid #e1e9dc;border-radius:5px 23px 5px 5px;box-shadow:none}
+body.v2-enabled .contact-card::before,body.v2-enabled .exercise-card::before{width:3px;border-radius:0;background:#11a76d}
+body.v2-enabled .contact-card h3,body.v2-enabled .exercise-card h3{font-size:16px;letter-spacing:-.025em}
+body.v2-enabled .section-label{color:#07704d;letter-spacing:.12em}
+body.v2-enabled .v2-section-head h2{font-size:24px}
+body.v2-enabled .v2-stats{background:#092b24;border:0;border-radius:5px 26px 5px 5px;padding:18px;color:#fff}
+body.v2-enabled .v2-stat{border-color:#ffffff38;background:transparent}
+body.v2-enabled .v2-stat strong{color:#d5f46e;font-size:37px}
+body.v2-enabled .v2-stat span{color:#c0d4c7}
+body.v2-enabled .v2-dock{background:#082b24;border:1px solid #d2fa8066;box-shadow:0 14px 42px #082b244d}
+body.v2-enabled .v2-dock-button.is-active{background:#d3f36c;color:#082b24}
+body.v2-enabled .v2-dock-button{color:#c6d9cb}
+body.v2-enabled input,body.v2-enabled select,body.v2-enabled textarea{border-radius:8px!important;border-color:#cedccc!important;background:#fff!important;font-size:15px}
+body.v2-enabled input:focus,body.v2-enabled select:focus,body.v2-enabled textarea:focus{border-color:#0d9d65!important;box-shadow:0 0 0 3px #c6f1d7!important}
+body.v2-enabled .form-stack>label,body.v2-enabled .form-grid>label{background:#f7faf4;border-radius:10px;border:1px solid #e3ecdf}
+body.v2-enabled .menu-button.compact,body.v2-enabled .form-stack button[type=submit],body.v2-enabled .form-grid button[type=submit]{background:#0a6749;color:#fff;border:0;border-radius:9px;font-weight:750;min-height:44px}
+body.v2-enabled .participant-table th{background:#0c4c3a;color:#fff}
+body.v2-enabled .participant-table td{border-color:#e1e9dc}
+body.v2-enabled .participant-table tbody tr:nth-child(even){background:#f4f8ef}
+body.v2-enabled .status-box{border-radius:7px;border-left:4px solid #0c9967}
+body.v2-enabled .v2-notice{border:0;border-radius:5px 20px 5px 5px;background:#fff0d6}
+body.v2-enabled .v2-action{border-radius:5px 25px 5px 5px}
+body.v2-enabled .v2-more-row{border-radius:5px 20px 5px 5px;background:#edf5e6;border:0}
+body.v2-enabled .v2-more-row span:first-child{background:#d2f46e}
+body.v2-enabled .year-switcher{justify-content:flex-start}
+body.v2-enabled .year-switcher label{max-width:230px}
+body.v2-enabled .auth-card{max-width:590px}
+body .staff-panel{border-radius:5px 30px 5px 5px}
+body .staff-stadium{background:linear-gradient(135deg,#063d30,#0da86b)}
+body .staff-stadium-title{letter-spacing:-.055em}
+@media(max-width:760px){body .container,body.v2-enabled .container{padding:14px 12px 112px}body .app-header,body.v2-enabled .app-header{min-height:65px;padding-inline:14px}body .page-intro .hero-card,body.v2-enabled.v2-subpage .page-intro .hero-card{min-height:190px;padding:24px;border-radius:4px 35px 4px 4px}body .page-intro .hero-card h2{max-width:85%;font-size:clamp(31px,8vw,44px)}body .page-intro .hero-card>p{max-width:82%;font-size:12px}body .page-intro .hero-card::after{width:38%;right:-10%;opacity:.35}body.v2-enabled #mainMenu,body.v2-enabled.v2-subpage #mainMenu{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}body.v2-enabled #mainMenu>.menu-button{min-height:130px;padding:14px;border-radius:4px 20px 4px 4px}body.v2-enabled #mainMenu>.menu-button:first-child{min-height:150px}body.v2-enabled #mainMenu .menu-copy>span{font-size:15px}body.v2-enabled #mainMenu .menu-copy small{font-size:11px}body.v2-enabled .v2-home .v2-hero{min-height:260px}body.v2-enabled .v2-hero h1{max-width:90%;font-size:clamp(39px,10vw,57px)}body.v2-enabled .v2-hero::after{opacity:.25}body.v2-enabled .v2-stats{padding:8px}body.v2-enabled .v2-stat strong{font-size:29px}}
+@media(max-width:380px){body.v2-enabled #mainMenu>.menu-button{min-height:135px}body.v2-enabled #mainMenu .menu-copy small{display:none}}
+@media(prefers-reduced-motion:reduce){body.v2-enabled #mainMenu>.menu-button{transition:none}}
