@@ -284,7 +284,7 @@
     if (role === 'responsible') {
       return [
         action('🚑', 'Tryggleik & kontakt', 'Allergi, helse og ring foresatte', 'showResponsibleSafety', 'red', 'safety'),
-        action('🧭', 'Ansvar & oppgåver', 'Kva dei vaksne skal passe på', 'showResponsibleInstructions', 'green', 'more'),
+        action('🧭', 'Dagens ansvar', 'Felles arbeidsplan gjennom dagen', 'showResponsibleDaily', 'green', 'more'),
         action('🔄', 'Instruktørplan', 'Kven har kva gruppe', 'showInstructorSchedule', 'violet', 'plan'),
         action('📅', 'Dagsprogram', 'Tid, mat og beskjedar', 'showDays', 'orange', 'more'),
         action('👥', 'Deltakargrupper', 'Finn namn og gruppe raskt', 'showGroups', '', 'more'),
