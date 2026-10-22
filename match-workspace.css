@@ -1,0 +1,69 @@
+/* 2027 unified working surfaces: shared across all functional pages */
+:root{--match-ink:#102b50;--match-blue:#154b91;--match-yellow:#f6d239;--match-border:#dce5f0}
+body.v2-enabled .content-area{color:var(--match-ink);font-family:"Segoe UI",Arial,sans-serif}
+body.v2-enabled .content-area .welcome-box,
+body.v2-enabled .content-area .v2-day-admin-picker,
+body.v2-enabled .content-area .v2-day-editor,
+body.v2-enabled .content-area .v2-day-section,
+body.v2-enabled .content-area .v2-day-panel,
+body.v2-enabled .content-area .panel,
+body.v2-enabled .content-area .card,
+body.v2-enabled .content-area .form-card,
+body.v2-enabled .content-area .section-card{
+ border:1px solid var(--match-border)!important;
+ border-radius:12px!important;
+ background:#fff!important;
+ box-shadow:0 8px 26px #0b2c4d0b!important;
+}
+body.v2-enabled .content-area .welcome-box{padding:clamp(16px,2vw,26px)!important;border-left:0!important}
+body.v2-enabled .content-area .v2-day-admin-picker{padding:clamp(16px,2vw,24px)!important;gap:16px!important}
+body.v2-enabled .content-area .v2-day-admin-picker-head strong{font-size:22px!important;font-weight:650!important;letter-spacing:-.035em!important;color:var(--match-ink)!important}
+body.v2-enabled .content-area .v2-day-admin-kicker{font-weight:700!important;color:#36639a!important;letter-spacing:.12em!important}
+body.v2-enabled .content-area .v2-day-empty,
+body.v2-enabled .content-area .status-box:not(.error):not(.danger){
+ background:#f1f6fc!important;
+ border:1px solid #dce8f5!important;
+ color:#47607c!important;
+ border-radius:9px!important;
+ padding:15px!important;
+ font-size:14px!important;
+}
+body.v2-enabled .content-area .v2-day-new,
+body.v2-enabled .content-area .v2-day-save-top,
+body.v2-enabled .content-area .v2-day-close,
+body.v2-enabled .content-area .primary-button,
+body.v2-enabled .content-area button[type="submit"],
+body.v2-enabled .content-area .btn-primary{
+ background:#174d91!important;color:white!important;border:1px solid #174d91!important;
+ border-radius:9px!important;min-height:40px!important;padding:9px 16px!important;
+ box-shadow:none!important;font:600 13px/1.35 "Segoe UI",Arial,sans-serif!important;
+ letter-spacing:0!important;transition:background .15s ease,transform .15s ease!important;
+}
+body.v2-enabled .content-area .v2-day-new:hover,
+body.v2-enabled .content-area .v2-day-save-top:hover,
+body.v2-enabled .content-area .primary-button:hover{background:#0d3469!important;transform:translateY(-1px)}
+body.v2-enabled .content-area .v2-day-admin-picker button:not(.v2-day-new):not(.v2-day-save-top),
+body.v2-enabled .content-area .v2-admin-day-pill{border-radius:9px!important;box-shadow:none!important}
+body.v2-enabled .content-area input:not([type="checkbox"]):not([type="radio"]),
+body.v2-enabled .content-area select,
+body.v2-enabled .content-area textarea{
+ background:#fff!important;border:1px solid #cdd9e8!important;border-radius:9px!important;
+ color:var(--match-ink)!important;box-shadow:none!important;font:400 14px/1.4 "Segoe UI",Arial,sans-serif!important;
+}
+body.v2-enabled .content-area input:focus,
+body.v2-enabled .content-area select:focus,
+body.v2-enabled .content-area textarea:focus{outline:2px solid #b8d1f4!important;outline-offset:0!important;border-color:#3c75bd!important}
+body.v2-enabled .content-area h2,
+body.v2-enabled .content-area h3,
+body.v2-enabled .content-area h4{color:var(--match-ink)!important;font-weight:650!important;letter-spacing:-.025em!important}
+body.v2-enabled .content-area label{font-weight:550!important}
+body.v2-enabled .content-area .v2-day-editor-head{
+ background:#f8fbff!important;border-radius:11px 11px 0 0!important;box-shadow:none!important;
+}
+body.v2-enabled .content-area .v2-admin-day-pill.is-active{background:#eaf2ff!important;border-color:#84afe2!important}
+body.v2-enabled .content-area .v2-day-admin-picker-head{align-items:center!important}
+body.v2-enabled .content-area table{border-collapse:separate;border-spacing:0;width:100%}
+body.v2-enabled .content-area th{background:#f1f6fc!important;color:#24466e!important;font-weight:650!important}
+body.v2-enabled .content-area td,body.v2-enabled .content-area th{border-bottom:1px solid #e2eaf4;padding:10px 12px}
+body.v2-enabled .content-area .back-button{border-radius:9px!important;box-shadow:none!important;font-weight:600!important}
+@media(max-width:650px){body.v2-enabled .content-area .v2-day-admin-picker-head{align-items:flex-start!important;flex-wrap:wrap!important}body.v2-enabled .content-area .v2-day-admin-picker{padding:14px!important}}
