@@ -27,7 +27,7 @@
 
   function currentYear() {
     const text = document.getElementById('currentYearLabel')?.textContent || '';
-    return text.match(/\b(20\d{2})\b/)?.[1] || '';
+    return text.match(/\b(20\d{2})\b/)?.[1] || document.getElementById('footerYear')?.textContent?.match(/\b(20\d{2})\b/)?.[1] || '2027';
   }
 
   function isSeptemberDay(day = {}) {
