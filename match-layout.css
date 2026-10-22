@@ -1,0 +1,39 @@
+/* New standalone layout, scoped to dashboard shell; keeps existing functionality. */
+body.v2-enabled:has(.match-shell) .app-header{display:none!important}
+body.v2-enabled:has(.match-shell) .container{width:100%!important;max-width:1600px!important;padding:0!important}
+body.v2-enabled:has(.match-shell) .app-shell{background:#f5f7fb!important}
+body.v2-enabled:has(.match-shell) .app-footer{display:none}
+.match-shell{display:grid;grid-template-columns:208px minmax(0,1fr);min-height:100vh;background:#f5f7fb}
+.match-sidebar{position:sticky;top:0;height:100vh;align-self:start;background:linear-gradient(170deg,#061b39,#0c3569 70%,#071d3b);color:#fff;display:flex;flex-direction:column;overflow:auto;box-shadow:8px 0 25px #061a3320;z-index:2}
+.match-side-logo{min-height:190px;padding:33px 17px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;border-bottom:1px solid #ffffff24}
+.match-side-logo:before{content:"⚽";width:56px;height:56px;display:grid;place-items:center;background:#f8d13d;border:3px solid #fff;border-radius:50%;font-size:29px;box-shadow:0 0 0 5px #f8d13d2b}
+.match-side-logo>span{font-size:11px;letter-spacing:.22em;font-weight:800;color:#f5d03e}
+.match-side-logo>strong{font-size:19px;line-height:1.15;letter-spacing:-.045em;font-weight:900}
+.match-side-logo em{font-style:normal;color:#f8d23f;font-size:29px;display:block}
+.match-sidebar nav{display:grid;gap:4px;padding:18px 10px}
+.match-side-link{display:flex;align-items:center;gap:12px;width:100%;padding:13px 12px;background:transparent;color:#dfeaff;border:0;border-radius:7px;text-align:left;font:600 13px/1.2 Inter,system-ui,sans-serif;cursor:pointer}
+.match-side-link span{width:25px;text-align:center;font-size:18px}
+.match-side-link:hover,.match-side-link.current{background:#f7d23a;color:#0b2851}
+.match-side-footer{margin-top:auto;min-height:135px;padding:30px 16px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;background:linear-gradient(0deg,#06172d,#06172d00),url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=500&q=75') center/cover}
+.match-side-footer strong{font-size:14px;color:#fff}.match-side-footer small{font-size:11px;color:#f9d640}
+body.v2-enabled .match-shell .v2-home{max-width:none!important;width:100%;padding:16px!important;gap:13px!important}
+body.v2-enabled .match-shell .v2-preview-buttons{margin:0!important}
+body.v2-enabled .match-shell .v2-home .v2-hero{min-height:290px!important;border-radius:12px!important;padding:clamp(25px,4vw,55px)!important;background-image:linear-gradient(90deg,#071a36e8 0%,#0a2445ad 42%,#0a24451c 100%),url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=2000&q=85')!important;background-size:cover!important;background-position:center!important}
+body.v2-enabled .match-shell .v2-hero h1{font-size:clamp(43px,5.8vw,78px)!important;max-width:720px!important}
+body.v2-enabled .match-shell .v2-action-grid{grid-template-columns:repeat(12,minmax(0,1fr))!important;gap:11px!important}
+body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(n){grid-column:span 4!important;min-height:180px!important;border-radius:10px!important;display:flex!important;justify-content:flex-end!important;align-items:flex-start!important;background-size:cover!important;background-position:center!important;padding:18px!important}
+body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(1){background-image:linear-gradient(0deg,#153b23ee,#236f4a36),url('https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=700&q=80')!important}
+body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(2){background-image:linear-gradient(0deg,#142e6aef,#2c66c63a),url('https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=700&q=80')!important}
+body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(3){background-image:linear-gradient(0deg,#71360ef2,#e9842e33),url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=700&q=80')!important}
+body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(4){background-image:linear-gradient(0deg,#102c55f2,#3382a133),url('https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=700&q=80')!important}
+body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(5){background-image:linear-gradient(0deg,#4d1d6bee,#8c51bd33),url('https://images.unsplash.com/photo-1518604666860-9ed391f76460?auto=format&fit=crop&w=700&q=80')!important}
+body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(6){background-image:linear-gradient(0deg,#8a143bef,#db568a33),url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=700&q=80')!important}
+body.v2-enabled .match-shell .v2-action-grid .v2-action-copy strong{color:#fff!important;font-size:19px!important}
+body.v2-enabled .match-shell .v2-action-grid .v2-action-copy span{color:#fff!important}
+body.v2-enabled .match-shell .match-bottom{grid-template-columns:1.2fr 1fr!important;gap:12px!important}
+body.v2-enabled .match-shell .match-bottom>.v2-section{border-radius:12px!important;padding:17px!important}
+body.v2-enabled .match-shell .match-bottom .v2-stats{display:grid!important;grid-template-columns:repeat(4,1fr)!important}
+body.v2-enabled .match-shell .match-bottom .v2-stat{min-width:0!important}
+body.v2-enabled .match-shell .v2-section-head h2{font-size:22px!important}
+@media(max-width:1100px){.match-shell{grid-template-columns:165px minmax(0,1fr)}.match-side-logo{padding-inline:8px}.match-side-logo>strong{font-size:16px}body.v2-enabled .match-shell .match-bottom .v2-stats{grid-template-columns:repeat(2,1fr)!important}}
+@media(max-width:750px){body.v2-enabled:has(.match-shell) .app-header{display:flex!important}.match-shell{display:block}.match-sidebar{display:none}body.v2-enabled .match-shell .v2-home{padding:10px!important}body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(n){grid-column:span 6!important;min-height:155px!important;padding:12px!important}body.v2-enabled .match-shell .v2-action-grid .v2-action-copy strong{font-size:15px!important}body.v2-enabled .match-shell .match-bottom{grid-template-columns:1fr!important}body.v2-enabled .match-shell .v2-home .v2-hero{min-height:245px!important}}
