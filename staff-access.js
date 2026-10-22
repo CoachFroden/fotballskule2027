@@ -2,17 +2,17 @@
   const auth = firebase.auth(), db = firebase.firestore();
   const $ = id => document.getElementById(id);
   const esc = x => String(x || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const screen = html => { $('mainMenu').innerHTML = ''; $('pageIntro').innerHTML = ''; $('content').innerHTML = '<div class="welcome-box auth-card">' + html + '</div>'; };
+  const screen = html => { $('mainMenu').innerHTML = ''; $('pageIntro').innerHTML = ''; $('content').innerHTML = '<div class="staff-stage"><div class="staff-stadium"><div class="staff-kicker">SAMNANGER IL <span>•</span> FOTBALLSKULE 2027</div><div class="staff-ball">⚽</div><div class="staff-stadium-title">Bli med på laget!</div><div class="staff-stadium-sub">Eitt lag. Mange moglegheiter.</div><div class="staff-pitch"></div></div><div class="staff-panel">' + html + '</div></div>'; };
   const errorMessage = e => ({'auth/email-already-in-use':'E-postadressa er allereie registrert. Prøv å logge inn.','auth/weak-password':'Passordet må vere minst seks teikn.','auth/invalid-email':'Ugyldig e-postadresse.','auth/invalid-credential':'Feil e-post eller passord.'}[e.code] || 'Noko gjekk gale: ' + (e.code || 'ukjend feil'));
   window.staffAccessPending = async user => {
     let request;
     try { const snap = await db.collection('accessRequests').doc(user.uid).get(); request = snap.exists ? snap.data() : null; }
     catch (e) { console.error(e); }
     const pending = request?.status === 'pending';
-    screen('<h2>' + (pending ? 'Vent på godkjenning' : 'Be om tilgang') + '</h2><p>Innlogga som ' + esc(user.email) + '</p>' +
+    screen('<div class="staff-eyebrow">DIN PLASS PÅ LAGET</div><h2>' + (pending ? 'Søknaden er på veg!' : 'Søk om tilgang') + '</h2><p class="staff-email">Du søkjer om tilgang med <strong>' + esc(user.email) + '</strong></p>' +
       (pending ? '<p>Brukarkontoen din er oppretta, men må godkjennast av administrator før du får tilgang til Fotballskule 2027.</p><p>Prøv å logge inn igjen når du har fått beskjed.</p>' :
-      '<form onsubmit="staffAccessApply(event)" class="form-grid"><label>Namn<input id="staffName" required maxlength="120" value="' + esc(user.displayName || '') + '"></label><label>Ønskt rolle<select id="staffRole"><option value="instructor">Instruktør</option><option value="responsible">Ansvarleg</option></select></label><button class="menu-button compact">Send søknad</button></form>') +
-      '<button class="text-button" onclick="logout()">Logg ut</button>');
+      '<p class="staff-help">Fortel oss kven du er og kva rolle du ønskjer. Administrator godkjenner søknaden før du får tilgang.</p><form onsubmit="staffAccessApply(event)" class="form-grid"><label>Namn<input id="staffName" required maxlength="120" value="' + esc(user.displayName || '') + '"></label><label>Ønskt rolle<select id="staffRole"><option value="instructor">Instruktør</option><option value="responsible">Ansvarleg</option></select></label><button class="menu-button compact">Send søknad →</button></form>') +
+      '<div class="staff-foot"><span>🔒 Trygg registrering</span><button class="text-button" onclick="logout()">Logg ut</button></div>');
   };
   window.staffAccessApply = async event => {
     event.preventDefault();
