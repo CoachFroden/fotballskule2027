@@ -376,7 +376,11 @@
 
     try {
       const role = await getRole();
-      if (!role || !ROLE[role]) return;
+      if (!role || !ROLE[role]) {
+        const content = document.getElementById('content');
+        if (content) content.innerHTML = '<div class="welcome-box" role="alert">Kunne ikkje finne godkjend brukartilgang. Prøv å logge inn på nytt.</div>';
+        return;
+      }
       const data = await loadDashboardData(role, year);
       if (token !== renderToken || auth.currentUser?.uid !== user.uid) return;
 
@@ -551,6 +555,12 @@
   }
 
   auth.onAuthStateChanged(user => {
+    if (user) {
+      window.setTimeout(() => {
+        const content = document.getElementById('content');
+        if (content && (content.textContent || '').includes('Lastar ny forside')) window.showHome();
+      }, 300);
+    }
     if (!user) {
       cachedRole = null;
       cachedUid = null;
