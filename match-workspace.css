@@ -92,3 +92,17 @@ body.v2-enabled.v2-subpage .content-area input:focus-visible,body.v2-enabled.v2-
 body.v2-enabled.v2-subpage .content-area button:not(.back-button):not(.match-empty-back){font-family:inherit!important;font-size:13px!important;font-weight:600!important;letter-spacing:0!important;border-radius:8px!important}
 body.v2-enabled.v2-subpage .content-area .card,body.v2-enabled.v2-subpage .content-area .exercise-card,body.v2-enabled.v2-subpage .content-area .exercise-item{border-radius:9px!important;box-shadow:none!important}
 body.v2-enabled.v2-subpage .content-area .status-box.info{background:#f7f9fc!important;border-left:3px solid #f3cb37!important;color:#274362!important}
+
+/* Compact activity bank: image-free editorial cards, clearer affordance */
+body.v2-enabled .content-area .exercise-list{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))!important;gap:12px!important;margin-top:17px!important}
+body.v2-enabled .content-area .exercise-card{position:relative!important;display:flex!important;flex-direction:column!important;justify-content:flex-end!important;align-items:flex-start!important;min-height:132px!important;padding:19px 20px!important;border:1px solid #dce5f0!important;border-bottom:3px solid #f2c938!important;border-left:1px solid #dce5f0!important;border-radius:11px!important;background:linear-gradient(145deg,#fff,#f4f7fc)!important;color:#10294a!important;box-shadow:0 5px 16px #102c4a0a!important;text-align:left!important;transition:transform .15s,box-shadow .15s!important}
+body.v2-enabled .content-area .exercise-card:hover{transform:translateY(-3px)!important;box-shadow:0 12px 24px #102c4a18!important}
+body.v2-enabled .content-area .exercise-card:after{content:"↗";position:absolute;top:13px;right:16px;color:#174c8a;font-size:19px}
+body.v2-enabled .content-area .exercise-card h3{font:650 17px/1.22 Inter,"Segoe UI",Arial,sans-serif!important;letter-spacing:-.035em!important;margin:0 25px 9px 0!important}
+body.v2-enabled .content-area .exercise-card p{font:450 12px/1.4 Inter,"Segoe UI",Arial,sans-serif!important;color:#64768d!important;margin:0!important}
+body.v2-enabled .content-area details{border-radius:10px!important;border-color:#dce5f0!important;overflow:hidden}
+body.v2-enabled .content-area details>summary{cursor:pointer!important;padding:15px 18px!important;font-weight:650!important;font-size:15px!important;letter-spacing:-.02em!important;background:#f8fafd!important;color:#112c4d!important}
+body.v2-enabled .content-area details[open]>summary{background:#eef4fc!important;border-bottom:1px solid #e0e7f1!important}
+body.v2-enabled .content-area details>ul{margin:12px 20px 17px!important}
+body.v2-enabled .content-area details li{padding:4px 0!important;font-size:14px!important}
+@media(max-width:650px){body.v2-enabled .content-area .exercise-list{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}body.v2-enabled .content-area .exercise-card{min-height:120px!important;padding:14px!important}body.v2-enabled .content-area .exercise-card h3{font-size:15px!important}}
