@@ -53,10 +53,11 @@
  };
  window.staffDecide=async(year,uid,approve)=>{
    const user=auth.currentUser;if(!user||!/^20\d\d$/.test(year))return;
-   const profile=await db.collection('users').doc(user.uid).get();if(profile.data()?.role!=='admin')return;
    try{
+     const profile=await db.collection('users').doc(user.uid).get();
+     if(profile.data()?.role!=='admin') throw new Error('Du har ikkje administratorrolle.');
      const ref=db.collection('years').doc(year).collection('accessRequests').doc(uid),snap=await ref.get(),data=snap.data();
-     if(!data||data.status!=='pending'||!['instructor','responsible'].includes(data.requestedRole))return;
+     if(!data||data.status!=='pending'||!['instructor','responsible'].includes(data.requestedRole)) throw new Error('Søknaden er ikkje lenger ventande. Oppdater sida.');
      const batch=db.batch();
      if(approve){
        batch.set(db.collection('users').doc(uid),{name:data.name,email:data.email,role:data.requestedRole},{merge:true});
@@ -66,6 +67,6 @@
      }
      batch.update(ref,{status:approve?'approved':'rejected',decidedBy:user.uid,decidedAt:ts()});
      await batch.commit();await window.staffAccessAdmin();
-   }catch(e){console.error(e);alert('Kunne ikkje behandle søknaden: '+(e.code||''));}
+   }catch(e){console.error(e);alert('Kunne ikkje behandle søknaden: '+(e.message||e.code||'ukjend feil'));}
  };
 })();
