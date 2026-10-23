@@ -149,3 +149,17 @@ body.v2-enabled .content-area .attendance-list .attendance-card:has(input:checke
 body.v2-enabled .content-area .attendance-list .attendance-card span{display:block!important;visibility:visible!important;opacity:1!important;color:inherit!important}
 body.v2-enabled .content-area .attendance-list .attendance-card input[type="checkbox"]{display:block!important;visibility:visible!important;opacity:1!important;appearance:auto!important;width:25px!important;height:25px!important;flex:0 0 25px!important;accent-color:#148257!important;cursor:pointer!important}
 @media(max-width:650px){body.v2-enabled .content-area .attendance-list{grid-template-columns:1fr!important}body.v2-enabled .content-area .welcome-box:has(#addonAttendanceCounter){padding:14px!important}}
+
+/* Samnanger palette: strong, clean functional panels, no pastel warning surfaces */
+body.v2-enabled .content-area .status-box.warning,
+body.v2-enabled .content-area .status-box.info,
+body.v2-enabled .content-area .status-box.success{background:#fff!important;border:1px solid #cad6e5!important;border-left:5px solid #ffcf25!important;color:#102747!important;border-radius:9px!important;box-shadow:none!important}
+body.v2-enabled .content-area .status-box.warning strong,
+body.v2-enabled .content-area .status-box.warning p{color:#102747!important}
+body.v2-enabled .content-area .welcome-box{background:#fff!important}
+body.v2-enabled .content-area .welcome-box button:not(.back-button):not(.attendance-card),
+body.v2-enabled .content-area .welcome-box a.safety-phone-button{border-radius:9px!important;font-family:Inter,"Segoe UI",Arial,sans-serif!important;font-weight:650!important;letter-spacing:0!important}
+body.v2-enabled .content-area .welcome-box button:not(.back-button):not(.attendance-card){box-shadow:none!important}
+body.v2-enabled .content-area .welcome-box .attendance-card{background:#fff!important}
+body.v2-enabled .content-area .welcome-box .attendance-card:has(input:checked){background:#ecfff3!important}
+body.v2-enabled .content-area .welcome-box .attendance-card input[type=checkbox]{accent-color:#078c50!important}
