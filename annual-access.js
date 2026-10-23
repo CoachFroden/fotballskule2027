@@ -28,7 +28,7 @@
      const results=await Promise.all(years.docs.map(async y=>{const snap=await y.ref.collection('accessRequests').get();return snap.docs.filter(d=>d.data().status==='pending').map(d=>({year:y.id,uid:d.id,...d.data()}));}));
      const items=results.flat();
      screen('<h2>Tilgangssøknader ('+items.length+')</h2><p class="staff-help">Godkjenninga gjeld berre den valde årgangen.</p>'+
-       (items.map(v=>'<div class="contact-card"><h3>'+safe(v.name)+'</h3><p>'+safe(v.email)+'</p><p>'+safe(v.year)+' · '+(v.requestedRole==='responsible'?'Ansvarleg':'Instruktør')+'</p><button class="menu-button compact" onclick="staffDecide('+JSON.stringify(v.year)+','+JSON.stringify(v.uid)+',true)">Godkjenn</button><button class="text-button" onclick="staffDecide('+JSON.stringify(v.year)+','+JSON.stringify(v.uid)+',false)">Avslå</button></div>').join('')||'<p>Ingen ventande søknader.</p>')+
+       (items.map(v=>'<div class="contact-card"><h3>'+safe(v.name)+'</h3><p>'+safe(v.email)+'</p><p>'+safe(v.year)+' · '+(v.requestedRole==='responsible'?'Ansvarleg':'Instruktør')+'</p><button class="menu-button compact" type="button" data-staff-action="approve" data-year="'+safe(v.year)+'" data-uid="'+safe(v.uid)+'">Godkjenn</button><button class="text-button" type="button" data-staff-action="reject" data-year="'+safe(v.year)+'" data-uid="'+safe(v.uid)+'">Avslå</button></div>').join('')||'<p>Ingen ventande søknader.</p>')+
        '<button class="text-button" onclick="staffMigrate2027()">Overfør tidlegare godkjende til 2027</button><button class="text-button" onclick="showAdmin()">Tilbake</button>');
    }catch(e){console.error(e);screen('<h2>Tilgangssøknader</h2><p>Kunne ikkje hente søknader.</p>');}
  };
@@ -51,8 +51,21 @@
      alert(count+' tidlegare godkjende overførte til 2027.');await window.staffAccessAdmin();
    }catch(e){console.error(e);alert('Overføring mislukkast: '+(e.code||''));}
  };
+ document.addEventListener('click', event => {
+   const button=event.target.closest('[data-staff-action]');
+   if(!button)return;
+   event.preventDefault();
+   if(button.disabled)return;
+   const year=button.dataset.year, uid=button.dataset.uid, approve=button.dataset.staffAction==='approve';
+   button.disabled=true;
+   const original=button.textContent;
+   button.textContent=approve?'Godkjenner…':'Avslår…';
+   Promise.resolve(window.staffDecide(year,uid,approve)).finally(()=>{
+     if(button.isConnected){button.disabled=false;button.textContent=original;}
+   });
+ });
  window.staffDecide=async(year,uid,approve)=>{
-   const user=auth.currentUser;if(!user||!/^20\d\d$/.test(year))return;
+   const user=auth.currentUser;if(!user||!/^20\d\d$/.test(year)){alert('Manglar innlogging eller gyldig årgang.');return;}
    try{
      const profile=await db.collection('users').doc(user.uid).get();
      if(profile.data()?.role!=='admin') throw new Error('Du har ikkje administratorrolle.');
