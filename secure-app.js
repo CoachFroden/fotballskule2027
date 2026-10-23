@@ -250,6 +250,31 @@
         yearPath('adultPrivate').get()
       ]);
       pPriv.docs.forEach(doc => state.participantPrivate.set(doc.id, doc.data()));
+      // Registration form is authoritative for sensitive registration fields.
+      // Keep these in the restricted participantPrivate collection, never participants.
+      if (String(state.yearId) === '2027' && state.year?.status !== 'archived' && state.formsPrivate?.size) {
+        const privateWrites = [];
+        for (const [id, f] of state.formsPrivate) {
+          const docId = 'forms-' + id;
+          const details = {
+            allergy: String(f.allergiar || (f.harAllergiar ? 'Ja' : '')).trim(),
+            guardian: [f.kontakt1Namn, f.kontakt1Telefon, f.kontakt2Namn, f.kontakt2Telefon].filter(Boolean).join(' · '),
+            notes: String(f.andreOmsyn || '').trim()
+          };
+          const old = state.participantPrivate.get(docId) || {};
+          if (Object.keys(details).some(k => details[k] !== (old[k] || ''))) {
+            privateWrites.push(yearPath('participantPrivate').doc(docId).set(details, { merge: true }));
+          }
+          state.participantPrivate.set(docId, { ...old, ...details });
+        }
+        if (privateWrites.length) {
+          const settled = await Promise.allSettled(privateWrites);
+          if (settled.some(result => result.status === 'rejected')) {
+            console.warn('Kunne ikkje synkronisere alle private deltakaropplysningar.');
+          }
+        }
+      }
+
       if (state.formsPrivate) for (const [id, f] of state.formsPrivate) {
         state.participantPrivate.set('forms-' + id, {
           allergy: f.harAllergiar ? (f.allergiar || 'Ja') : '',
@@ -418,6 +443,7 @@
       ...(String(state.yearId) === '2027' && state.year?.status !== 'archived' ? [card('➕', 'Legg til deltakar', 'Etterpåmelding direkte i Firebase', 'showManualRegistration2027()')] : []),
       card('🧑‍🏫', 'Instruktørar', 'Gruppe, dagar og kontaktinformasjon', 'showAdminInstructors()'),
       card('🧑', 'Vaksne', 'Ansvarlege, kjøkken, førstehjelp og andre roller', 'showAdminAdults()'),
+      card('☑', 'Krysselister', 'Kontroller oppmøte per gruppe og dag', 'showChecklists()'),
       card('📅', 'Dagar, program og meny', 'Legg inn det instruktørane skal sjå', 'showAdminDays()'),
       card('🗂️', 'Årgangar og arkiv', 'Opprett neste år og arkiver ferdige år', 'showYearAdmin()'),
       card('🚨', 'Manglande oppmøte', 'Samla oversikt og kontaktinfo for admin', 'showMissingAdmin()', 'danger')
