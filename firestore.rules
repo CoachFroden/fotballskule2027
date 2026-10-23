@@ -60,7 +60,9 @@ service cloud.firestore {
         allow write: if admin();
       }
       match /adultPrivate/{id} {
-        allow read, write: if admin();
+        allow read: if admin();
+        allow write: if admin();
+        allow create, update: if signedIn() && annualRole(year) == 'responsible' && request.auth.uid == id && request.resource.data.keys().hasOnly(['phone','email','updatedAt']);
       }
       match /days/{id} {
         allow read: if staffYear(year);
