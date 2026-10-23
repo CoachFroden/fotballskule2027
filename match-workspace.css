@@ -122,3 +122,20 @@ body.v2-enabled #responsibleSafetyList .contact-card p{font-size:13px!important;
 body.v2-enabled #responsibleSafetyList .contact-card .alert-box{border:1px solid #f1c6bb!important;border-left:4px solid #d74736!important;border-radius:8px!important;background:#fff2ef!important;color:#8e2924!important;padding:11px 13px!important;margin:10px 0!important}
 body.v2-enabled #responsibleSafetyList .contact-card .important-box{border:1px solid #e9d4a4!important;border-left:4px solid #d7a12c!important;border-radius:8px!important;background:#fff9ea!important;padding:11px 13px!important;margin:10px 0!important}
 @media(max-width:720px){body.v2-enabled .content-area .welcome-box:has(#responsibleSafetyList)>.toolbar{grid-template-columns:1fr!important}body.v2-enabled .content-area .welcome-box:has(#responsibleSafetyList)>.quick-grid{grid-template-columns:1fr 1fr!important}}
+
+/* Safety participant grid: same dimensions, aligned bottom actions */
+body.v2-enabled #responsibleSafetyList .contact-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:stretch!important;gap:14px!important}
+body.v2-enabled #responsibleSafetyList .safety-person-card{display:flex!important;flex-direction:column!important;min-width:0!important;min-height:292px!important;padding:22px!important;border:1px solid #dce5f1!important;border-top:3px solid #1a568e!important;border-left:1px solid #dce5f1!important;border-radius:12px!important;box-shadow:0 5px 18px #102c4a0a!important}
+body.v2-enabled #responsibleSafetyList .safety-person-card.has-health-note{border-top-color:#cf453c!important}
+body.v2-enabled #responsibleSafetyList .safety-person-card h3{font-size:18px!important;font-weight:700!important;margin:0 0 5px!important}
+body.v2-enabled #responsibleSafetyList .safety-person-card .safety-group{font-size:12px!important;font-weight:600!important;color:#647792!important;margin:0 0 14px!important}
+body.v2-enabled #responsibleSafetyList .safety-person-card .alert-box{padding:11px 12px!important;font-size:13px!important;line-height:1.5!important;margin:0 0 12px!important}
+body.v2-enabled #responsibleSafetyList .safety-person-card .safety-contact-footer{margin-top:auto!important;padding-top:14px!important;display:flex!important;flex-direction:column!important;gap:12px!important}
+body.v2-enabled #responsibleSafetyList .safety-contact-footer p{margin:0!important;display:flex!important;flex-direction:column!important;gap:4px!important;overflow-wrap:anywhere!important}
+body.v2-enabled #responsibleSafetyList .safety-contact-footer p strong{font-weight:650!important;color:#1d3b60!important}
+body.v2-enabled #responsibleSafetyList .safety-phone-actions{display:flex!important;gap:8px!important;flex-wrap:wrap!important}
+body.v2-enabled #responsibleSafetyList .safety-phone-button{display:flex!important;flex:1 1 130px!important;justify-content:center!important;align-items:center!important;gap:8px!important;min-height:42px!important;padding:10px 12px!important;border-radius:9px!important;background:#123b6a!important;color:#fff!important;font-size:13px!important;font-weight:650!important;text-decoration:none!important;box-shadow:none!important}
+body.v2-enabled #responsibleSafetyList .safety-phone-button:hover{background:#0b2b50!important}
+body.v2-enabled #responsibleSafetyList .safety-no-phone{display:flex!important;align-items:center!important;justify-content:center!important;min-height:42px!important;border-radius:9px!important;background:#f3f6fa!important;color:#718199!important;font-size:12px!important}
+@media(max-width:1050px){body.v2-enabled #responsibleSafetyList .contact-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:650px){body.v2-enabled #responsibleSafetyList .contact-grid{grid-template-columns:1fr!important}body.v2-enabled #responsibleSafetyList .safety-person-card{min-height:0!important}}
