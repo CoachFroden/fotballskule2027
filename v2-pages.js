@@ -53,14 +53,6 @@
     hero.appendChild(stamp);
   }
 
-  function addRibbon(intro) {
-    if (!intro || intro.querySelector('.v2-pitch-ribbon')) return;
-    const ribbon = document.createElement('div');
-    ribbon.className = 'v2-pitch-ribbon';
-    const year = document.getElementById('currentYearLabel')?.textContent?.match(/20\d{2}/)?.[0] || '';
-    ribbon.innerHTML = `<span>⚽ Fotballglede</span><span>🏟️ Samnanger IL</span><span>🏁 ${year ? `Fotballskule ${year}` : 'TINE Fotballskule'}</span>`;
-    intro.appendChild(ribbon);
-  }
 
   function enhanceSubpage() {
     if (isV2Home()) {
@@ -83,7 +75,7 @@
       if (hero.dataset.v2Icon !== page.icon) hero.dataset.v2Icon = page.icon;
       hero.classList.add('v2-subhero');
       addIdentity(hero);
-      addRibbon(intro);
+      intro?.querySelectorAll('.v2-pitch-ribbon').forEach(el => el.remove());
     }
 
     content?.classList.add('v2-page-content');
