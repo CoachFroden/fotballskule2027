@@ -459,8 +459,7 @@
 
   function renderDock(role, active = 'home') {
     let exit = document.getElementById('v2PreviewExit');
-    if (!exit) { exit = document.createElement('button'); exit.id = 'v2PreviewExit'; exit.type = 'button'; exit.textContent = '← Tilbake til administrator'; exit.onclick = () => window.v2PreviewRole(null); document.body.appendChild(exit); }
-    exit.hidden = !previewRole;
+    if (exit) { exit.remove(); } // Exit is already available in the preview banner.
     const dock = ensureDock();
     dock.hidden = false;
     dock.innerHTML = dockItems(role).map(([key, icon, label, fn]) => `<button class="v2-dock-button ${active === key ? 'is-active' : ''}" type="button" onclick="v2Open('${fn}','${key}')"><span class="v2-dock-icon">${icon}</span><span class="v2-dock-label">${esc(label)}</span></button>`).join('');
