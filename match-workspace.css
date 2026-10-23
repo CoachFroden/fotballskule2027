@@ -106,3 +106,19 @@ body.v2-enabled .content-area details[open]>summary{background:#eef4fc!important
 body.v2-enabled .content-area details>ul{margin:12px 20px 17px!important}
 body.v2-enabled .content-area details li{padding:4px 0!important;font-size:14px!important}
 @media(max-width:650px){body.v2-enabled .content-area .exercise-list{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}body.v2-enabled .content-area .exercise-card{min-height:120px!important;padding:14px!important}body.v2-enabled .content-area .exercise-card h3{font-size:15px!important}}
+
+/* Safety & contact — calm, legible, clear health alerts */
+body.v2-enabled .content-area .welcome-box:has(#responsibleSafetyList){background:#fff!important;border:1px solid #dfe7f2!important;border-radius:14px!important;padding:clamp(18px,2.6vw,32px)!important;box-shadow:0 8px 28px #122c4b0b!important}
+body.v2-enabled .content-area .welcome-box:has(#responsibleSafetyList)>.alert-box{background:#fff9e9!important;border:1px solid #f3dfaa!important;border-left:4px solid #e4aa24!important;border-radius:10px!important;padding:14px 18px!important;color:#554319!important}
+body.v2-enabled .content-area .welcome-box:has(#responsibleSafetyList)>.alert-box strong{font-size:14px!important;font-weight:700!important}
+body.v2-enabled .content-area .welcome-box:has(#responsibleSafetyList)>.quick-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important;margin:16px 0!important}
+body.v2-enabled .content-area .welcome-box:has(#responsibleSafetyList)>.quick-grid .contact-card{background:#f4f7fc!important;border:1px solid #e0e8f3!important;border-radius:10px!important;padding:15px 18px!important;box-shadow:none!important}
+body.v2-enabled .content-area .welcome-box:has(#responsibleSafetyList)>.quick-grid h3{font-size:26px!important;line-height:1.1!important;font-weight:750!important;color:#123c71!important;margin:0 0 5px!important}
+body.v2-enabled .content-area .welcome-box:has(#responsibleSafetyList)>.toolbar{display:grid!important;grid-template-columns:minmax(180px,2fr) repeat(2,minmax(140px,1fr))!important;gap:10px!important}
+body.v2-enabled #responsibleSafetyList .contact-grid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))!important;gap:12px!important;margin-top:14px!important}
+body.v2-enabled #responsibleSafetyList .contact-card{border:1px solid #dce6f2!important;border-radius:11px!important;background:#fff!important;padding:20px!important;box-shadow:0 4px 14px #102c4a0b!important}
+body.v2-enabled #responsibleSafetyList .contact-card h3{font:700 18px/1.25 Inter,"Segoe UI",Arial,sans-serif!important;letter-spacing:-.025em!important;color:#102b4d!important;margin:0 0 9px!important}
+body.v2-enabled #responsibleSafetyList .contact-card p{font-size:13px!important;line-height:1.5!important;color:#536781!important}
+body.v2-enabled #responsibleSafetyList .contact-card .alert-box{border:1px solid #f1c6bb!important;border-left:4px solid #d74736!important;border-radius:8px!important;background:#fff2ef!important;color:#8e2924!important;padding:11px 13px!important;margin:10px 0!important}
+body.v2-enabled #responsibleSafetyList .contact-card .important-box{border:1px solid #e9d4a4!important;border-left:4px solid #d7a12c!important;border-radius:8px!important;background:#fff9ea!important;padding:11px 13px!important;margin:10px 0!important}
+@media(max-width:720px){body.v2-enabled .content-area .welcome-box:has(#responsibleSafetyList)>.toolbar{grid-template-columns:1fr!important}body.v2-enabled .content-area .welcome-box:has(#responsibleSafetyList)>.quick-grid{grid-template-columns:1fr 1fr!important}}
