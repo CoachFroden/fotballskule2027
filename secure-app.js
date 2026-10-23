@@ -211,11 +211,23 @@
     // Berre administrator får lese kontakt- og helseopplysningar.
     if (isAdmin() && String(state.yearId) === '2027') {
       const formsSnap = await db.collection('pameldingar2027').get();
+      const existingIds = new Set(state.participants.map(p => p.id));
+      const syncWrites = [];
       for (const doc of formsSnap.docs) {
         const f = doc.data();
         const group = Number(f.manuellGruppe || f.standardGruppe);
         const id = 'forms-' + doc.id;
-        state.participants.push({ id, name: f.namn || '', group, birthYear: f.fodselsar || null, tshirt: f.tSkjorte || '', formsId: doc.id });
+        const publicParticipant = { name: f.namn || '', group: Number.isFinite(group) ? group : 0, birthYear: f.fodselsar || null, formsId: doc.id };
+        if (!existingIds.has(id)) {
+          state.participants.push({ id, ...publicParticipant });
+          existingIds.add(id);
+        }
+        // Copy only non-sensitive fields to the year roster, readable by approved staff.
+        syncWrites.push(yearPath('participants').doc(id).set(publicParticipant, { merge: true }));
+      }
+      if (syncWrites.length) {
+        const results = await Promise.allSettled(syncWrites);
+        if (results.some(x => x.status === 'rejected')) console.warn('Nokre påmeldingar kunne ikkje synkroniserast til deltakarlista.');
       }
       state.participants.sort(sortByName);
       state.formsPrivate = new Map(formsSnap.docs.map(doc => [doc.id, doc.data()]));
