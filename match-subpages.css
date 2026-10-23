@@ -31,3 +31,19 @@
  body.match-subpage .app-shell{padding-left:0!important}
  body.match-subpage #mainMenu .menu-icon{display:none!important}
 }
+
+/* Remove redundant decorative slogan pills on functional subpages.
+   Keep the actual page title, content and back navigation. */
+body.v2-enabled.v2-subpage .page-intro + .v2-football-values,
+body.v2-enabled.v2-subpage .page-intro + .v2-football-strip,
+body.v2-enabled.v2-subpage .v2-page-slogans{display:none!important}
+body.v2-enabled.v2-subpage #mainMenu>.back-button,
+body.match-subpage #mainMenu>.back-button{
+ min-height:34px!important;padding:4px 0!important;margin:0!important;
+ border:0!important;background:transparent!important;box-shadow:none!important;
+ backdrop-filter:none!important;color:#204d7d!important;
+ font:600 13px/1.4 Inter,"Segoe UI",Arial,sans-serif!important;
+ border-radius:0!important;text-decoration:none!important;
+}
+body.v2-enabled.v2-subpage #mainMenu>.back-button:hover,
+body.match-subpage #mainMenu>.back-button:hover{color:#0c2444!important;text-decoration:underline!important}
