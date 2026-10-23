@@ -240,13 +240,13 @@
       const health = healthInfo(priv);
       const guardian = String(priv.guardian || '').trim();
       const phones = extractPhones(guardian);
-      return `<article class="contact-card">
+      return `<article class="contact-card safety-person-card ${allergy || health ? 'has-health-note' : 'no-health-note'}">
         <h3>${esc(row.name || 'Utan namn')}</h3>
-        <p><strong>Gruppe ${esc(row.group || '-')}</strong></p>
+        <p class="safety-group">Gruppe ${esc(row.group || '-')}</p>
         ${allergy ? `<div class="alert-box"><strong>⚠️ Allergi/mat:</strong><br>${esc(allergy)}</div>` : ''}
         ${health ? `<div class="important-box"><strong>🩺 Helse/merknad:</strong><br>${esc(health)}</div>` : ''}
-        <p><strong>Foresatte:</strong><br>${guardian ? esc(guardian) : '<span class="muted">Ingen kontaktinfo registrert.</span>'}</p>
-        ${phones.length ? `<div class="quick-grid">${phones.map(phone => `<a class="menu-button compact success" href="tel:${esc(phone)}">📞 ${esc(phone)}</a>`).join('')}</div>` : ''}
+        <div class="safety-contact-footer"><p><strong>Føresette</strong><span>${guardian ? esc(guardian) : 'Ingen kontaktinfo registrert.'}</span></p>
+        ${phones.length ? `<div class="safety-phone-actions">${phones.map(phone => `<a class="safety-phone-button" href="tel:${esc(phone)}" aria-label="Ring ${esc(phone)}"><span aria-hidden="true">☎</span> ${esc(phone)}</a>`).join('')}</div>` : '<span class="safety-no-phone">Telefonnummer manglar</span>'}</div>
       </article>`;
     }).join('')}</div>`;
   };
