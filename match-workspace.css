@@ -163,3 +163,52 @@ body.v2-enabled .content-area .welcome-box button:not(.back-button):not(.attenda
 body.v2-enabled .content-area .welcome-box .attendance-card{background:#fff!important}
 body.v2-enabled .content-area .welcome-box .attendance-card:has(input:checked){background:#ecfff3!important}
 body.v2-enabled .content-area .welcome-box .attendance-card input[type=checkbox]{accent-color:#078c50!important}
+
+/* 2027 unified visual system: functional pages */
+body.v2-enabled{--school-navy:#0c2447;--school-blue:#1554a0;--school-yellow:#ffd332;--school-green:#07965c;--school-line:#d5e0ee}
+body.v2-enabled .content-area .welcome-box,
+body.v2-enabled .content-area .instruction-section,
+body.v2-enabled .content-area .contact-card,
+body.v2-enabled .content-area .participant-card,
+body.v2-enabled .content-area .day-card,
+body.v2-enabled .content-area .responsible-task-card,
+body.v2-enabled .content-area .responsible-timeline,
+body.v2-enabled .content-area .responsible-day-pill,
+body.v2-enabled .content-area .v2-day-admin-picker,
+body.v2-enabled .content-area .admin-day-card{background:#fff!important;border-color:var(--school-line)!important;box-shadow:0 5px 16px #09264c0b!important}
+body.v2-enabled .content-area h2,
+body.v2-enabled .content-area h3,
+body.v2-enabled .content-area h4{color:var(--school-navy)!important;letter-spacing:-.025em!important}
+body.v2-enabled .content-area .status-box:not(.error):not(.danger),
+body.v2-enabled .content-area .v2-day-empty,
+body.v2-enabled .content-area .responsible-note,
+body.v2-enabled .content-area .alert-box:not(.danger):not(.error){background:#fff!important;border:1px solid var(--school-line)!important;border-left:4px solid var(--school-yellow)!important;color:var(--school-navy)!important;border-radius:9px!important;box-shadow:none!important}
+body.v2-enabled .content-area .status-box.warning{border-left-color:var(--school-yellow)!important}
+body.v2-enabled .content-area .status-box.success{border-left-color:var(--school-green)!important}
+body.v2-enabled .content-area .status-box.info{border-left-color:var(--school-blue)!important}
+body.v2-enabled .content-area input:not([type=checkbox]):not([type=radio]),
+body.v2-enabled .content-area select,
+body.v2-enabled .content-area textarea{background:#fff!important;color:var(--school-navy)!important;border:1px solid #bacbe0!important;border-radius:9px!important;box-shadow:none!important;font-family:Inter,"Segoe UI",Arial,sans-serif!important}
+body.v2-enabled .content-area input:focus-visible,
+body.v2-enabled .content-area select:focus-visible,
+body.v2-enabled .content-area textarea:focus-visible{outline:3px solid #ffd33299!important;outline-offset:1px!important;border-color:var(--school-blue)!important}
+body.v2-enabled .content-area .primary-button,
+body.v2-enabled .content-area .btn-primary,
+body.v2-enabled .content-area button[type=submit],
+body.v2-enabled .content-area .menu-button.success,
+body.v2-enabled .content-area a.menu-button.success{background:var(--school-blue)!important;color:#fff!important;border:1px solid var(--school-blue)!important;border-radius:9px!important;font-weight:650!important;box-shadow:none!important}
+body.v2-enabled .content-area .primary-button:hover,
+body.v2-enabled .content-area .btn-primary:hover,
+body.v2-enabled .content-area button[type=submit]:hover{background:#0c366f!important}
+body.v2-enabled .content-area .quick-grid{gap:12px!important}
+body.v2-enabled .content-area .quick-grid>.contact-card,
+body.v2-enabled .content-area .quick-grid>.instruction-section{border-left:0!important;border-top:3px solid var(--school-blue)!important;border-radius:10px!important;padding:18px!important}
+body.v2-enabled .content-area .responsible-day-pill.is-active{background:#fff!important;border:2px solid var(--school-blue)!important;box-shadow:inset 0 -3px 0 var(--school-yellow)!important}
+body.v2-enabled .content-area .responsible-count,
+body.v2-enabled .content-area .responsible-task-icon{background:#0c2447!important;color:#fff!important}
+body.v2-enabled .content-area .responsible-shared-banner{background:linear-gradient(105deg,#0c2447,#1554a0)!important}
+body.v2-enabled .content-area .responsible-note strong{color:var(--school-navy)!important}
+body.v2-enabled .content-area .responsible-note p{color:#334968!important}
+body.v2-enabled .content-area .attendance-list .attendance-card:has(input:checked){background:#fff!important;border:2px solid var(--school-green)!important}
+body.v2-enabled .content-area .attendance-list .attendance-card:has(input:checked)::after{content:"Møtt";color:#087e4f;font-size:12px;font-weight:700}
+@media(max-width:650px){body.v2-enabled .content-area .quick-grid{grid-template-columns:1fr!important}body.v2-enabled .content-area .welcome-box{padding:16px!important}}
