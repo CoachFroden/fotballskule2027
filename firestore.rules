@@ -61,6 +61,7 @@ service cloud.firestore {
         allow update: if signedIn() && annualRole(year) == 'responsible' && request.auth.uid == id && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name','dayIds','days','onboardingComplete','updatedAt']) && request.resource.data.name is string && request.resource.data.dayIds is list && request.resource.data.onboardingComplete == true;
       }
       match /adultPrivate/{id} {
+        allow create: if signedIn() && annualRole(year) == 'responsible' && request.auth.uid == id && request.resource.data.keys().hasOnly(['phone','updatedAt']);
         allow read: if admin() || (signedIn() && annualRole(year) == 'responsible' && request.auth.uid == id);
         allow write: if admin();
         allow update: if signedIn() && annualRole(year) == 'responsible' && request.auth.uid == id && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['phone','updatedAt']);
