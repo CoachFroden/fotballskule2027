@@ -81,3 +81,14 @@ body.v2-enabled .content-area .match-empty-state h3{font-size:clamp(23px,3vw,35p
 body.v2-enabled .content-area .match-empty-state p{font-size:14px;line-height:1.65;max-width:560px;color:#d5e2f0;margin:0}
 body.v2-enabled .content-area .match-empty-back{margin-top:10px;padding:10px 17px!important;border:1px solid #ffffff55!important;border-radius:8px!important;background:#f9d43c!important;color:#102747!important;font-weight:650!important;min-height:40px!important}
 @media(max-width:650px){body.v2-enabled .content-area .match-empty-state{min-height:215px;padding:25px 22px}}
+
+/* Shared 2027 design system — all functional subpages */
+body.v2-enabled.v2-subpage .v2-pitch-ribbon{display:none!important}
+body.v2-enabled.v2-subpage #mainMenu>.back-button{background:none!important;border:0!important;box-shadow:none!important;padding:6px 0!important;min-height:30px!important;font-size:13px!important}
+body.v2-enabled.v2-subpage .content-area{font-family:Inter,"Segoe UI",Arial,sans-serif!important;color:#122b4b!important}
+body.v2-enabled.v2-subpage .content-area>.welcome-box{border:0!important;border-radius:12px!important;background:#fff!important;box-shadow:0 10px 32px #122b4810!important;padding:clamp(18px,2.3vw,30px)!important}
+body.v2-enabled.v2-subpage .content-area input:not([type=checkbox]):not([type=radio]),body.v2-enabled.v2-subpage .content-area select,body.v2-enabled.v2-subpage .content-area textarea{font-family:inherit!important;font-size:14px!important;font-weight:450!important;color:#193451!important;border:1px solid #d5dfeb!important;border-radius:8px!important;background:#fff!important;box-shadow:none!important;min-height:42px}
+body.v2-enabled.v2-subpage .content-area input:focus-visible,body.v2-enabled.v2-subpage .content-area select:focus-visible,body.v2-enabled.v2-subpage .content-area textarea:focus-visible{outline:2px solid #f5ca35!important;outline-offset:1px!important}
+body.v2-enabled.v2-subpage .content-area button:not(.back-button):not(.match-empty-back){font-family:inherit!important;font-size:13px!important;font-weight:600!important;letter-spacing:0!important;border-radius:8px!important}
+body.v2-enabled.v2-subpage .content-area .card,body.v2-enabled.v2-subpage .content-area .exercise-card,body.v2-enabled.v2-subpage .content-area .exercise-item{border-radius:9px!important;box-shadow:none!important}
+body.v2-enabled.v2-subpage .content-area .status-box.info{background:#f7f9fc!important;border-left:3px solid #f3cb37!important;color:#274362!important}
