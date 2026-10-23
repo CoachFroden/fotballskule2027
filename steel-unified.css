@@ -103,3 +103,50 @@ body.v2-enabled .content-area .back-button{font-size:12px!important;font-weight:
  body.v2-enabled .content-area .exercise-card{min-height:105px!important;padding:12px!important}
  body.v2-enabled .content-area .quick-grid{grid-template-columns:1fr!important}
 }
+
+/* ADMIN NAVIGATION — compact equal-sized steel cards, no pastel backgrounds.
+   Override legacy first-card span, per-card colors and oversized tiles. */
+body.v2-enabled #mainMenu.button-container{
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ gap:10px!important;align-items:stretch!important;margin:10px 0 14px!important;
+}
+body.v2-enabled #mainMenu>.menu-button:not(.back-button){
+ grid-column:auto!important;grid-row:auto!important;grid-area:auto!important;
+ width:100%!important;min-width:0!important;min-height:88px!important;height:auto!important;
+ padding:14px 16px!important;display:flex!important;align-items:flex-end!important;
+ justify-content:flex-start!important;position:relative!important;overflow:hidden!important;
+ background-color:#102c4c!important;
+ background-image:linear-gradient(90deg,#071c34f5,#16406bc9)!important;
+ border:1px solid #345e88!important;border-bottom:3px solid #ffce21!important;
+ border-radius:8px!important;box-shadow:0 5px 13px #081d3530!important;
+ color:#fff!important;text-align:left!important;
+}
+body.v2-enabled #mainMenu>.menu-button:not(.back-button):hover{
+ background-image:linear-gradient(100deg,#123f70,#246ab1)!important;
+ transform:translateY(-2px)!important;border-color:#ffce21!important;
+}
+body.v2-enabled #mainMenu>.menu-button:not(.back-button) .menu-copy,
+body.v2-enabled #mainMenu>.menu-button:not(.back-button) .menu-copy *{
+ color:#fff!important;text-shadow:none!important;
+}
+body.v2-enabled #mainMenu>.menu-button:not(.back-button) .menu-copy>span{
+ display:block!important;font:650 16px/1.2 Inter,"Segoe UI",sans-serif!important;
+ letter-spacing:-.025em!important;
+}
+body.v2-enabled #mainMenu>.menu-button:not(.back-button) .menu-copy small{
+ display:block!important;margin-top:4px!important;
+ font:450 11px/1.35 Inter,"Segoe UI",sans-serif!important;color:#c9d9e9!important;
+}
+body.v2-enabled #mainMenu>.menu-button:not(.back-button) .menu-icon{display:none!important}
+body.v2-enabled #mainMenu>.back-button{
+ grid-column:1/-1!important;grid-row:auto!important;justify-self:start!important;
+ min-height:30px!important;height:auto!important;padding:4px 0!important;
+ background:transparent!important;border:0!important;box-shadow:none!important;
+}
+@media(max-width:850px){
+ body.v2-enabled #mainMenu.button-container{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:520px){
+ body.v2-enabled #mainMenu.button-container{grid-template-columns:1fr!important;gap:7px!important}
+ body.v2-enabled #mainMenu>.menu-button:not(.back-button){min-height:72px!important;padding:11px 13px!important}
+}
