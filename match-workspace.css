@@ -67,3 +67,17 @@ body.v2-enabled .content-area th{background:#f1f6fc!important;color:#24466e!impo
 body.v2-enabled .content-area td,body.v2-enabled .content-area th{border-bottom:1px solid #e2eaf4;padding:10px 12px}
 body.v2-enabled .content-area .back-button{border-radius:9px!important;box-shadow:none!important;font-weight:600!important}
 @media(max-width:650px){body.v2-enabled .content-area .v2-day-admin-picker-head{align-items:flex-start!important;flex-wrap:wrap!important}body.v2-enabled .content-area .v2-day-admin-picker{padding:14px!important}}
+
+/* 2027 visual language: lean editorial typography, navy and Samnanger yellow */
+body.v2-enabled .content-area{font-family:Inter,"Segoe UI",Arial,sans-serif!important}
+body.v2-enabled .content-area .status-box:not(.error):not(.danger){background:#f8fafc!important;border:1px solid #e4eaf1!important;border-left:3px solid #f3c829!important;border-radius:7px!important;color:#263e5c!important;font-weight:450!important;box-shadow:none!important}
+body.v2-enabled .content-area .welcome-box{box-shadow:none!important;border-color:#e2e8f0!important}
+body.v2-enabled .content-area h2,body.v2-enabled .content-area h3{font-family:Inter,"Segoe UI",Arial,sans-serif!important;font-weight:650!important;letter-spacing:-.035em!important}
+body.v2-enabled .content-area button{font-family:Inter,"Segoe UI",Arial,sans-serif!important;letter-spacing:-.012em!important}
+body.v2-enabled .content-area .match-empty-state{position:relative;overflow:hidden;min-height:230px;padding:clamp(25px,4vw,48px);border-radius:13px;background:linear-gradient(115deg,#0a2343 0%,#123963 72%,#17466b 100%);color:#fff;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:12px}
+body.v2-enabled .content-area .match-empty-state:after{content:"";position:absolute;right:-40px;top:-85px;width:310px;height:310px;border:1px solid #ffffff20;border-radius:50%;box-shadow:0 0 0 50px #ffffff07,0 0 0 100px #ffffff04;pointer-events:none}
+body.v2-enabled .content-area .match-empty-eyebrow{font-size:11px;font-weight:750;letter-spacing:.15em;color:#f9d548}
+body.v2-enabled .content-area .match-empty-state h3{font-size:clamp(23px,3vw,35px)!important;color:white!important;line-height:1.1;margin:0}
+body.v2-enabled .content-area .match-empty-state p{font-size:14px;line-height:1.65;max-width:560px;color:#d5e2f0;margin:0}
+body.v2-enabled .content-area .match-empty-back{margin-top:10px;padding:10px 17px!important;border:1px solid #ffffff55!important;border-radius:8px!important;background:#f9d43c!important;color:#102747!important;font-weight:650!important;min-height:40px!important}
+@media(max-width:650px){body.v2-enabled .content-area .match-empty-state{min-height:215px;padding:25px 22px}}
