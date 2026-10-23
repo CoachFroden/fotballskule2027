@@ -167,6 +167,7 @@
         state.profile.role = access.data().role;
       }
       await chooseInitialYear();
+      if (state.profile.role === 'responsible' && await window.responsibleOnboardingGate?.(user, state.yearId, state.days)) return;
       showHome();
     } catch (error) {
       console.error(error);
