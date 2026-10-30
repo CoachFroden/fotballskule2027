@@ -74,7 +74,7 @@
   };
   const observer = new MutationObserver(() => {
     const btn = document.querySelector('.auth-card button[onclick="loginGoogle()"]');
-    if (btn && !document.getElementById('staffEmailEntry')) btn.insertAdjacentHTML('afterend','<button id="staffEmailEntry" class="menu-button compact" type="button" onclick="staffAuthForm(\'login\')">Logg inn med e-post / opprett konto</button>');
+    if (btn && !document.querySelector('.auth-card button[onclick*="staffAuthForm"]')) btn.insertAdjacentHTML('afterend','<button id="staffEmailEntry" class="menu-button compact" type="button" onclick="staffAuthForm(\'login\')">Logg inn med e-post / opprett konto</button>');
   });
   observer.observe(document.getElementById('content'), {childList:true,subtree:true});
 })();
