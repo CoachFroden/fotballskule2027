@@ -30,3 +30,22 @@ body .v2-hero::before,body .v2-hero::after,body .hero-card::before,body .hero-ca
 body .menu-icon,body .v2-tile-icon,body .v2-action-icon,body .instructor-primary>span,body .instructor-secondary-grid button>span:first-child{display:none!important}
 body .instructor-primary{box-shadow:none!important}
 @media(max-width:650px){body .staff-stage{display:block!important;min-height:0!important}body .staff-stadium{padding:18px 22px!important}body .staff-panel{padding:22px!important}}
+
+/* Explicit overrides for the former stadium/photo-first hero and dashboard tiles. */
+html body.v2-enabled .v2-home .v2-hero,
+html body.v2-enabled .v2-home section.v2-hero,
+html body.v2-enabled [data-v2-role] .v2-hero,
+html body.v2-enabled .v2-hero,
+html body .v2-hero{
+ background:#004b87!important;background-image:none!important;background-color:#004b87!important;
+}
+html body.v2-enabled .v2-home .v2-hero::before,
+html body.v2-enabled .v2-home .v2-hero::after{display:none!important;content:none!important}
+html body.v2-enabled #mainMenu>.menu-button,
+html body.v2-enabled #mainMenu>.menu-button:not(.back-button),
+html body.v2-enabled .v2-home .v2-tile,
+html body.v2-enabled .v2-home .v2-action-card{
+ background-image:none!important;background-color:#fff!important;color:#004b87!important;
+}
+html body.v2-enabled .v2-home .v2-hero .v2-state-pill,
+html body.v2-enabled .v2-home .v2-hero .v2-role-pill{background:#e2231a!important;color:#fff!important}
