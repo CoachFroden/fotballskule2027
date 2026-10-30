@@ -89,7 +89,7 @@
     const y=year();
     const snap=await db.collection('years').doc(y).collection('days').get();
     const days=snap.docs.map(doc=>({id:doc.id,...doc.data()}))
-      .filter(d=>!/^(20\\d{2})-09-/.test(String(d.date||d.id)))
+      .filter(d=>!/^(20\d{2})-09-/.test(String(d.date||d.id)))
       .sort((a,b)=>String(a.date||a.id).localeCompare(String(b.date||b.id)));
     document.getElementById('pageIntro').innerHTML='<div class="hero-card"><p class="hero-kicker">Fotballskule '+escape(y)+'</p><h2>Krysseliste · Gruppe '+Number(group)+'</h2><p>Vel dag. Før og etter lunsj ligg på same liste.</p></div>';
     document.getElementById('mainMenu').innerHTML='<button class="back-button" type="button" onclick="showChecklists()">← Krysselister</button>';
