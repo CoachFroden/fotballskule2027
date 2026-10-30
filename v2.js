@@ -456,7 +456,7 @@
     if (role === 'responsible') return [
       ['home', '⌂', 'Heim', 'showHome'],
       ['safety', '✚', 'Tryggleik', 'showResponsibleSafety'],
-      ['exercises', '⚽', 'Øvingar', 'showExercises'],
+      ['plan', '↻', 'Plan', 'showInstructorSchedule'],
       ['more', '•••', 'Meir', 'v2ShowMore']
     ];
     return [
