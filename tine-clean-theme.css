@@ -49,3 +49,28 @@ html body.v2-enabled .v2-home .v2-action-card{
 }
 html body.v2-enabled .v2-home .v2-hero .v2-state-pill,
 html body.v2-enabled .v2-home .v2-hero .v2-role-pill{background:#e2231a!important;color:#fff!important}
+
+/* Kompakte snarvegar – same høgd på mobil og desktop, utan store tomme felt. */
+html body.v2-enabled .match-shell .v2-action-grid{gap:9px!important;grid-template-columns:repeat(12,minmax(0,1fr))!important}
+html body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(n){
+ grid-column:span 4!important;min-height:96px!important;height:auto!important;
+ padding:13px 14px!important;display:flex!important;align-items:center!important;
+ justify-content:flex-start!important;border-radius:10px!important;
+ background:#004b87!important;background-image:none!important;box-shadow:none!important;
+}
+html body.v2-enabled .match-shell .v2-action-grid .v2-action-copy{max-width:100%!important;padding:0!important;margin:0!important}
+html body.v2-enabled .match-shell .v2-action-grid .v2-action-copy strong{
+ font-size:15px!important;line-height:1.2!important;margin:0 0 5px!important;display:block!important
+}
+html body.v2-enabled .match-shell .v2-action-grid .v2-action-copy span{
+ font-size:12px!important;line-height:1.3!important;display:block!important
+}
+html body.v2-enabled .match-shell .v2-action-grid .v2-action::after,
+html body.v2-enabled .match-shell .v2-action-grid .v2-action::before,
+html body.v2-enabled .match-shell .v2-action-grid .v2-action-icon{display:none!important;content:none!important}
+@media(max-width:750px){
+ html body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(n){
+ grid-column:span 6!important;min-height:88px!important;padding:11px 12px!important
+ }
+ html body.v2-enabled .match-shell .v2-action-grid .v2-action-copy strong{font-size:14px!important}
+}
