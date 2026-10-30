@@ -2,8 +2,13 @@
   const auth = firebase.auth(), db = firebase.firestore();
   const $ = id => document.getElementById(id);
   const esc = x => String(x || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const screen = html => { $('mainMenu').innerHTML = ''; $('pageIntro').innerHTML = ''; $('content').innerHTML = '<div class="staff-stage"><div class="staff-stadium"><div class="staff-kicker">SAMNANGER IL <span>•</span> FOTBALLSKULE 2027</div><div class="staff-ball">⚽</div><div class="staff-stadium-title">Bli med på laget!</div><div class="staff-stadium-sub">Eitt lag. Mange moglegheiter.</div><div class="staff-pitch"></div></div><div class="staff-panel">' + html + '</div></div>'; };
-  const errorMessage = e => ({'auth/email-already-in-use':'E-postadressa er allereie registrert. Prøv å logge inn.','auth/weak-password':'Passordet må vere minst seks teikn.','auth/invalid-email':'Ugyldig e-postadresse.','auth/invalid-credential':'Feil e-post eller passord.'}[e.code] || 'Noko gjekk gale: ' + (e.code || 'ukjend feil'));
+  const screen = html => {
+    $('mainMenu').innerHTML = '';
+    $('pageIntro').innerHTML = '';
+    document.body.classList.add('login-screen');
+    $('content').innerHTML = '<section class="login-layout staff-auth-layout"><div class="login-brand"><span class="login-eyebrow">SAMNANGER IL · TINE FOTBALLSKULE</span><span class="login-emblem" aria-hidden="true">⚽</span><h1>Velkomen på laget</h1><p>Trygg tilgang for instruktørar, ansvarlege og administrasjon.</p><div class="login-brand-foot">Fotballskule 2027 · Samnanger IL</div></div><div class="login-panel staff-panel">' + html + '</div></section>';
+  };
+  const errorMessage = e => ({'auth/email-already-in-use':'E-postadressa er allereie registrert. Prøv å logge inn.','auth/weak-password':'Passordet må vere minst seks teikn.','auth/invalid-email':'Ugyldig e-postadresse.','auth/invalid-credential':'Feil e-post eller passord.','auth/internal-error':'Firebase klarte ikkje å fullføre innlogginga. Sjekk at e-post/passord er aktivert i Firebase Authentication, og prøv igjen.','auth/unauthorized-domain':'Denne testadressa er ikkje godkjend i Firebase Authentication.'}[e.code] || 'Noko gjekk gale: ' + (e.code || 'ukjend feil'));
   window.staffAccessPending = async user => {
     let request;
     try { const snap = await db.collection('accessRequests').doc(user.uid).get(); request = snap.exists ? snap.data() : null; }
@@ -26,7 +31,16 @@
   window.staffEmailLogin = async event => {
     event.preventDefault();
     try { await auth.signInWithEmailAndPassword($('staffEmail').value.trim(), $('staffPassword').value); }
-    catch (e) { alert(errorMessage(e)); }
+    catch (e) {
+      console.error('Email sign-in failed', e.code, e.message);
+      const message = errorMessage(e);
+      const form = document.querySelector('.staff-panel form');
+      if (form) {
+        let errorBox = document.getElementById('staffLoginError');
+        if (!errorBox) { errorBox = document.createElement('div'); errorBox.id = 'staffLoginError'; errorBox.className = 'status-box error'; form.prepend(errorBox); }
+        errorBox.textContent = message;
+      } else alert(message);
+    }
   };
   window.staffEmailRegister = async event => {
     event.preventDefault();
