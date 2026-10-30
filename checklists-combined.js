@@ -83,6 +83,21 @@
     return window.showCombinedChecklist(day.id,group);
   };
   window.openManualSmartChecklist = async function(dayId,slot,group) {return window.showCombinedChecklist(dayId,group);};
+  // The legacy group page displayed separate morning and afternoon cards.
+  // Replace it for every role, including admin preview and historical dates.
+  window.showChecklistGroup = async function(group) {
+    const y=year();
+    const snap=await db.collection('years').doc(y).collection('days').get();
+    const days=snap.docs.map(doc=>({id:doc.id,...doc.data()}))
+      .filter(d=>!/^(20\\d{2})-09-/.test(String(d.date||d.id)))
+      .sort((a,b)=>String(a.date||a.id).localeCompare(String(b.date||b.id)));
+    document.getElementById('pageIntro').innerHTML='<div class="hero-card"><p class="hero-kicker">Fotballskule '+escape(y)+'</p><h2>Krysseliste · Gruppe '+Number(group)+'</h2><p>Vel dag. Før og etter lunsj ligg på same liste.</p></div>';
+    document.getElementById('mainMenu').innerHTML='<button class="back-button" type="button" onclick="showChecklists()">← Krysselister</button>';
+    document.getElementById('content').innerHTML='<div class="welcome-box"><div class="combined-day-grid">'+
+      (days.length ? days.map(d=>'<button type="button" class="combined-day-button" data-day="'+escape(d.id)+'"><strong>📅 '+escape(d.date||d.title||d.id)+'</strong><small>Opne samla krysseliste →</small></button>').join('') : '<p>Ingen programdagar er registrerte.</p>')+
+      '</div></div>';
+    document.querySelectorAll('.combined-day-button').forEach(button=>button.addEventListener('click',()=>window.showCombinedChecklist(button.dataset.day,group)));
+  };
   const oldShowChecklists=window.showChecklists;
   window.showChecklists=async function() {
     const user=auth.currentUser;
