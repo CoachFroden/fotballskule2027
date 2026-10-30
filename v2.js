@@ -301,6 +301,22 @@
     ];
   }
 
+  function instructorQuickHome(data) {
+    const day = data.focusDay;
+    const dayLabel = day ? dateParts(day.date || day.id).long : 'Programdagane er ikkje lagde inn enno';
+    const notice = day && day.note ? '<div class="instructor-alert"><strong>Viktig beskjed</strong><p>'+esc(day.note)+'</p></div>' : '';
+    return '<div class="instructor-mobile-home">'+
+      '<section class="instructor-welcome"><span>SAMNANGER IL · FOTBALLSKULE '+esc(data.year)+'</span><h1>Velkomen som instruktør! ⚽</h1><p>Her finn du det du treng. Bruk tida på barna!</p></section>'+
+      '<button class="instructor-today" type="button" onclick="v2Open(\'showDays\',\'home\')"><span>📅 Dagens program</span><strong>'+esc(dayLabel)+'</strong><small>Aktivitetar, tidspunkt, mat og beskjedar →</small></button>'+notice+
+      '<div class="instructor-primary-grid">'+
+        '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showChecklists\',\'attendance\')"><span>✓</span><strong>Krysseliste</strong><small>Registrer oppmøte</small></button>'+
+        '<button class="instructor-primary instructor-exercises" type="button" onclick="v2Open(\'showExercises\',\'exercises\')"><span>⚽</span><strong>Øvingar</strong><small>Finn neste aktivitet</small></button>'+
+      '</div><div class="instructor-secondary-grid">'+
+        '<button type="button" onclick="v2Open(\'showGroups\',\'home\')"><strong>👥 Grupper</strong><small>Oversikt over barna</small></button>'+
+        '<button type="button" onclick="v2Open(\'showInstructorSchedule\',\'plan\')"><strong>🔄 Instruktørplan</strong><small>Før og etter lunsj</small></button>'+
+      '</div><button class="instructor-more-link" type="button" onclick="v2ShowMore()">☰ Meir · instruksar, tilbakemelding og anna →</button></div>';
+  }
+
   function statsFor(role, data) {
     if (role === 'admin') {
       return [
@@ -393,6 +409,11 @@
 
       intro.innerHTML = '';
       menu.innerHTML = '';
+      if (role === 'instructor') {
+        content.innerHTML = `${previewControls()}${instructorQuickHome(data)}`;
+        renderDock(role, 'home');
+        return;
+      }
       content.innerHTML = `<div class="match-shell">${sidebar(role, data.year)}<div class="v2-home">
         ${previewControls()}
         ${renderHero(role, data)}
@@ -435,7 +456,7 @@
     if (role === 'responsible') return [
       ['home', '⌂', 'Heim', 'showHome'],
       ['safety', '✚', 'Tryggleik', 'showResponsibleSafety'],
-      ['plan', '↻', 'Plan', 'showInstructorSchedule'],
+      ['exercises', '⚽', 'Øvingar', 'showExercises'],
       ['more', '•••', 'Meir', 'v2ShowMore']
     ];
     return [
