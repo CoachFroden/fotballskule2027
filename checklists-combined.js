@@ -11,23 +11,26 @@
   let active = null;
   let refresh = null;
   let beforeOverride = false;
+  let correctionMode = false;
   function refreshLock() {
     if (!active) return;
     const unlock = active.day.date === today() && minutes(active.day.lunchTime) !== null && clock() >= minutes(active.day.lunchTime);
-    const beforeOpen = active.day.date === today() && (!unlock || beforeOverride);
+    const beforeOpen = correctionMode || (active.day.date === today() && (!unlock || beforeOverride));
     document.querySelectorAll('.combined-before').forEach(box => { box.disabled = !beforeOpen || active.archived; });
     const correction = document.getElementById('combinedBeforeUnlock');
     if (correction) {
-      correction.hidden = active.archived || !unlock;
+      correction.hidden = active.archived || correctionMode || !unlock;
       correction.textContent = beforeOverride ? '🔒 Lås før lunsj' : '🔓 Lås opp før lunsj';
     }
     const beforeTag = document.getElementById('combinedBeforeTag');
     if (beforeTag) beforeTag.textContent = beforeOpen ? 'Open' : 'Låst';
-    document.querySelectorAll('.combined-after').forEach(box => { box.disabled = !unlock || active.archived; });
+    document.querySelectorAll('.combined-after').forEach(box => { box.disabled = !(unlock || correctionMode) || active.archived; });
+    const manual = document.getElementById('combinedCorrectionMode');
+    if (manual) { manual.hidden = active.archived; manual.textContent = correctionMode ? '🔒 Avslutt redigering' : '✏️ Rediger låst liste'; }
     const hint = document.getElementById('combinedAfterHint');
     if (hint) hint.textContent = active.archived ? 'Arkivert' : !active.day.lunchTime ? 'Vent på at administrator set klokkeslett' : unlock ? 'Open for registrering' : 'Opnar kl. '+active.day.lunchTime;
     const tag = document.getElementById('combinedAfterTag');
-    if (tag) tag.textContent = unlock ? 'Open' : 'Låst';
+    if (tag) tag.textContent = (unlock || correctionMode) ? 'Open' : 'Låst';
   }
   window.showCombinedChecklist = async function(dayId, group) {
     const y = year(), ref = db.collection('years').doc(y), sessionKey = slot => dayId+'_'+slot+'_g'+group;
@@ -45,14 +48,16 @@
     const archived = yearSnap.data()?.status === 'archived';
     active = {day,archived};
     beforeOverride = false;
+    correctionMode = false;
     document.getElementById('pageIntro').innerHTML = '<div class="hero-card"><p class="hero-kicker">Fotballskule '+escape(y)+'</p><h2>Gruppe '+Number(group)+'</h2><p>'+escape(day.date)+' · Krysseliste</p></div>';
     document.getElementById('mainMenu').innerHTML = '<button class="back-button" type="button" onclick="showChecklists()">← Vel anna gruppe</button>';
     document.getElementById('content').innerHTML = '<section class="welcome-box combined-checklist"><div class="combined-heading"><strong>Oppmøte · Gruppe '+Number(group)+'</strong><small>Før og etter lunsj på same liste</small></div>'+
       '<div class="combined-head"><span>Barn</span><span>☀️ Før <small id="combinedBeforeTag">Open</small></span><span>🌤️ Etter <small id="combinedAfterTag">Låst</small></span></div>'+
       '<div class="combined-rows">'+people.map(p => '<div class="combined-row"><strong>'+escape(p.name)+'</strong><label aria-label="Før lunsj: '+escape(p.name)+'"><input type="checkbox" class="combined-before" data-id="'+escape(p.id)+'" '+(before.get(p.id)?'checked':'')+' '+(archived?'disabled':'')+'></label><label aria-label="Etter lunsj: '+escape(p.name)+'"><input type="checkbox" class="combined-after" data-id="'+escape(p.id)+'" '+(after.get(p.id)?'checked':'')+' disabled></label></div>').join('')+'</div>'+
-      '<div class="combined-foot"><strong id="combinedCount"></strong><span id="combinedAfterHint"></span></div><button id="combinedBeforeUnlock" class="combined-unlock" type="button" hidden>🔓 Lås opp før lunsj</button></section>';
+      '<div class="combined-foot"><strong id="combinedCount"></strong><span id="combinedAfterHint"></span></div><button id="combinedBeforeUnlock" class="combined-unlock" type="button" hidden>🔓 Lås opp før lunsj</button><button id="combinedCorrectionMode" class="combined-unlock" type="button">✏️ Rediger låst liste</button></section>';
     const host = document.querySelector('.combined-checklist');
     host.querySelector('#combinedBeforeUnlock').addEventListener('click', () => { beforeOverride = !beforeOverride; refreshLock(); });
+    host.querySelector('#combinedCorrectionMode').addEventListener('click', () => { correctionMode = !correctionMode; refreshLock(); });
     const update = () => { const all=host.querySelectorAll('.combined-row').length;const b=host.querySelectorAll('.combined-before:checked').length;const a=host.querySelectorAll('.combined-after:checked').length; document.getElementById('combinedCount').textContent='Før: '+b+'/'+all+' · Etter: '+a+'/'+all; };
     host.addEventListener('change', async event => {
       const box=event.target;
@@ -61,8 +66,8 @@
       const current=box.checked;
       box.disabled=true;
       try {
-        if (slot==='for' && (day.date!==today() || (minutes(day.lunchTime)!==null && clock()>=minutes(day.lunchTime) && !beforeOverride))) throw Error('Før lunsj er låst');
-        if (slot==='etter' && (day.date!==today() || minutes(day.lunchTime)===null || clock()<minutes(day.lunchTime))) throw Error('Etter lunsj er ikkje open enno');
+        if (!correctionMode && slot==='for' && (day.date!==today() || (minutes(day.lunchTime)!==null && clock()>=minutes(day.lunchTime) && !beforeOverride))) throw Error('Før lunsj er låst');
+        if (!correctionMode && slot==='etter' && (day.date!==today() || minutes(day.lunchTime)===null || clock()<minutes(day.lunchTime))) throw Error('Etter lunsj er ikkje open enno');
         await ref.collection('attendance').doc(sessionKey(slot)).collection('entries').doc(box.dataset.id).set({present:current,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:auth.currentUser.uid},{merge:true});
         update();
       } catch(err) {
