@@ -65,6 +65,7 @@
   }
 
   function setIntro(title, text = '', kicker = '') {
+    document.body.classList.remove('login-screen');
     if (!intro()) return;
     const name = String(title || '').toLowerCase();
     document.body.dataset.matchPage = /deltakar|påmelding|gruppe/.test(name) ? 'participants'
