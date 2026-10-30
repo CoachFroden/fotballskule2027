@@ -788,7 +788,7 @@
     setIntro('Dagar, program og meny', 'Det du legg inn her blir synleg for instruktørane.', `Fotballskule ${state.yearId || ''}`);
     setMenu([], back('Administrasjon', 'showAdmin()'));
     const blocked = !state.yearId || state.year?.status === 'archived';
-    content().innerHTML = `<div class="welcome-box">${blocked ? status('Vel ein aktiv årgang for å redigere.', 'warning') : `<form class="form-stack" onsubmit="saveDay(event)"><label>Dato<input id="dayDate" type="date" required></label><label>Tittel<input id="dayTitle" placeholder="Måndag / Dag 1"></label><label>Meny<textarea id="dayMenu" class="feedback-text" placeholder="Lunsj: ...\nFrukt: ..."></textarea></label><label>Program<textarea id="dayProgram" class="feedback-text" placeholder="09.30 Registrering\n10.00 Aktivitet\n11.30 Lunsj"></textarea></label><label>Viktig beskjed<textarea id="dayNote" class="feedback-text"></textarea></label><button class="menu-button compact" type="submit">Lagre dag</button></form>`}<h3>Registrerte dagar</h3><div class="day-grid">${state.days.map(d => `<div class="day-card"><h3>${escapeHtml(formatDate(d.date))}</h3><p>${escapeHtml(d.title || '')}</p><button class="text-button" onclick="editDay('${escapeHtml(d.id)}')">Rediger</button></div>`).join('') || '<p>Ingen dagar enno.</p>'}</div></div>`;
+    content().innerHTML = `<div class="welcome-box">${blocked ? status('Vel ein aktiv årgang for å redigere.', 'warning') : `<form class="form-stack" onsubmit="saveDay(event)"><label>Dato<input id="dayDate" type="date" required></label><label>Tittel<input id="dayTitle" placeholder="Måndag / Dag 1"></label><label>Meny<textarea id="dayMenu" class="feedback-text" placeholder="Lunsj: ...\nFrukt: ..."></textarea></label><label>Program<textarea id="dayProgram" class="feedback-text" placeholder="09.30 Registrering\n10.00 Aktivitet\n11.30 Lunsj"></textarea></label><label>Etter lunsj kan kryssast frå klokka<input id="dayLunchTime" type="time" required value="12:00"></label><label>Viktig beskjed<textarea id="dayNote" class="feedback-text"></textarea></label><button class="menu-button compact" type="submit">Lagre dag</button></form>`}<h3>Registrerte dagar</h3><div class="day-grid">${state.days.map(d => `<div class="day-card"><h3>${escapeHtml(formatDate(d.date))}</h3><p>${escapeHtml(d.title || '')}</p><button class="text-button" onclick="editDay('${escapeHtml(d.id)}')">Rediger</button></div>`).join('') || '<p>Ingen dagar enno.</p>'}</div></div>`;
   };
 
   window.saveDay = async function (event) {
@@ -796,7 +796,7 @@
     assertWritable();
     const date = el('dayDate').value;
     const id = slugify(date);
-    await yearPath('days').doc(id).set({ date, title: el('dayTitle').value.trim(), menu: el('dayMenu').value.trim(), program: el('dayProgram').value.trim(), note: el('dayNote').value.trim(), updatedAt: serverTimestamp(), updatedBy: state.user.uid }, { merge: true });
+    await yearPath('days').doc(id).set({ date, title: el('dayTitle').value.trim(), menu: el('dayMenu').value.trim(), program: el('dayProgram').value.trim(), lunchTime: el('dayLunchTime').value, note: el('dayNote').value.trim(), updatedAt: serverTimestamp(), updatedBy: state.user.uid }, { merge: true });
     await loadYear(state.yearId);
     showAdminDays();
   };
@@ -809,6 +809,7 @@
     el('dayTitle').value = day.title || '';
     el('dayMenu').value = day.menu || '';
     el('dayProgram').value = day.program || '';
+    el('dayLunchTime').value = day.lunchTime || '12:00';
     el('dayNote').value = day.note || '';
   };
 
