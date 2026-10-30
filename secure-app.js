@@ -121,15 +121,30 @@
     state.profile = null;
     state.yearId = null;
     updateHeader();
-    setIntro('Trygg innlogging', 'Personopplysningar og oppmøte er berre tilgjengeleg for godkjende brukarar.', 'Samnanger IL');
+    if (intro()) intro().innerHTML = '';
     setMenu([]);
+    document.body.classList.add('login-screen');
     content().innerHTML = `
-      <div class="welcome-box auth-card">
-        <h2>Logg inn</h2>
-        ${error ? status(error, 'error') : ''}
-        <button class="menu-button compact" type="button" onclick="loginGoogle()">Logg inn med Google</button><button class="menu-button compact" type="button" onclick="staffAuthForm('login')">Logg inn med e-post / opprett konto</button>
-        <p class="muted">Berre godkjende administratorar og medarbeidarar får tilgang til deltakaropplysningar.</p>
-      </div>`;
+      <section class="login-layout" aria-labelledby="loginTitle">
+        <div class="login-brand">
+          <span class="login-eyebrow">SAMNANGER IL · TINE FOTBALLSKULE</span>
+          <span class="login-emblem" aria-hidden="true">⚽</span>
+          <h1 id="loginTitle">Velkomen til fotballskulen</h1>
+          <p>Éin trygg stad for instruktørar, ansvarlege og administrasjon.</p>
+          <div class="login-brand-foot">Fotballskule 2027 <span aria-hidden="true">·</span> Samnanger IL</div>
+        </div>
+        <div class="login-panel">
+          <div class="login-panel-top"><span class="login-lock" aria-hidden="true">🔒</span><span>Trygg innlogging</span></div>
+          <h2>Logg inn</h2>
+          <p class="login-panel-desc">Bruk kontoen din for å få tilgang til fotballskulen.</p>
+          ${error ? status(error, 'error') : ''}
+          <div class="login-actions">
+            <button class="menu-button login-google" type="button" onclick="loginGoogle()">Logg inn med Google</button>
+            <button class="menu-button login-email" type="button" onclick="staffAuthForm('login')">Logg inn med e-post</button>
+          </div>
+          <p class="login-help">Berre godkjende medarbeidarar har tilgang til deltakaropplysningar.</p>
+        </div>
+      </section>`;
   }
 
   window.loginGoogle = async function () {
@@ -137,7 +152,7 @@
       await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
     } catch (error) {
       console.error(error);
-      renderLogin('Google-innlogging mislukkast: ' + (error.code || 'ukjend feil'));
+      renderLogin(error.code === 'auth/unauthorized-domain' ? 'Denne testadressa er ikkje godkjend for Google-innlogging i Firebase enno. Bruk e-postinnlogging, eller legg domenet til under Firebase Authentication → Authorized domains.' : 'Google-innlogging mislukkast: ' + (error.code || 'ukjend feil'));
     }
   };
 
