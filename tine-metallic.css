@@ -1,0 +1,80 @@
+/* TINE metallisk – moderat djupne, ikkje bilete. Felles design for alle roller. */
+:root{--tine-metal-blue-top:#2368aa;--tine-metal-blue-mid:#06457e;--tine-metal-blue-bottom:#03294f;--tine-metal-red-top:#ee2834;--tine-metal-red-mid:#bc101e;--tine-metal-red-bottom:#720916}
+html body.v2-enabled .app-header,html body .app-header{
+ background:linear-gradient(160deg,#18568f 0%,#092c55 57%,#031a37 100%)!important;
+ border-bottom:3px solid #e11e2c!important;box-shadow:0 3px 12px #08244925!important;
+}
+html body .brand-mark{background:linear-gradient(145deg,#f42d3b,#ad0715)!important;border:1px solid #ff7180!important;box-shadow:inset 0 1px 0 #ffffff55,0 2px 6px #00172e22!important}
+html body.v2-enabled .v2-dock,html body .v2-dock{
+ background:linear-gradient(155deg,#17568f 0%,#073b70 43%,#032447 100%)!important;
+ border:1px solid #397eb2!important;box-shadow:0 4px 12px #0827492b!important;
+}
+html body .v2-dock-button.is-active{
+ background:linear-gradient(155deg,#f03440 0%,#c31120 55%,#930914 100%)!important;
+ border:1px solid #ff6c77!important;color:#fff!important;box-shadow:inset 0 1px 0 #ffffff44,0 2px 6px #00152b33!important;
+}
+html body.v2-enabled .match-shell .v2-action-grid{gap:11px!important}
+html body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(n){
+ grid-column:span 4!important;min-height:118px!important;height:auto!important;
+ padding:15px 14px 14px!important;align-items:flex-start!important;justify-content:center!important;
+ position:relative!important;overflow:hidden!important;border-radius:13px!important;
+ background:linear-gradient(150deg,var(--tine-metal-blue-top) 0%,var(--tine-metal-blue-mid) 52%,var(--tine-metal-blue-bottom) 100%)!important;
+ border:1px solid #4d8ac1!important;color:#fff!important;
+ box-shadow:inset 0 1px 0 #ffffff55,inset 0 -1px 0 #00162d50,0 4px 10px #0a2d4d28!important;
+ text-align:left!important;
+}
+html body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(2),
+html body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(3),
+html body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(6){
+ background:linear-gradient(150deg,var(--tine-metal-red-top) 0%,var(--tine-metal-red-mid) 52%,var(--tine-metal-red-bottom) 100%)!important;
+ border-color:#ef5a65!important;
+}
+html body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(n)::before{
+ content:""!important;display:block!important;position:absolute!important;
+ top:0!important;right:0!important;width:48%!important;height:42%!important;
+ background:linear-gradient(145deg,#ffffff25,transparent 75%)!important;
+ clip-path:polygon(35% 0,100% 0,100% 100%)!important;pointer-events:none!important;
+}
+html body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(n)::after{
+ content:"›"!important;display:flex!important;align-items:center!important;justify-content:center!important;
+ position:absolute!important;right:11px!important;top:50%!important;transform:translateY(-50%)!important;
+ width:25px!important;height:25px!important;border-radius:50%!important;
+ border:1px solid #ffffffaa!important;background:#ffffff17!important;
+ color:#fff!important;font-size:24px!important;line-height:1!important;pointer-events:none!important;
+}
+html body.v2-enabled .match-shell .v2-action-grid .v2-action-icon{
+ display:block!important;font-size:19px!important;line-height:1!important;margin:0 0 7px!important;
+}
+html body.v2-enabled .match-shell .v2-action-grid .v2-action-copy{
+ display:block!important;max-width:calc(100% - 22px)!important;
+}
+html body.v2-enabled .match-shell .v2-action-grid .v2-action-copy strong{
+ font-size:15px!important;line-height:1.18!important;font-weight:750!important;color:#fff!important;margin:0 0 5px!important
+}
+html body.v2-enabled .match-shell .v2-action-grid .v2-action-copy span{
+ color:#e2eaf4!important;font-size:12px!important;line-height:1.3!important
+}
+html body.v2-enabled .match-shell .v2-action-grid>.v2-action:focus-visible{
+ outline:3px solid #ec3342!important;outline-offset:3px!important;
+}
+html body.v2-enabled .match-shell .v2-home .v2-hero{
+ background:linear-gradient(145deg,#1b5b96,#073764 55%,#031f40)!important;
+ border:1px solid #3979ad!important;box-shadow:0 5px 14px #052e5222!important;
+}
+html body .instructor-welcome,html body .instructor-exercises{
+ background:linear-gradient(145deg,#1e609e,#073968 65%,#03284e)!important;
+}
+html body .instructor-attendance{
+ background:linear-gradient(145deg,#ee3340,#bb1021 60%,#810a18)!important;color:#fff!important;
+}
+@media(max-width:750px){
+ html body.v2-enabled .match-shell .v2-action-grid>.v2-action:nth-child(n){
+ grid-column:span 6!important;min-height:119px!important;padding:13px 12px!important
+ }
+ html body.v2-enabled .match-shell .v2-action-grid .v2-action-copy strong{font-size:14px!important}
+ html body.v2-enabled .match-shell .v2-action-grid .v2-action-copy span{font-size:11px!important}
+}
+@media(prefers-reduced-motion:no-preference){
+ html body.v2-enabled .match-shell .v2-action-grid>.v2-action{transition:transform .15s ease,box-shadow .15s ease!important}
+ html body.v2-enabled .match-shell .v2-action-grid>.v2-action:active{transform:translateY(1px)!important}
+}
