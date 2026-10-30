@@ -129,6 +129,19 @@
     const participants = participantsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     const groups = [...new Set(participants.map(p => Number(p.group)).filter(Boolean))].sort((a, b) => a - b);
     const context = currentContext(days, year);
+    if (context.day && auth.currentUser) {
+      try {
+        const planDoc = await db.collection('years').doc(year).collection('instructorPlans').doc(context.day.id).get();
+        const assignedGroup = Number(planDoc.data()?.[context.slot]?.[auth.currentUser.uid]);
+        if (assignedGroup && groups.includes(assignedGroup)) {
+          await originalShowChecklistSession(context.day.id, context.slot, assignedGroup);
+          injectSmartSessionTools(assignedGroup, context);
+          return;
+        }
+      } catch (error) {
+        console.warn('Kunne ikkje finne automatisk instruktørgruppe', error);
+      }
+    }
 
     setIntro('Krysseliste no', 'Vel gruppa du har no. Rett liste blir vald automatisk ut frå dag og klokkeslett.', `Fotballskule ${year}`);
     smartNav();
@@ -166,7 +179,7 @@
     const menu = document.getElementById('mainMenu');
     if (menu) {
       menu.innerHTML = `
-        <button class="back-button" type="button" onclick="showChecklists()">← Bytt gruppe</button>
+        <button class="back-button" type="button" onclick="showChecklists()">← Vel anna gruppe</button>
         <button class="smart-nav-button" type="button" onclick="showSmartOtherLists(${Number(group)})">🗂️ Andre lister</button>`;
     }
 
