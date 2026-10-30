@@ -8,7 +8,7 @@
     document.body.classList.add('login-screen');
     $('content').innerHTML = '<section class="login-layout staff-auth-layout"><div class="login-brand"><span class="login-eyebrow">SAMNANGER IL · TINE FOTBALLSKULE</span><span class="login-emblem" aria-hidden="true">⚽</span><h1>Velkomen på laget</h1><p>Trygg tilgang for instruktørar, ansvarlege og administrasjon.</p><div class="login-brand-foot">Fotballskule 2027 · Samnanger IL</div></div><div class="login-panel staff-panel">' + html + '</div></section>';
   };
-  const errorMessage = e => ({'auth/email-already-in-use':'E-postadressa er allereie registrert. Prøv å logge inn.','auth/weak-password':'Passordet må vere minst seks teikn.','auth/invalid-email':'Ugyldig e-postadresse.','auth/invalid-credential':'Feil e-post eller passord.','auth/internal-error':'Firebase returnerte ein intern feil. Vi må sjå den konkrete feilen i nettlesarkonsollen for å finne årsaka.','auth/unauthorized-domain':'Denne testadressa er ikkje godkjend i Firebase Authentication.'}[e.code] || 'Noko gjekk gale: ' + (e.code || 'ukjend feil'));
+  const errorMessage = e => ({'auth/email-already-in-use':'E-postadressa er allereie registrert. Prøv å logge inn.','auth/weak-password':'Passordet må vere minst seks teikn.','auth/invalid-email':'Ugyldig e-postadresse.','auth/invalid-credential':'Feil e-post eller passord.','auth/internal-error':'Firebase kunne ikkje logge inn. Kontroller e-post og passord, eller prøv Google-innlogging dersom du brukar Google-konto.','auth/wrong-password':'Feil e-post eller passord.','auth/user-not-found':'Feil e-post eller passord.','auth/unauthorized-domain':'Denne testadressa er ikkje godkjend i Firebase Authentication.'}[e.code] || 'Noko gjekk gale: ' + (e.code || 'ukjend feil'));
   window.staffAccessPending = async user => {
     let request;
     try { const snap = await db.collection('accessRequests').doc(user.uid).get(); request = snap.exists ? snap.data() : null; }
@@ -33,7 +33,8 @@
     try { await auth.signInWithEmailAndPassword($('staffEmail').value.trim(), $('staffPassword').value); }
     catch (e) {
       console.error('Email sign-in failed', {code:e.code, message:e.message, name:e.name, customData:e.customData});
-      const message = errorMessage(e);
+      const invalidCredentials = e.code === 'auth/internal-error' && /INVALID_LOGIN_CREDENTIALS|INVALID_PASSWORD|EMAIL_NOT_FOUND/.test(e.message || '');
+      const message = invalidCredentials ? 'E-post eller passord vart ikkje godkjent. Dersom du vanlegvis loggar inn med Google, bruk Google-innlogging på ei godkjend adresse.' : errorMessage(e);
       const form = document.querySelector('.staff-panel form');
       if (form) {
         let errorBox = document.getElementById('staffLoginError');
