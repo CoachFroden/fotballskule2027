@@ -36,7 +36,7 @@
         missingTotal+=missing.length;
         sections+='<section class="missing-group"><h3>Gruppe '+group+' <span>'+missing.length+' meldt manglande</span></h3>'+
           (missing.length?missing.map(p=>'<div class="missing-person"><strong>'+esc(p.name)+'</strong><small>'+['for','etter'].filter(slot=>maps[slot].get(p.id)===false).map(slot=>slot==='for'?'Før lunsj':'Etter lunsj').join(' og ')+'</small><button type="button" data-mark="'+esc(p.id)+'" data-group="'+group+'">✓ Marker møtt</button></div>').join(''):'<p>Ingen registrerte fråvær.</p>')+
-          (unchecked.length?'<details><summary>'+unchecked.length+' barn har ufullstendig registrering</summary>'+unchecked.map(p=>'<p>'+esc(p.name)+'</p>').join('')+'</details>':'')+'</section>';
+          (unchecked.length?'<div class="missing-unchecked"><strong>⚠️ '+unchecked.length+' barn ikkje ferdig registrerte</strong>'+unchecked.map(p=>'<p>'+esc(p.name)+'</p>').join('')+'</div>':'')+'</section>';
       }
       const label=day.date||day.id;
       root.innerHTML='<div class="missing-summary '+(missingTotal?'has-missing':'')+'"><strong>'+missingTotal+' barn registrerte som manglande</strong><span>'+esc(label)+'</span></div>'+
