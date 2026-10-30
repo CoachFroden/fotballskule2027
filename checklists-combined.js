@@ -118,7 +118,12 @@
           const plan=await ref.collection('instructorPlans').doc(day.id).get();
           const time=minutes(day.data().lunchTime);
           const slot=time!==null && clock()>=time?'etter':'for';
-          const group=Number(plan.data()?.[slot]?.[user.uid]);
+          let group=Number(plan.data()?.[slot]?.[user.uid]);
+          if (!group) {
+            const instructors=await ref.collection('instructors').get();
+            const linked=instructors.docs.find(i=>i.data().linkedUid===user.uid);
+            if(linked) group=Number(plan.data()?.[slot]?.[linked.id]);
+          }
           if(group) return window.showCombinedChecklist(day.id,group);
         }
       }
