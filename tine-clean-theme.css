@@ -1,0 +1,52 @@
+/* TINE Fotballskule – roleg, felles uttrykk for alle roller og undersider.
+   Berre visuell styling: påverkar ikkje Firestore, skjema eller funksjonar. */
+:root{
+ --navy-950:#0b2346;--navy-900:#102b50;--navy-800:#174276;
+ --blue-600:#205ca5;--blue-100:#eaf1fb;
+ --v2-navy:#102b50;--v2-blue:#205ca5;--v2-bg:#f3f6fb;
+ --v2-card:#fff;--v2-shadow:none;--v2-shadow-lg:none;
+ --steel-950:#0b2346;--steel-900:#102b50;--steel-800:#174276;
+ --steel-700:#205ca5;--steel-yellow:#ffce21;
+}
+html,body,body.v2-enabled{background:#f3f6fb!important;color:#102b50!important}
+body::before,body::after,body.v2-enabled::before,body.v2-enabled::after{background-image:none!important;box-shadow:none!important}
+body *,body *::before,body *::after{background-image:none!important;text-shadow:none!important;filter:none!important;backdrop-filter:none!important}
+body .app-header,body.v2-enabled .app-header{background:#102b50!important;border-bottom:4px solid #ffce21!important;box-shadow:none!important}
+body .app-footer{background:#102b50!important;color:#fff!important;box-shadow:none!important}
+body .brand-mark{background:#ffce21!important;color:#102b50!important;box-shadow:none!important}
+body .brand-kicker{color:#ffce21!important}
+body .v2-hero,body.v2-enabled .v2-home .v2-hero,body .hero-card,body .welcome-hero,body .staff-stadium{
+ background:#102b50!important;color:#fff!important;min-height:0!important;box-shadow:none!important
+}
+body .v2-hero *,body .hero-card *,body .staff-stadium *{text-shadow:none!important}
+body .v2-hero h1,body .v2-hero h2,body .hero-card h1,body .hero-card h2,body .staff-stadium-title{color:#fff!important}
+body .v2-hero p,body .hero-card p,body .staff-stadium-sub{color:#e1eaf6!important}
+body .staff-kicker,body .hero-kicker{color:#ffce21!important}
+body .staff-stadium:before,body .staff-stadium:after,body .staff-pitch,body .staff-ball{display:none!important}
+body .staff-stage{box-shadow:none!important;border:1px solid #d4dfeb!important;border-radius:14px!important}
+body .staff-panel{background:#fff!important}
+body .content-area .welcome-box,body.v2-enabled .content-area .welcome-box,
+body .content-area .card,body .content-area .panel,body .content-area .detail-card,
+body .content-area .section-card,body .content-area .form-card,
+body .content-area .day-card,body .content-area .contact-card,
+body .content-area .schedule-mini-card,body .content-area .schedule-accordion,
+body .content-area .v2-day-panel,body .content-area .v2-day-editor,
+body .content-area .v2-day-section,body .content-area .v2-day-admin-picker{
+ background:#fff!important;box-shadow:none!important;border-color:#d4dfeb!important
+}
+body .menu-button,body .v2-tile,body .v2-action-card,body .instructor-today,
+body .instructor-secondary-grid button{box-shadow:none!important;border-color:#cbd8e8!important}
+body .instructor-welcome,body .instructor-exercises{background:#102b50!important;color:#fff!important}
+body .instructor-attendance{background:#ffce21!important;color:#102b50!important}
+body .instructor-primary span,body .instructor-secondary-grid button>span:first-child,
+body .menu-icon,body .v2-tile-icon,body .v2-action-icon,
+body .brand-mark img,body .v2-hero-art{display:none!important}
+body .instructor-welcome>span,body .instructor-exercises strong{color:#ffce21!important}
+body .v2-bottom-nav,body .v2-dock,body .mobile-dock{background:#102b50!important;box-shadow:none!important}
+body .v2-bottom-nav .active,body .v2-dock .active,body .mobile-dock .active{background:#ffce21!important;color:#102b50!important}
+body .menu-button.success,body .button-primary,body button[type=submit].success{background:#205ca5!important;color:#fff!important}
+body input:not([type=checkbox]):not([type=radio]),body select,body textarea{background:#fff!important;color:#102b50!important}
+body img:not([data-qr]):not(.qr-code),body picture,body .photo-overlay,body .hero-photo,
+body .background-photo,body .decorative-image{display:none!important}
+body .v2-hero::before,body .v2-hero::after,body .hero-card::before,body .hero-card::after{display:none!important}
+@media(max-width:650px){body .staff-stage{display:block!important;min-height:0!important}body .staff-stadium{padding:18px 22px!important}body .staff-panel{padding:22px!important}}
