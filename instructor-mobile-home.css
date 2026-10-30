@@ -1,0 +1,25 @@
+body[data-v2-role="instructor"] .instructor-mobile-home{width:min(100%,760px);margin:0 auto;padding:10px 0 105px;display:grid;gap:14px}
+.instructor-welcome{background:#102b50;color:#fff;border-radius:17px;padding:24px 20px}
+.instructor-welcome>span{font-size:11px;font-weight:800;letter-spacing:.09em;color:#facc15}
+.instructor-welcome h1{font-size:clamp(23px,5vw,32px);line-height:1.18;margin:12px 0 9px;color:#fff}
+.instructor-welcome p{color:#e5ecf5;margin:0;font-size:15px}
+.instructor-today{display:grid;text-align:left;gap:5px;width:100%;background:var(--surface,#fff);color:inherit;border:1px solid #cdd5df;border-radius:14px;padding:17px;cursor:pointer}
+.instructor-today span{font-weight:800;font-size:16px}
+.instructor-today strong{font-size:16px}
+.instructor-today small{font-size:13px;opacity:.75}
+.instructor-primary-grid,.instructor-secondary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.instructor-primary{min-height:151px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;text-align:left;gap:9px;border:0;border-radius:15px;padding:19px;cursor:pointer}
+.instructor-primary span{font-size:29px;font-weight:900;line-height:1}
+.instructor-primary strong{font-size:21px;line-height:1.2}
+.instructor-primary small{font-size:13px}
+.instructor-attendance{background:#facc15;color:#102b50}
+.instructor-exercises{background:#102b50;color:#fff}
+.instructor-exercises span{color:#facc15}
+.instructor-secondary-grid button{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:9px;min-height:103px;padding:16px;border:1px solid #cdd5df;border-radius:13px;background:var(--surface,#fff);color:inherit;cursor:pointer}
+.instructor-secondary-grid strong{font-size:16px}
+.instructor-secondary-grid small{font-size:12px;opacity:.75}
+.instructor-more-link{background:transparent;border:0;text-align:left;font-weight:700;font-size:14px;padding:13px 4px;color:inherit;cursor:pointer}
+.instructor-alert{border-left:4px solid #d97706;padding:10px 14px;background:#fff8e8;color:#342509;border-radius:8px}
+.instructor-alert p{margin:4px 0 0}
+body[data-v2-role="instructor"] .v2-dock{z-index:100}
+@media(max-width:380px){.instructor-primary{padding:14px;min-height:140px}.instructor-primary strong{font-size:18px}.instructor-secondary-grid button{padding:12px}}
