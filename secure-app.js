@@ -65,7 +65,7 @@
   }
 
   function setIntro(title, text = '', kicker = '') {
-    document.body.classList.remove('login-screen');
+    document.body.classList.remove('login-screen', 'admin-landing');
     if (!intro()) return;
     const name = String(title || '').toLowerCase();
     document.body.dataset.matchPage = /deltakar|påmelding|gruppe/.test(name) ? 'participants'
@@ -453,6 +453,7 @@
   window.showAdmin = function () {
     if (!isAdmin()) return showHome();
     setIntro('Administrasjon', 'Persondata, import og årgangar er berre synleg for administrator.', `Fotballskule ${state.yearId || ''}`);
+    document.body.classList.add('admin-landing');
     setMenu([
       card('🔐', 'Tilgangssøknader', 'Godkjenn nye medarbeidarar', 'staffAccessAdmin()'),
       card('📥', 'Importer Excel/CSV', 'Deltakarar, instruktørar eller vaksne', 'showImport()'),
@@ -465,7 +466,7 @@
       card('🗂️', 'Årgangar og arkiv', 'Opprett neste år og arkiver ferdige år', 'showYearAdmin()'),
       card('🚨', 'Manglande oppmøte', 'Samla oversikt og kontaktinfo for admin', 'showMissingAdmin()', 'danger')
     ], back('Framside', 'showHome()'));
-    content().innerHTML = `<div class="welcome-box">${yearSelector()}${state.year?.status === 'archived' ? status('Årgangen er arkivert. Du kan sjå data, men import og redigering er sperra i appen.', 'warning') : '<p>Vel funksjon over.</p>'}</div>`;
+    content().innerHTML = `<div class="welcome-box admin-year-panel"><div class="admin-year-title">Aktiv årgang</div>${yearSelector()}${state.year?.status === 'archived' ? status('Årgangen er arkivert. Du kan sjå data, men import og redigering er sperra i appen.', 'warning') : '<p class="admin-year-hint">Vel ein funksjon frå korta ovanfor.</p>'}</div>`;
   };
 
   function assertWritable() {
