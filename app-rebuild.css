@@ -146,3 +146,14 @@ body.v2-enabled .v2-dock-button.is-active{background:linear-gradient(130deg,#e82
 body.v2-enabled .v2-hero-logo-image{display:block;flex:0 0 auto;width:clamp(104px,13vw,170px);height:clamp(104px,13vw,170px);object-fit:contain;border-radius:12px;filter:drop-shadow(0 7px 15px rgba(0,8,27,.36))}
 body.login-screen .login-brand-logo{display:block;width:clamp(132px,17vw,210px);height:clamp(132px,17vw,210px);object-fit:contain;margin:15px 0 20px;border-radius:12px;box-shadow:0 9px 25px #00102735}
 @media(max-width:600px){body.v2-enabled .v2-hero-logo-image{width:84px;height:84px}body.login-screen .login-brand-logo{width:105px;height:105px;margin:8px 0 12px}}
+
+/* Never show legacy pitch decorations or duplicate school badges in the new hero. */
+body.v2-enabled .v2-hero .v2-home-football,
+body.v2-enabled .v2-hero .v2-school-tag,
+body.v2-enabled .v2-hero .pitch-outline,
+body.v2-enabled .v2-hero .goal-box,
+body.v2-enabled .v2-hero .ball,
+body.v2-enabled .v2-hero .cone,
+body.v2-enabled .v2-hero .match-brand,
+body.v2-enabled .v2-hero .match-masthead{display:none!important}
+body.v2-enabled .v2-hero{min-height:0!important}
