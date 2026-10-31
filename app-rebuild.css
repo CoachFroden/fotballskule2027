@@ -87,3 +87,9 @@ body.v2-enabled .v2-action:focus-visible{outline:3px solid #65a5dc;outline-offse
 body.v2-enabled .v2-dock{z-index:90}
 @media(max-width:850px){body.v2-enabled .match-bottom{grid-template-columns:1fr}body.v2-enabled .v2-today-card{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 @media(max-width:600px){body.v2-enabled .v2-home{gap:16px}body.v2-enabled .v2-hero{min-height:0;padding:21px 19px;gap:8px}body.v2-enabled .v2-hero h1{font-size:27px}body.v2-enabled .v2-hero .v2-hero-copy{font-size:13px}body.v2-enabled .v2-hero .v2-hero-row{align-items:flex-start}body.v2-enabled .match-overview,body.v2-enabled .match-program{padding:16px}body.v2-enabled .v2-stats{gap:8px}body.v2-enabled .v2-stat{min-height:82px;padding:12px}body.v2-enabled .v2-stat strong{font-size:28px}body.v2-enabled .v2-today-card{grid-template-columns:1fr}body.v2-enabled .v2-action-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Remove obsolete home decorations injected by legacy modules. */
+body.v2-enabled .match-sidebar{display:none!important}
+body.v2-enabled .v2-home>.match-brand,body.v2-enabled .v2-home>.match-masthead{display:none!important}
+body.v2-enabled .v2-hero~.match-brand,body.v2-enabled .v2-hero~.match-masthead{display:none!important}
+body.v2-enabled .match-shell .v2-preview-buttons{display:none!important}
