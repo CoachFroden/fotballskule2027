@@ -181,3 +181,24 @@ body.v2-enabled .v2-brand-year span{padding:4px 20px 5px 24px;background:linear-
 body.v2-enabled .v2-hero-clean-motto{margin-top:5px!important}
 body.v2-enabled .v2-hero.v2-hero-clean .v2-hero-row{margin-top:6px!important}
 @media(max-width:600px){body.v2-enabled .v2-hero.v2-hero-clean{padding:16px 10px 12px!important}body.v2-enabled .v2-brand-lockup{padding:5px 0 0}body.v2-enabled .v2-brand-ball{width:42px;height:42px}body.v2-enabled .v2-brand-club{font-size:10px;gap:9px;letter-spacing:.19em}body.v2-enabled .v2-brand-club:before,body.v2-enabled .v2-brand-club:after{width:12%}body.v2-enabled .v2-brand-name{font-size:clamp(16px,5vw,27px);gap:.2em;letter-spacing:-.05em}body.v2-enabled .v2-brand-year{margin-top:6px;font-size:14px}body.v2-enabled .v2-brand-year span{padding:3px 14px 4px 18px}body.v2-enabled .v2-hero-clean-motto{font-size:11px}}
+
+/* Dashboard alignment pass: identical icon boxes, card geometry and visual rhythm. */
+body.v2-enabled .match-actions .v2-action-grid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important;align-items:stretch}
+body.v2-enabled .match-actions .v2-action{position:relative;display:grid!important;grid-template-columns:44px minmax(0,1fr) 24px!important;align-items:center!important;justify-content:stretch!important;gap:12px!important;width:100%;min-width:0;min-height:104px!important;padding:14px 15px!important;text-align:left;border-radius:15px}
+body.v2-enabled .match-actions .v2-action-icon{display:grid!important;place-items:center!important;width:44px!important;height:44px!important;min-width:44px;min-height:44px;flex:0 0 44px!important;margin:0!important;padding:0!important;border-radius:12px!important;font-size:20px!important;line-height:1!important}
+body.v2-enabled .match-actions .v2-action-copy{display:flex!important;flex-direction:column!important;justify-content:center!important;gap:4px!important;min-width:0;align-self:center!important}
+body.v2-enabled .match-actions .v2-action-copy strong{font-size:14px!important;line-height:1.2!important;white-space:normal}
+body.v2-enabled .match-actions .v2-action-copy span{font-size:11px!important;line-height:1.35!important}
+body.v2-enabled .match-actions .v2-action:after{position:static!important;grid-column:3;grid-row:1;align-self:center;justify-self:center;display:grid!important;place-items:center;width:24px!important;height:24px!important;margin:0!important}
+body.v2-enabled .match-bottom{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr)!important;align-items:stretch!important;gap:16px!important}
+body.v2-enabled .match-bottom>.v2-section{height:100%;min-width:0}
+body.v2-enabled .v2-today-card{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:16px!important}
+body.v2-enabled .v2-date-block{align-items:center!important;min-height:70px;margin:0 0 12px!important}
+body.v2-enabled .v2-date-badge{min-width:60px;min-height:67px}
+body.v2-enabled .v2-today-side{display:grid;grid-template-columns:1fr;gap:9px;align-content:start}
+body.v2-enabled .v2-info-tile{min-height:63px;display:flex;flex-direction:column;justify-content:center;gap:5px}
+body.v2-enabled .v2-today-side .v2-action{min-height:66px!important}
+body.v2-enabled .v2-program-lines{gap:9px}
+body.v2-enabled .v2-program-line{min-height:54px;display:flex;align-items:center}
+@media(max-width:900px){body.v2-enabled .match-actions .v2-action-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}body.v2-enabled .match-bottom{grid-template-columns:1fr!important}}
+@media(max-width:600px){body.v2-enabled .match-actions .v2-action-grid{gap:9px!important}body.v2-enabled .match-actions .v2-action{grid-template-columns:32px minmax(0,1fr) 17px!important;gap:7px!important;min-height:96px!important;padding:10px 8px!important}body.v2-enabled .match-actions .v2-action-icon{width:32px!important;height:32px!important;min-width:32px;min-height:32px;flex-basis:32px!important;font-size:17px!important;border-radius:9px!important}body.v2-enabled .match-actions .v2-action-copy strong{font-size:12px!important}body.v2-enabled .match-actions .v2-action-copy span{font-size:10px!important}body.v2-enabled .match-actions .v2-action:after{width:17px!important;height:17px!important}body.v2-enabled .v2-today-card{grid-template-columns:1fr!important}}
