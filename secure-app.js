@@ -129,7 +129,7 @@
       <section class="login-layout" aria-labelledby="loginTitle">
         <div class="login-brand">
           <span class="login-eyebrow">SAMNANGER IL · TINE FOTBALLSKULE</span>
-          <img class="login-brand-logo" src="./fotballskule-logo.png" alt="Samnanger IL TINE Fotballskule 2027">
+          <img class="login-brand-logo" src="./fotballskule-logo-2027.png" alt="Samnanger IL TINE Fotballskule 2027">
           <h1 id="loginTitle">Velkomen til fotballskulen</h1>
           <p>Éin trygg stad for instruktørar, ansvarlege og administrasjon.</p>
           <div class="login-brand-foot">Fotballskule 2027 <span aria-hidden="true">·</span> Samnanger IL</div>
