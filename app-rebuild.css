@@ -212,3 +212,26 @@ body.v2-enabled .match-actions .v2-action:nth-child(3) .v2-action-icon:after{con
 body.v2-enabled .match-actions .v2-action:nth-child(4) .v2-action-icon:after{content:"⇄";font-size:26px;line-height:20px;background:none}
 body.v2-enabled .match-actions .v2-action:nth-child(5) .v2-action-icon:after{content:"▦";font-size:24px;line-height:20px;background:none}
 body.v2-enabled .match-actions .v2-action:nth-child(6) .v2-action-icon:after{content:"⚙";font-size:23px;line-height:20px;background:none}
+
+/* Administration landing: transparent glass cards, consistent alignment and readable labels. */
+body.admin-landing #pageIntro .hero-card{position:relative;padding:26px 30px;border:1px solid #a7d3ff40;border-radius:20px;background:linear-gradient(120deg,#3674ad55,#102f5d65)!important;box-shadow:inset 0 1px #ffffff24,0 15px 32px #00000017}
+body.admin-landing #pageIntro .hero-card:after,body.admin-landing #pageIntro .hero-card:before{display:none!important;content:none!important}
+body.admin-landing #pageIntro .hero-card h2{color:#fff!important}
+body.admin-landing #pageIntro .hero-card p{color:#d9e9fa!important}
+body.admin-landing #mainMenu{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:13px;margin:0 0 18px}
+body.admin-landing #mainMenu .menu-button{display:grid!important;grid-template-columns:38px minmax(0,1fr);align-items:center;justify-content:start;gap:12px;width:100%;min-width:0;min-height:94px;margin:0!important;padding:15px!important;border:1px solid #a9d5ff55!important;border-radius:16px!important;background:linear-gradient(135deg,#65a9ec30,#17477740 65%,#061d3b50)!important;box-shadow:inset 0 1px #ffffff2b,0 9px 20px #0000001c;backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);color:#fff!important;text-align:left;transition:transform .16s ease,border-color .16s ease,background .16s ease}
+body.admin-landing #mainMenu .menu-button:hover{transform:translateY(-2px);border-color:#c9e4ff99!important;background:linear-gradient(135deg,#75b8f047,#1d57895e)!important}
+body.admin-landing #mainMenu .menu-button .menu-icon{display:grid!important;place-items:center;width:38px;height:38px;margin:0;padding:0;border:1px solid #d2eaff38;border-radius:11px;background:#c1e4ff1b;font-size:21px;line-height:1}
+body.admin-landing #mainMenu .menu-button .menu-copy{display:flex!important;flex-direction:column;gap:5px;min-width:0;margin:0;padding:0;text-align:left;line-height:1.2}
+body.admin-landing #mainMenu .menu-button .menu-copy>span{display:block;color:#fff!important;font-size:15px;font-weight:800;line-height:1.25;overflow-wrap:break-word}
+body.admin-landing #mainMenu .menu-button .menu-copy small{display:block!important;margin:0;color:#c4d9ef!important;font-size:12px;font-weight:450;line-height:1.35;white-space:normal;overflow-wrap:break-word}
+body.admin-landing #mainMenu .menu-button.danger{border-color:#ff8a9a70!important;background:linear-gradient(135deg,#d12c4b5c,#69112b55)!important}
+body.admin-landing #mainMenu .back-button{grid-column:1/-1;justify-self:start;min-height:42px;background:#ffffff16!important;border:1px solid #b5d7fa5c!important;color:#fff!important;padding:10px 16px}
+body.admin-landing .admin-year-panel{max-width:100%;padding:20px 24px!important;border:1px solid #a9d5ff55!important;border-radius:18px!important;background:linear-gradient(125deg,#4b8ac33b,#0d325f66)!important;box-shadow:inset 0 1px #ffffff20,0 12px 28px #00000016;color:#fff!important;backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
+body.admin-landing .admin-year-title{margin:0 0 10px;color:#fff;font-size:16px;font-weight:800}
+body.admin-landing .admin-year-panel .year-switcher{max-width:350px}
+body.admin-landing .admin-year-panel .year-switcher label{display:flex;flex-direction:column;gap:7px;color:#dcecff!important;font-size:12px;font-weight:700}
+body.admin-landing .admin-year-panel .year-switcher select{display:block;width:100%;min-height:46px;padding:10px 13px;border:1px solid #b6d9ff73;border-radius:11px;background:#092b50a8;color:#fff;font-size:15px}
+body.admin-landing .admin-year-hint{margin:10px 0 0;color:#bfd5ee!important;font-size:12px}
+@media(max-width:850px){body.admin-landing #mainMenu{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:550px){body.admin-landing #pageIntro .hero-card{padding:20px!important}body.admin-landing #mainMenu{gap:10px}body.admin-landing #mainMenu .menu-button{grid-template-columns:30px minmax(0,1fr);gap:8px;min-height:102px;padding:11px!important}body.admin-landing #mainMenu .menu-button .menu-icon{width:30px;height:30px;font-size:17px}body.admin-landing #mainMenu .menu-button .menu-copy>span{font-size:12px}body.admin-landing #mainMenu .menu-button .menu-copy small{font-size:10px}body.admin-landing .admin-year-panel{padding:17px!important}}
