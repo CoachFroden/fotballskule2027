@@ -26,3 +26,10 @@ body:has(.participant-admin-page) .participant-admin-grid>p{color:#f5f9ff}
 @media(max-width:980px){body:has(.participant-admin-page) .participant-admin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){body:has(.participant-admin-page) #pageIntro{margin:12px 12px 10px;padding:18px!important}body:has(.participant-admin-page) #mainMenu{margin:0 12px 10px}body:has(.participant-admin-page) .participant-admin-page{margin:0 10px;padding:13px!important}body:has(.participant-admin-page) .participant-admin-page>.toolbar{grid-template-columns:1fr;gap:9px}body:has(.participant-admin-page) .participant-admin-grid{grid-template-columns:1fr;gap:11px}body:has(.participant-admin-page) .participant-admin-card{padding:15px!important}body:has(.participant-admin-page) .participant-admin-info{min-height:0}body:has(.participant-admin-page) .participant-admin-actions{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 @media(max-width:350px){body:has(.participant-admin-page) .participant-admin-actions{grid-template-columns:1fr}}
+
+/* No duplicated branding in participant page header. */
+body:has(.participant-admin-page) #pageIntro .hero-card:before,
+body:has(.participant-admin-page) #pageIntro .hero-card:after{content:none!important;display:none!important}
+body:has(.participant-admin-page) #pageIntro .hero-card{padding:0!important;margin:0!important;min-height:0!important;border:0!important;box-shadow:none!important;background:transparent!important}
+body:has(.participant-admin-page) #pageIntro .hero-card h2{margin:6px 0 10px!important;color:#fff!important}
+body:has(.participant-admin-page) #pageIntro .hero-card p{color:#dbeaff!important}
