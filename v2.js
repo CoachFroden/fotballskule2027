@@ -364,7 +364,7 @@
     const archived = data.yearData?.status === 'archived';
     return `<section class="v2-hero">
       <div class="v2-hero-brand">
-        <img class="v2-hero-logo-image" src="https://raw.githubusercontent.com/CoachFroden/fotballskule2027/main/Samnanger%20IL%20fotballskule%202027.png" alt="Samnanger IL TINE Fotballskule 2027" loading="eager">
+        <img class="v2-hero-logo-image" src="./fotballskule-logo.png" alt="Samnanger IL TINE Fotballskule 2027" loading="eager">
         <div class="v2-hero-title">
           <p class="v2-hero-club">SAMNANGER IL</p>
           <h1>TINE Fotballskule ${esc(data.year)}</h1>
