@@ -235,3 +235,29 @@ body.admin-landing .admin-year-panel .year-switcher select{display:block;width:1
 body.admin-landing .admin-year-hint{margin:10px 0 0;color:#bfd5ee!important;font-size:12px}
 @media(max-width:850px){body.admin-landing #mainMenu{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:550px){body.admin-landing #pageIntro .hero-card{padding:20px!important}body.admin-landing #mainMenu{gap:10px}body.admin-landing #mainMenu .menu-button{grid-template-columns:30px minmax(0,1fr);gap:8px;min-height:102px;padding:11px!important}body.admin-landing #mainMenu .menu-button .menu-icon{width:30px;height:30px;font-size:17px}body.admin-landing #mainMenu .menu-button .menu-copy>span{font-size:12px}body.admin-landing #mainMenu .menu-button .menu-copy small{font-size:10px}body.admin-landing .admin-year-panel{padding:17px!important}}
+
+/* Missing attendance: dark translucent glass surface with accessible contrast. */
+#content .welcome-box.admin-missing{padding:24px!important;background:linear-gradient(140deg,#2a60945c,#0a28517a)!important;border:1px solid #a7d5ff55!important;border-radius:19px!important;box-shadow:inset 0 1px #ffffff29,0 15px 32px #00000020!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:#f5faff!important}
+#content .admin-missing .missing-toolbar{display:flex;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+#content .admin-missing .missing-toolbar label{flex:1 1 250px;display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:700;color:#e5f1ff!important}
+#content .admin-missing .missing-toolbar select{width:100%;min-height:46px;border:1px solid #9bc6ef80;border-radius:11px;background:#08254aab!important;color:#fff!important;padding:10px 14px}
+#content .admin-missing .missing-toolbar button,#content .admin-missing .missing-person button{min-height:42px;border:1px solid #b2d9ff8a!important;border-radius:11px!important;background:linear-gradient(130deg,#2868a8,#123b70)!important;color:#fff!important;padding:9px 16px;font-weight:750;box-shadow:inset 0 1px #ffffff26}
+#content .admin-missing .missing-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:17px 19px;margin-bottom:12px;border-radius:14px;border:1px solid #9ecdf65e;background:#ffffff13!important;color:#fff!important}
+#content .admin-missing .missing-summary.has-missing{border-color:#ff9eac7a;background:#b51b3740!important}
+#content .admin-missing .missing-summary strong{font-size:17px;color:#fff!important}
+#content .admin-missing .missing-summary span{font-size:13px;color:#dceaff!important}
+#content .admin-missing .missing-status{margin:0 0 18px;padding:0 3px;color:#d9eaff!important;font-size:13px;line-height:1.6}
+#content .admin-missing .missing-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+#content .admin-missing .missing-group{min-width:0;padding:20px;border:1px solid #a9d5ff54;border-radius:16px;background:linear-gradient(145deg,#80b8ec25,#0b2b5655)!important;box-shadow:inset 0 1px #ffffff1f;color:#edf6ff!important}
+#content .admin-missing .missing-group h3{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 0 15px;font-size:19px;color:#fff!important}
+#content .admin-missing .missing-group h3 span{font-size:12px;font-weight:650;color:#c4dfff!important}
+#content .admin-missing .missing-group p{color:#d9e9fa!important;margin:8px 0}
+#content .admin-missing .missing-person{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:13px 0;border-top:1px solid #b5d9fa35;color:#fff!important}
+#content .admin-missing .missing-person strong{color:#fff!important;font-size:15px}
+#content .admin-missing .missing-person small{color:#d1e5fa!important;font-size:12px}
+#content .admin-missing .missing-person button{margin-left:auto}
+#content .admin-missing .missing-unchecked{margin-top:15px;padding:15px;border:1px solid #ffd3937a;border-radius:12px;background:#b36b1438!important;color:#fff!important}
+#content .admin-missing .missing-unchecked strong{color:#ffe5b6!important;font-size:13px}
+#content .admin-missing .missing-unchecked p{margin:7px 0 0!important;color:#fff1d9!important}
+#content .admin-missing #adminMissingDashboard>p{color:#fff!important}
+@media(max-width:760px){#content .admin-missing .missing-groups{grid-template-columns:1fr}#content .welcome-box.admin-missing{padding:16px!important}#content .admin-missing .missing-toolbar{align-items:stretch}#content .admin-missing .missing-toolbar button{width:100%}}
