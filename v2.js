@@ -273,7 +273,7 @@
   function actionsFor(role) {
     if (role === 'admin') {
       return [
-        action('🚨', 'Mangler nå', 'Oppmøte og foresattkontakt', 'showSimpleMissingAdmin', 'red', 'missing'),
+        action('🚨', 'Mangler no', 'Oppmøte og føresette', 'showSimpleMissingAdmin', 'red', 'missing'),
         action('💬', 'Tilbakemeldingar', 'Sjå svar og mønster', 'showSimpleFeedbackAdmin', 'violet', 'feedback'),
         action('👟', 'Deltakarar', 'Søk, allergi og kontakt', 'showAdminParticipants', '', 'admin'),
         action('🔄', 'Instruktørplan', 'Fordel bemanning raskt', 'showInstructorScheduleAdmin', 'green', 'admin'),
@@ -362,11 +362,19 @@
 
   function renderHero(role, data) {
     const archived = data.yearData?.status === 'archived';
-    return `<section class="v2-hero">
-      <p class="v2-eyebrow"><span class="v2-role-pill"><span class="v2-live-dot"></span>${esc(ROLE[role]?.label || role)}</span>${archived ? '<span class="v2-state-pill">Arkivert</span>' : ''}</p>
-      <h1>${esc(roleHeroTitle(role, data.year))}</h1>
-      <p class="v2-hero-copy">${esc(greeting())}. ${esc(roleDescription(role))}</p>
-      <div class="v2-hero-row"><div class="v2-eyebrow">Samnanger IL · TINE Fotballskule</div>${yearSelect(data, role)}</div>
+    return `<section class="v2-hero v2-hero-clean">
+      <div class="v2-brand-lockup" role="img" aria-label="Samnanger IL TINE Fotballskule ${esc(data.year)}">
+        <div class="v2-brand-ball" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="46" fill="#f8fbff" stroke="#9ac7f0" stroke-width="3"/><path d="M50 29 66 40 61 59 40 62 32 44Z" fill="#0c2448"/><path d="M50 29 48 6M66 40 89 31M61 59 77 78M40 62 26 83M32 44 10 34" stroke="#0c2448" stroke-width="8" stroke-linejoin="round"/><path d="M50 29 66 40 61 59 40 62 32 44Z" fill="#0c2448"/></svg></div>
+        <div class="v2-brand-club"><span>SAMNANGER IL</span></div>
+        <div class="v2-brand-name"><span>TINE</span> <span>FOTBALLSKULE</span></div>
+        <div class="v2-brand-year"><span>${esc(data.year)}</span></div>
+      </div>
+      <p class="v2-hero-clean-motto">Fotballglede · Meistring · Fellesskap</p>
+      <div class="v2-hero-row">
+        <span class="v2-role-pill"><span class="v2-live-dot"></span>${esc(ROLE[role]?.label || role)}</span>
+        ${archived ? '<span class="v2-state-pill">Arkivert</span>' : ''}
+        ${yearSelect(data, role)}
+      </div>
     </section>`;
   }
 
@@ -414,8 +422,8 @@
         renderDock(role, 'home');
         return;
       }
-      content.innerHTML = `<div class="match-shell">${sidebar(role, data.year)}<div class="v2-home">
-        ${previewControls()}
+      content.innerHTML = `<div class="match-shell"><div class="v2-home">
+        ${previewRole ? previewControls() : ''}
         ${renderHero(role, data)}
         ${roleNotice(role, data)}
         <section class="v2-section match-actions">

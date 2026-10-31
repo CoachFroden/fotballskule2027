@@ -2,8 +2,13 @@
   const auth = firebase.auth(), db = firebase.firestore();
   const $ = id => document.getElementById(id);
   const esc = x => String(x || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const screen = html => { $('mainMenu').innerHTML = ''; $('pageIntro').innerHTML = ''; $('content').innerHTML = '<div class="staff-stage"><div class="staff-stadium"><div class="staff-kicker">SAMNANGER IL <span>•</span> FOTBALLSKULE 2027</div><div class="staff-ball">⚽</div><div class="staff-stadium-title">Bli med på laget!</div><div class="staff-stadium-sub">Eitt lag. Mange moglegheiter.</div><div class="staff-pitch"></div></div><div class="staff-panel">' + html + '</div></div>'; };
-  const errorMessage = e => ({'auth/email-already-in-use':'E-postadressa er allereie registrert. Prøv å logge inn.','auth/weak-password':'Passordet må vere minst seks teikn.','auth/invalid-email':'Ugyldig e-postadresse.','auth/invalid-credential':'Feil e-post eller passord.'}[e.code] || 'Noko gjekk gale: ' + (e.code || 'ukjend feil'));
+  const screen = html => {
+    $('mainMenu').innerHTML = '';
+    $('pageIntro').innerHTML = '';
+    document.body.classList.add('login-screen');
+    $('content').innerHTML = '<section class="login-layout staff-auth-layout"><div class="login-brand"><span class="login-eyebrow">SAMNANGER IL · TINE FOTBALLSKULE</span><img class="login-brand-logo" src="./fotballskule-logo-2027.png" alt="Samnanger IL TINE Fotballskule 2027"><h1>Velkomen på laget</h1><p>Trygg tilgang for instruktørar, ansvarlege og administrasjon.</p><div class="login-brand-foot">Fotballskule 2027 · Samnanger IL</div></div><div class="login-panel staff-panel">' + html + '</div></section>';
+  };
+  const errorMessage = e => ({'auth/email-already-in-use':'E-postadressa er allereie registrert. Prøv å logge inn.','auth/weak-password':'Passordet må vere minst seks teikn.','auth/invalid-email':'Ugyldig e-postadresse.','auth/invalid-credential':'Feil e-post eller passord.','auth/internal-error':'Firebase kunne ikkje logge inn. Kontroller e-post og passord, eller prøv Google-innlogging dersom du brukar Google-konto.','auth/wrong-password':'Feil e-post eller passord.','auth/user-not-found':'Feil e-post eller passord.','auth/unauthorized-domain':'Denne testadressa er ikkje godkjend i Firebase Authentication.'}[e.code] || 'Noko gjekk gale: ' + (e.code || 'ukjend feil'));
   window.staffAccessPending = async user => {
     let request;
     try { const snap = await db.collection('accessRequests').doc(user.uid).get(); request = snap.exists ? snap.data() : null; }
@@ -26,7 +31,17 @@
   window.staffEmailLogin = async event => {
     event.preventDefault();
     try { await auth.signInWithEmailAndPassword($('staffEmail').value.trim(), $('staffPassword').value); }
-    catch (e) { alert(errorMessage(e)); }
+    catch (e) {
+      console.error('Email sign-in failed', {code:e.code, message:e.message, name:e.name, customData:e.customData});
+      const invalidCredentials = e.code === 'auth/internal-error' && /INVALID_LOGIN_CREDENTIALS|INVALID_PASSWORD|EMAIL_NOT_FOUND/.test(e.message || '');
+      const message = invalidCredentials ? 'E-post eller passord vart ikkje godkjent. Dersom du vanlegvis loggar inn med Google, bruk Google-innlogging på ei godkjend adresse.' : errorMessage(e);
+      const form = document.querySelector('.staff-panel form');
+      if (form) {
+        let errorBox = document.getElementById('staffLoginError');
+        if (!errorBox) { errorBox = document.createElement('div'); errorBox.id = 'staffLoginError'; errorBox.className = 'status-box error'; form.prepend(errorBox); }
+        errorBox.textContent = message;
+      } else alert(message);
+    }
   };
   window.staffEmailRegister = async event => {
     event.preventDefault();
@@ -74,7 +89,7 @@
   };
   const observer = new MutationObserver(() => {
     const btn = document.querySelector('.auth-card button[onclick="loginGoogle()"]');
-    if (btn && !document.getElementById('staffEmailEntry')) btn.insertAdjacentHTML('afterend','<button id="staffEmailEntry" class="menu-button compact" type="button" onclick="staffAuthForm(\'login\')">Logg inn med e-post / opprett konto</button>');
+    if (btn && !document.querySelector('.auth-card button[onclick*="staffAuthForm"]')) btn.insertAdjacentHTML('afterend','<button id="staffEmailEntry" class="menu-button compact" type="button" onclick="staffAuthForm(\'login\')">Logg inn med e-post / opprett konto</button>');
   });
   observer.observe(document.getElementById('content'), {childList:true,subtree:true});
 })();
