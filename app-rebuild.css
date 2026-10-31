@@ -164,3 +164,20 @@ body.v2-enabled .v2-hero-clean-logo{display:block;width:min(100%,430px);height:a
 body.v2-enabled .v2-hero-clean-motto{margin:0!important;color:#d8e7f9;font-size:13px;letter-spacing:.02em}
 body.v2-enabled .v2-hero.v2-hero-clean .v2-hero-row{align-self:stretch;justify-content:flex-end!important;margin-top:8px!important;gap:9px}
 @media(max-width:600px){body.v2-enabled .v2-hero.v2-hero-clean{padding:18px 15px 13px!important;gap:6px!important}body.v2-enabled .v2-hero-clean-logo{max-width:290px;max-height:88px}body.v2-enabled .v2-hero-clean-motto{font-size:11px}body.v2-enabled .v2-hero.v2-hero-clean .v2-hero-row{justify-content:center!important;flex-wrap:wrap;margin-top:8px!important}}
+
+/* Football school identity: responsive live UI inspired by the approved banner, not a background photograph. */
+body.v2-enabled .v2-hero.v2-hero-clean{gap:8px!important;padding:20px 28px 14px!important}
+body.v2-enabled .v2-brand-lockup{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;max-width:780px;min-width:0;margin:0 auto;padding:13px 8px 0;text-align:center;isolation:isolate}
+body.v2-enabled .v2-brand-ball{width:67px;height:67px;filter:drop-shadow(0 7px 8px #00112980);margin:0 0 -5px}
+body.v2-enabled .v2-brand-club{display:flex;align-items:center;justify-content:center;gap:18px;width:100%;margin:2px 0 4px;color:#fff;font-size:clamp(11px,1.5vw,18px);font-weight:700;letter-spacing:.31em}
+body.v2-enabled .v2-brand-club:before,body.v2-enabled .v2-brand-club:after{content:"";display:block;width:min(16%,100px);height:3px;background:linear-gradient(90deg,transparent,#f32945);border-radius:2px}
+body.v2-enabled .v2-brand-club:after{transform:rotate(180deg)}
+body.v2-enabled .v2-brand-name{display:flex;justify-content:center;align-items:baseline;gap:.24em;max-width:100%;font-size:clamp(24px,4.2vw,57px);font-weight:950;font-style:italic;line-height:1.12;letter-spacing:-.05em;white-space:nowrap;text-shadow:0 3px 13px #00112b66}
+body.v2-enabled .v2-brand-name span:first-child{color:#fff}
+body.v2-enabled .v2-brand-name span:last-child{color:#7ac5ff}
+body.v2-enabled .v2-brand-year{display:flex;align-items:center;justify-content:center;width:min(90%,540px);gap:0;margin:5px auto 0;color:white;font-size:clamp(15px,2vw,22px);font-weight:900;letter-spacing:.25em}
+body.v2-enabled .v2-brand-year:before,body.v2-enabled .v2-brand-year:after{content:"";height:3px;flex:1;background:#ee2442}
+body.v2-enabled .v2-brand-year span{padding:4px 20px 5px 24px;background:linear-gradient(120deg,#f82c4a,#c51031);border-radius:11px;letter-spacing:.25em}
+body.v2-enabled .v2-hero-clean-motto{margin-top:5px!important}
+body.v2-enabled .v2-hero.v2-hero-clean .v2-hero-row{margin-top:6px!important}
+@media(max-width:600px){body.v2-enabled .v2-hero.v2-hero-clean{padding:16px 10px 12px!important}body.v2-enabled .v2-brand-lockup{padding:5px 0 0}body.v2-enabled .v2-brand-ball{width:42px;height:42px}body.v2-enabled .v2-brand-club{font-size:10px;gap:9px;letter-spacing:.19em}body.v2-enabled .v2-brand-club:before,body.v2-enabled .v2-brand-club:after{width:12%}body.v2-enabled .v2-brand-name{font-size:clamp(16px,5vw,27px);gap:.2em;letter-spacing:-.05em}body.v2-enabled .v2-brand-year{margin-top:6px;font-size:14px}body.v2-enabled .v2-brand-year span{padding:3px 14px 4px 18px}body.v2-enabled .v2-hero-clean-motto{font-size:11px}}
