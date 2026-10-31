@@ -157,3 +157,10 @@ body.v2-enabled .v2-hero .cone,
 body.v2-enabled .v2-hero .match-brand,
 body.v2-enabled .v2-hero .match-masthead{display:none!important}
 body.v2-enabled .v2-hero{min-height:0!important}
+
+/* Compact transparent-logo hero, replacing oversized legacy layout. */
+body.v2-enabled .v2-hero.v2-hero-clean{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:9px!important;min-height:0!important;padding:23px 28px 17px!important;text-align:center;background:linear-gradient(120deg,rgba(35,99,170,.53),rgba(9,39,87,.48))!important}
+body.v2-enabled .v2-hero-clean-logo{display:block;width:min(100%,430px);height:auto;max-height:130px;object-fit:contain;margin:0 auto;filter:drop-shadow(0 5px 12px rgba(0,8,27,.3))}
+body.v2-enabled .v2-hero-clean-motto{margin:0!important;color:#d8e7f9;font-size:13px;letter-spacing:.02em}
+body.v2-enabled .v2-hero.v2-hero-clean .v2-hero-row{align-self:stretch;justify-content:flex-end!important;margin-top:8px!important;gap:9px}
+@media(max-width:600px){body.v2-enabled .v2-hero.v2-hero-clean{padding:18px 15px 13px!important;gap:6px!important}body.v2-enabled .v2-hero-clean-logo{max-width:290px;max-height:88px}body.v2-enabled .v2-hero-clean-motto{font-size:11px}body.v2-enabled .v2-hero.v2-hero-clean .v2-hero-row{justify-content:center!important;flex-wrap:wrap;margin-top:8px!important}}
