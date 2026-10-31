@@ -414,8 +414,8 @@
         renderDock(role, 'home');
         return;
       }
-      content.innerHTML = `<div class="match-shell">${sidebar(role, data.year)}<div class="v2-home">
-        ${previewControls()}
+      content.innerHTML = `<div class="match-shell"><div class="v2-home">
+        ${previewRole ? previewControls() : ''}
         ${renderHero(role, data)}
         ${roleNotice(role, data)}
         <section class="v2-section match-actions">
