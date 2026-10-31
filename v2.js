@@ -362,15 +362,9 @@
 
   function renderHero(role, data) {
     const archived = data.yearData?.status === 'archived';
-    return `<section class="v2-hero">
-      <div class="v2-hero-brand">
-        <img class="v2-hero-logo-image" src="./fotballskule-logo-2027.png" alt="Samnanger IL TINE Fotballskule 2027" loading="eager">
-        <div class="v2-hero-title">
-          <p class="v2-hero-club">SAMNANGER IL</p>
-          <h1>TINE Fotballskule ${esc(data.year)}</h1>
-          <p class="v2-hero-copy">Fotballglede · Meistring · Fellesskap</p>
-        </div>
-      </div>
+    return `<section class="v2-hero v2-hero-clean">
+      <img class="v2-hero-clean-logo" src="./fotballskule-mark-clean.svg" alt="Samnanger IL TINE Fotballskule 2027" loading="eager">
+      <p class="v2-hero-clean-motto">Fotballglede · Meistring · Fellesskap</p>
       <div class="v2-hero-row">
         <span class="v2-role-pill"><span class="v2-live-dot"></span>${esc(ROLE[role]?.label || role)}</span>
         ${archived ? '<span class="v2-state-pill">Arkivert</span>' : ''}
