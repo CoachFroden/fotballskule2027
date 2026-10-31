@@ -273,7 +273,7 @@
   function actionsFor(role) {
     if (role === 'admin') {
       return [
-        action('🚨', 'Mangler nå', 'Oppmøte og foresattkontakt', 'showSimpleMissingAdmin', 'red', 'missing'),
+        action('🚨', 'Mangler no', 'Oppmøte og føresette', 'showSimpleMissingAdmin', 'red', 'missing'),
         action('💬', 'Tilbakemeldingar', 'Sjå svar og mønster', 'showSimpleFeedbackAdmin', 'violet', 'feedback'),
         action('👟', 'Deltakarar', 'Søk, allergi og kontakt', 'showAdminParticipants', '', 'admin'),
         action('🔄', 'Instruktørplan', 'Fordel bemanning raskt', 'showInstructorScheduleAdmin', 'green', 'admin'),
@@ -363,10 +363,19 @@
   function renderHero(role, data) {
     const archived = data.yearData?.status === 'archived';
     return `<section class="v2-hero">
-      <p class="v2-eyebrow"><span class="v2-role-pill"><span class="v2-live-dot"></span>${esc(ROLE[role]?.label || role)}</span>${archived ? '<span class="v2-state-pill">Arkivert</span>' : ''}</p>
-      <h1>${esc(roleHeroTitle(role, data.year))}</h1>
-      <p class="v2-hero-copy">${esc(greeting())}. ${esc(roleDescription(role))}</p>
-      <div class="v2-hero-row"><div class="v2-eyebrow">Samnanger IL · TINE Fotballskule</div>${yearSelect(data, role)}</div>
+      <div class="v2-hero-brand">
+        <div class="v2-hero-logo" aria-hidden="true"><span>S</span><small>IL</small></div>
+        <div class="v2-hero-title">
+          <p class="v2-hero-club">SAMNANGER IL</p>
+          <h1>TINE Fotballskule ${esc(data.year)}</h1>
+          <p class="v2-hero-copy">Fotballglede · Meistring · Fellesskap</p>
+        </div>
+      </div>
+      <div class="v2-hero-row">
+        <span class="v2-role-pill"><span class="v2-live-dot"></span>${esc(ROLE[role]?.label || role)}</span>
+        ${archived ? '<span class="v2-state-pill">Arkivert</span>' : ''}
+        ${yearSelect(data, role)}
+      </div>
     </section>`;
   }
 
