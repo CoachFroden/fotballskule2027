@@ -214,6 +214,15 @@
       const formsSnap = await db.collection('pameldingar2027').get();
       const existingIds = new Set(state.participants.map(p => p.id));
       const syncWrites = [];
+      // Remove orphaned form-import copies when their source registration is gone.
+      // Leave manually maintained participants untouched.
+      const activeFormIds = new Set(formsSnap.docs.map(doc => 'forms-' + doc.id));
+      const staleForms = state.participants.filter(p => p.id.startsWith('forms-') && !activeFormIds.has(p.id));
+      for (const stale of staleForms) {
+        syncWrites.push(yearPath('participants').doc(stale.id).delete());
+        syncWrites.push(yearPath('participantPrivate').doc(stale.id).delete());
+      }
+      state.participants = state.participants.filter(p => !staleForms.some(stale => stale.id === p.id));
       for (const doc of formsSnap.docs) {
         const f = doc.data();
         const group = Number(f.manuellGruppe || f.standardGruppe);
@@ -718,6 +727,7 @@
         </div>
         ${p.formsId ? `<div class="participant-admin-actions">
           <button type="button" class="participant-admin-edit" onclick="editFormsParticipant2027('${escapeHtml(p.formsId)}')">Rediger opplysningar</button>
+          <button type="button" class="participant-admin-edit" onclick="removeFormsParticipant2027('${escapeHtml(p.formsId)}')">Fjern deltakar</button>
           <label>Flytt til gruppe<select aria-label="Flytt ${escapeHtml(p.name)} til gruppe" onchange="changeFormsGroup2027('${escapeHtml(p.formsId)}', this.value)">${[1,2,3,4,5].map(g => `<option value="${g}" ${Number(p.group) === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>
         </div>` : ''}
       </article>`;
@@ -752,6 +762,32 @@
       console.error(error);
       alert('Kunne ikkje lagre. Prøv igjen.');
       if (el('saveParticipantEdit')) el('saveParticipantEdit').disabled = false;
+    }
+  };
+
+  window.removeFormsParticipant2027 = async function (formsId) {
+    if (!isAdmin() || String(state.yearId) !== '2027' || state.year?.status === 'archived') return;
+    const registration = state.formsPrivate?.get(formsId);
+    if (!registration) return;
+    if (!confirm('Fjerne ' + (registration.namn || 'deltakaren') + ' frå påmeldinga og appen? Dette kan ikkje angrast.')) return;
+    try {
+      const rosterId = 'forms-' + formsId;
+      // Delete the source first; a subsequent reload then reconciles any orphaned copy.
+      await db.collection('pameldingar2027').doc(formsId).delete();
+      const cleanup = await Promise.allSettled([
+        yearPath('participants').doc(rosterId).delete(),
+        yearPath('participantPrivate').doc(rosterId).delete()
+      ]);
+      await loadYear('2027');
+      showAdminParticipants();
+      if (cleanup.some(result => result.status === 'rejected')) {
+        alert('Påmeldinga er fjerna, men opprydding i deltakarregisteret feila. Prøv å laste inn sida på nytt.');
+      } else {
+        alert('Deltakaren er fjerna frå Firebase og appen. Google Sheets blir oppdatert ved neste automatiske synkronisering (om lag 15 minutt).');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Kunne ikkje fjerne deltakaren. Prøv igjen.');
     }
   };
 
