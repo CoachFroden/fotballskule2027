@@ -118,7 +118,16 @@
   }
 
   function tasksFor(day, year) {
-    return DAY_TASKS_2026[dayKey(day)] || genericTasks(day);
+    const tasks = (DAY_TASKS_2026[dayKey(day)] || genericTasks(day)).slice();
+    // First actual programme day always needs participant reception and registration.
+    const firstDay = cachedDays.length ? dayKey(cachedDays[0]) : '';
+    if (firstDay && dayKey(day) === firstDay) {
+      const registration = ['📝', 'Registrering og mottak', 'Ta imot barna og føresette, kontroller påmelding, registrer oppmøte og hjelp alle til rett gruppe.'];
+      const handout = ['🎒', 'Utdeling av utstyr', 'Del ut t-skjorter og anna utstyr som er klargjort, og hald oversikt over kva som er delt ut.'];
+      if (!tasks.some(task => /registr|oppmøte|mottak/i.test(task[1]))) tasks.unshift(registration);
+      if (!tasks.some(task => /utdeling/i.test(task[1]))) tasks.splice(1, 0, handout);
+    }
+    return tasks;
   }
 
   function renderTask(task) {
