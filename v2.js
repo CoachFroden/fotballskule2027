@@ -531,6 +531,68 @@
     if (typeof window.changeYear === 'function') return window.changeYear(year);
   };
 
+  function instructorSubpage(title, description) {
+    document.getElementById('pageIntro').innerHTML = '<div class="hero-card"><p class="hero-kicker">INSTRUKTØR · TINE FOTBALLSKULE</p><h2>'+esc(title)+'</h2><p>'+esc(description)+'</p></div>';
+    document.getElementById('mainMenu').innerHTML = '<button class="back-button" type="button" onclick="v2ShowMore()">← Meir</button>';
+    renderDock('instructor','more');
+  }
+
+  window.showInstructorInstructions = function () {
+    instructorSubpage('Instruksar for instruktørar','Det viktigaste før, under og etter aktivitetane.');
+    const items = [
+      ['Før oppstart','Møt i god tid, finn gruppa di og registrer oppmøte. Kontroller at alle barna er på plass.'],
+      ['Under aktivitetane','Sjå alle barna, forklar kort og tydeleg, og sørg for mykje aktivitet og meistring. Tilpass øvingane etter nivå og behov.'],
+      ['Tryggleik','Ha oversikt over barna til ei kvar tid. Meld frå til ein ansvarleg vaksen ved skade, sjukdom eller andre hendingar.'],
+      ['Ved lunsj og gruppebyte','Hald oversikt over barna ved overgangane. Kontroller oppmøtet på nytt etter lunsj.'],
+      ['Ved avslutning','Sørg for at alle barna blir følgde til avtalt avslutning eller overlevering. Meld frå om noko viktig har skjedd.']
+    ];
+    document.getElementById('content').innerHTML = '<div class="instructor-guide">'+items.map((item,i)=>'<article class="instructor-guide-card"><span class="instructor-guide-number">'+String(i+1).padStart(2,'0')+'</span><div><h3>'+esc(item[0])+'</h3><p>'+esc(item[1])+'</p></div></article>').join('')+'<p class="instructor-guide-note">Dette er generelle instruksar. Lokale rutinar og kontaktpersonar må stadfestast av administrator før fotballskulen.</p></div>';
+  };
+
+  window.showInstructorDayContacts = async function () {
+    instructorSubpage('Kontaktpersonar','Vaksne som er registrerte på fotballskulen den valde dagen.');
+    const target=document.getElementById('content');
+    target.innerHTML='<div class="welcome-box">Hentar kontaktpersonar …</div>';
+    try {
+      const year=String(document.getElementById('currentYearLabel')?.textContent||'').match(/20\\d{2}/)?.[0]||'2027';
+      const ref=db.collection('years').doc(year);
+      const [daysSnap,adultsSnap]=await Promise.all([ref.collection('days').get(),ref.collection('adults').get()]);
+      const days=daysSnap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>String(a.date||a.id).localeCompare(String(b.date||b.id)));
+      const adults=adultsSnap.docs.map(d=>({id:d.id,...d.data()}));
+      if(!days.length){target.innerHTML='<div class="welcome-box"><p>Ingen fotballskuledagar er registrerte enno.</p></div>';return;}
+      const today=new Date(),todayStr=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+      const chosen=days.find(d=>(d.date||d.id)===todayStr)||days.find(d=>(d.date||d.id)>todayStr)||days[days.length-1];
+      const available=adults.filter(a=>{
+        const ids=Array.isArray(a.dayIds)?a.dayIds.map(String):[];
+        if(ids.length)return ids.includes(String(chosen.id))||ids.includes(String(chosen.date||''));
+        const raw=String(a.days||'').trim();
+        if(!raw||/alle/i.test(raw))return true;
+        const date=new Date((chosen.date||chosen.id)+'T12:00:00');
+        const weekday=isNaN(date.getTime())?'':new Intl.DateTimeFormat('nn-NO',{weekday:'long'}).format(date).toLowerCase();
+        return raw.toLowerCase().includes(weekday)||raw.includes(String(chosen.date||chosen.id));
+      });
+      target.innerHTML='<div class="instructor-contacts"><label class="instructor-day-select">Vel dag<select id="instructorContactDay">'+days.map(d=>'<option value="'+esc(d.id)+'" '+(d.id===chosen.id?'selected':'')+'>'+esc(d.date||d.title||d.id)+'</option>').join('')+'</select></label><div id="instructorContactList"></div></div>';
+      const draw=id=>{
+        const day=days.find(d=>d.id===id)||chosen;
+        const people=adults.filter(a=>{
+          const ids=Array.isArray(a.dayIds)?a.dayIds.map(String):[];
+          if(ids.length)return ids.includes(String(day.id))||ids.includes(String(day.date||''));
+          const raw=String(a.days||'').trim();
+          if(!raw||/alle/i.test(raw))return true;
+          const date=new Date((day.date||day.id)+'T12:00:00');
+          const weekday=isNaN(date.getTime())?'':new Intl.DateTimeFormat('nn-NO',{weekday:'long'}).format(date).toLowerCase();
+          return raw.toLowerCase().includes(weekday)||raw.includes(String(day.date||day.id));
+        });
+        document.getElementById('instructorContactList').innerHTML=people.length?people.map(a=>{
+          const phone=String(a.phone||'').trim();
+          return '<article class="instructor-contact-card"><div><h3>'+esc(a.name||'Ansvarleg vaksen')+'</h3><p>'+esc(a.role||a.task||'Ansvarleg')+'</p></div>'+(phone?'<a href="tel:'+esc(phone.replace(/[^+\\d]/g,''))+'">Ring '+esc(phone)+'</a>':'<span class="instructor-contact-no-phone">Telefonnummer ikkje tilgjengeleg</span>')+'</article>';
+        }).join(''):'<div class="welcome-box"><p>Ingen vaksne er registrerte denne dagen.</p></div>';
+      };
+      document.getElementById('instructorContactDay').addEventListener('change',e=>draw(e.target.value));
+      draw(chosen.id);
+    }catch(error){console.error(error);target.innerHTML='<div class="welcome-box"><p>Kunne ikkje hente kontaktpersonane. Kontroller tilgangen eller prøv igjen.</p></div>';}
+  };
+
   window.v2ShowMore = async function () {
     const role = await getRole();
     if (!role) return;
@@ -555,11 +617,11 @@
     ] : [
       ['📅', 'Fast dagsprogram og meny', 'showDays'],
       ['📋', 'Instruksar for instruktørar', 'showInstructorInstructions'],
-      ['👥', 'Kontaktpersonar og bemanning', 'showInstructorSchedule'],
+      ['👥', 'Kontaktpersonar', 'showInstructorDayContacts'],
       ['📝', 'Tilbakemelding', 'showInstructorFeedback']
     ];
 
-    content.innerHTML = `${previewRole ? previewControls() : ''}<div class="welcome-box"><div class="v2-more-sheet">${rows.map(([icon, title, fn]) => `<button class="v2-more-row" type="button" onclick="v2Open('${fn}','more')"><span>${icon}</span><span>${esc(title)}</span></button>`).join('')}<button class="v2-more-row" type="button" onclick="logout()"><span>↪</span><span>Logg ut</span></button></div></div>`;
+    content.innerHTML = `<div class="v2-more-sheet">${rows.map(([icon, title, fn]) => `<button class="v2-more-row" type="button" onclick="v2Open('${fn}','more')"><span>${icon}</span><span>${esc(title)}</span></button>`).join('')}<button class="v2-more-row" type="button" onclick="logout()"><span>↪</span><span>Logg ut</span></button></div></div>`;
     renderDock(role, 'more');
   };
 
