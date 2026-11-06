@@ -152,8 +152,8 @@
 
     target.innerHTML = `
       <div class="responsible-shared-banner">
-        <span>🤝</span>
-        <div><strong>Felles ansvar</strong><p>Alle ansvarlege har ansvar for desse oppgåvene. Fordel dei mellom dykk slik det passar gjennom dagen.</p></div>
+        <span aria-hidden="true">🤝</span>
+        <div><strong>Felles ansvar</strong><p>Fordel oppgåvene mellom dei ansvarlege gjennom dagen.</p></div>
       </div>
 
       <section class="responsible-daily-section">
@@ -168,10 +168,10 @@
 
       ${note ? `<section class="responsible-note"><strong>📌 Beskjed for dagen</strong><p>${esc(note).replaceAll('\n', '<br>')}</p></section>` : ''}
 
-      <section class="responsible-daily-section">
-        <div class="responsible-section-head"><div><span class="responsible-kicker">Heile dagen</span><h3>Dette gjeld alltid</h3></div></div>
+      <details class="responsible-always-details">
+        <summary><span><small>HEILE DAGEN</small><strong>Faste rutinar og tryggleik</strong></span><span class="responsible-details-count">${GENERAL_TASKS.length} punkt <span aria-hidden="true">⌄</span></span></summary>
         <div class="responsible-task-grid compact">${GENERAL_TASKS.map(renderTask).join('')}</div>
-      </section>`;
+      </details>`;
   }
 
   window.selectResponsibleDay = function (id) {
