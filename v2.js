@@ -315,8 +315,8 @@
       '<div class="instructor-action-intro"><div><span>DIN ARBEIDSFLATE</span><h2>Det viktigaste i dag</h2></div><span class="instructor-action-line"></span></div>'+
       '<div class="instructor-primary-grid">'+
         '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showResponsibleSafety\',\'safety\')"><span class="instructor-action-symbol" aria-hidden="true">✚</span><span class="instructor-action-copy"><strong>Tryggleik og kontakt</strong><small>Helse, allergi og føresette</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
-        '<button class="instructor-primary instructor-exercises" type="button" onclick="v2Open(\'showResponsibleDaily\',\'home\')"><span class="instructor-action-symbol" aria-hidden="true">✓</span><span class="instructor-action-copy"><strong>Dagens ansvar</strong><small>Oppgåver og plan gjennom dagen</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
-        '<button class="instructor-primary responsible-staff-action" type="button" onclick="v2Open(\'showResponsibleAdults\',\'home\')"><span class="instructor-action-symbol" aria-hidden="true">♙</span><span class="instructor-action-copy"><strong>Kven er på plass?</strong><small>Vaksne, roller og kontakt</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
+        '<button class="instructor-primary instructor-exercises" type="button" onclick="v2Open(\'showResponsibleDaily\',\'responsibility\')"><span class="instructor-action-symbol" aria-hidden="true">✓</span><span class="instructor-action-copy"><strong>Dagens ansvar</strong><small>Oppgåver og plan gjennom dagen</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
+        '<button class="instructor-primary responsible-staff-action" type="button" onclick="v2Open(\'showResponsibleAdults\',\'more\')"><span class="instructor-action-symbol" aria-hidden="true">♙</span><span class="instructor-action-copy"><strong>Kven er på plass?</strong><small>Vaksne, roller og kontakt</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
       '</div><div class="instructor-bottom-note"><span>✦</span> SAMAN SKAPAR VI FOTBALLGLEDE <span>✦</span></div></div>';
   }
 
@@ -496,7 +496,7 @@
     if (role === 'responsible') return [
       ['home', '⌂', 'Heim', 'showHome'],
       ['safety', '✚', 'Tryggleik', 'showResponsibleSafety'],
-      ['plan', '↻', 'Plan', 'showInstructorSchedule'],
+      ['responsibility', '✓', 'Ansvar', 'showResponsibleDaily'],
       ['more', '•••', 'Meir', 'v2ShowMore']
     ];
     return [
@@ -629,10 +629,9 @@
     menu.innerHTML = '<button class="back-button" type="button" onclick="showHome()">← Framside</button>';
 
     const rows = role === 'responsible' ? [
-      ['📅', 'Dagsprogram & meny', 'showDays'],
-      ['🧭', 'Ansvar & oppgåver', 'showResponsibleInstructions'],
-      ['👥', 'Deltakargrupper', 'showGroups'],
-      ['🧑‍🤝‍🧑', 'Ansvarsfordeling', 'showResponsibleAdults']
+      ['📅', 'Dagsprogram og meny', 'showDays'],
+      ['📋', 'Rutinar og instruksar', 'showResponsibleInstructions'],
+      ['👥', 'Ansvarlege på plass', 'showResponsibleAdults']
     ] : role === 'admin' ? [
       ['📅', 'Program & meny', 'showAdminDays'],
       ['🔄', 'Instruktørplan', 'showInstructorScheduleAdmin'],
