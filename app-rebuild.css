@@ -375,3 +375,24 @@ body.v2-enabled #content .instructor-admin-row {
 }
 body.v2-enabled #content .welcome-box a {color:#12588c!important;text-decoration:underline}
 body.v2-enabled #content .welcome-box :is(button,input,select,textarea):focus-visible{outline:3px solid #f1b83b!important;outline-offset:2px}
+
+/* Instructor homepage: informational heading, not another action tile. */
+body.v2-enabled[data-v2-role="instructor"] .instructor-welcome{
+  background:transparent!important;
+  background-image:none!important;
+  border:0!important;
+  border-bottom:1px solid rgba(174,204,232,.25)!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  padding:12px 3px 18px!important;
+  margin-bottom:10px!important;
+}
+body.v2-enabled[data-v2-role="instructor"] .instructor-welcome span{
+  color:#9ec1df!important;font-size:10px!important;letter-spacing:.13em!important;font-weight:700!important;
+}
+body.v2-enabled[data-v2-role="instructor"] .instructor-welcome h1{
+  color:#fff!important;font-size:25px!important;line-height:1.2!important;margin:8px 0 6px!important;
+}
+body.v2-enabled[data-v2-role="instructor"] .instructor-welcome p{
+  color:#c3d7eb!important;font-size:13px!important;line-height:1.5!important;
+}
