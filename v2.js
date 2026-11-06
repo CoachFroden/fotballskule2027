@@ -302,20 +302,15 @@
   }
 
   function instructorQuickHome(data) {
-    const day = data.focusDay;
-    const dayLabel = day ? dateParts(day.date || day.id).long : 'Ingen programdag vald';
-    const notice = day && day.note ? '<div class="instructor-alert"><strong>Viktig beskjed</strong><p>'+esc(day.note)+'</p></div>' : '';
+    const notice = data.focusDay && data.focusDay.note ? '<div class="instructor-alert"><strong>Viktig beskjed</strong><p>'+esc(data.focusDay.note)+'</p></div>' : '';
     return '<div class="instructor-mobile-home">'+
-      '<section class="instructor-welcome"><span>FOTBALLSKULE '+esc(data.year)+'</span><h1>Instruktør</h1><p>Det du treng for å kome raskt i gang.</p></section>'+
+      '<section class="instructor-welcome"><span>FOTBALLSKULE '+esc(data.year)+'</span><h1>Instruktør</h1><p>Det viktigaste, utan unødvendige val.</p></section>'+
       '<div class="instructor-primary-grid">'+
-        '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showChecklists\',\'attendance\')"><span>✓</span><strong>Oppmøte</strong><small>Kryss av barna</small></button>'+
-        '<button class="instructor-primary instructor-exercises" type="button" onclick="v2Open(\'showExercises\',\'exercises\')"><span>◈</span><strong>Øvelsesbank</strong><small>Finn ei øving</small></button>'+
+        '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showChecklists\',\'home\')"><span>✓</span><strong>Oppmøte</strong><small>Kryss av barna</small></button>'+
+        '<button class="instructor-primary instructor-exercises" type="button" onclick="v2Open(\'showExercises\',\'home\')"><span>◈</span><strong>Øvelsesbank</strong><small>Finn ei øving</small></button>'+
       '</div>'+notice+
-      '<button class="instructor-today" type="button" onclick="v2Open(\'showDays\',\'plan\')"><span>Dagens program</span><strong>'+esc(dayLabel)+'</strong><small>Sjå tider og aktivitetar →</small></button>'+
-      '<div class="instructor-secondary-grid">'+
-        '<button type="button" onclick="v2Open(\'showGroups\',\'more\')"><strong>Grupper</strong><small>Barna på gruppa</small></button>'+
-        '<button type="button" onclick="v2Open(\'showInstructorSchedule\',\'more\')"><strong>Bemanning</strong><small>Før og etter lunsj</small></button>'+
-      '</div></div>';
+      '<button class="instructor-today" type="button" onclick="v2Open(\'showGroups\',\'home\')"><span>Mine grupper</span><strong>Oversikt over barna</strong><small>Sjå gruppeoversikta →</small></button>'+
+      '</div>';
   }
 
   function statsFor(role, data) {
@@ -472,7 +467,6 @@
     ];
     return [
       ['home', '⌂', 'Heim', 'showHome'],
-      ['plan', '▦', 'Program', 'showDays'],
       ['more', '•••', 'Meir', 'v2ShowMore']
     ];
   }
@@ -546,10 +540,9 @@
       ['👟', 'Deltakarar', 'showAdminParticipants'],
       ['🛡️', 'Administrasjon', 'showAdmin']
     ] : [
-      ['📅', 'Dagsprogram & meny', 'showDays'],
-      ['🎯', 'Øvingar', 'showExercises'],
-      ['👥', 'Deltakargrupper', 'showGroups'],
-      ['📋', 'Instruksar', 'showInstructorInstructions'],
+      ['📅', 'Fast dagsprogram og meny', 'showDays'],
+      ['📋', 'Instruksar for instruktørar', 'showInstructorInstructions'],
+      ['👥', 'Kontaktpersonar og bemanning', 'showInstructorSchedule'],
       ['📝', 'Tilbakemelding', 'showInstructorFeedback']
     ];
 
