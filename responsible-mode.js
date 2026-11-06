@@ -182,16 +182,17 @@
       const healthCount = safetyRows.filter(hasHealthInfo).length;
 
       content.innerHTML = `
-        <div class="welcome-box">
-          <div class="alert-box">
+        <div class="welcome-box safety-dashboard">
+          <div class="alert-box safety-privacy">
             <strong>🔒 Sensitive opplysningar</strong>
             <p>Bruk denne sida berre når du treng opplysningane for tryggleik, helse eller kontakt med foresatte.</p>
           </div>
-          <div class="quick-grid">
+          <div class="quick-grid safety-summary-row">
             <div class="contact-card"><h3>${safetyRows.length}</h3><p>Deltakarar</p></div>
             <div class="contact-card"><h3>${healthCount}</h3><p>Med helse/allergi-info</p></div>
           </div>
-          <div class="toolbar">
+          <div class="toolbar safety-filter-panel">
+            <label for="responsibleSafetySearch">Finn ein deltakar</label>
             <input id="responsibleSafetySearch" type="search" placeholder="Søk etter namn…" oninput="filterResponsibleSafety()">
             <select id="responsibleSafetyGroup" onchange="filterResponsibleSafety()">
               <option value="">Alle grupper</option>
@@ -202,7 +203,7 @@
               <option value="health">Berre helse/allergi</option>
             </select>
           </div>
-          <div id="responsibleSafetySummary" class="muted"></div>
+          <div class="safety-results-heading"><strong>Deltakarar</strong><span id="responsibleSafetySummary" class="muted"></span></div>
           <div id="responsibleSafetyList"></div>
         </div>`;
       window.filterResponsibleSafety();
@@ -234,7 +235,7 @@
       return;
     }
 
-    target.innerHTML = `<div class="contact-grid">${rows.map(row => {
+    target.innerHTML = `<div class="contact-grid safety-person-grid">${rows.map(row => {
       const priv = row.private || {};
       const allergy = String(priv.allergy || '').trim();
       const health = healthInfo(priv);
