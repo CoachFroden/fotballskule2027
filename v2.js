@@ -303,12 +303,23 @@
 
   function instructorQuickHome(data) {
     const notice = data.focusDay && data.focusDay.note ? '<div class="instructor-alert"><strong>Viktig beskjed</strong><p>'+esc(data.focusDay.note)+'</p></div>' : '';
-    return '<div class="instructor-mobile-home">'+
-      '<section class="instructor-welcome"><span>FOTBALLSKULE '+esc(data.year)+'</span><h1>Instruktør</h1><p>Det viktigaste, utan unødvendige val.</p></section>'+
+    return '<div class="instructor-mobile-home instructor-stadium">'+
+      '<section class="instructor-welcome instructor-hero">'+
+        '<div class="instructor-hero-glow" aria-hidden="true"></div>'+
+        '<div class="instructor-pitch" aria-hidden="true"><i></i><b></b></div>'+
+        '<div class="instructor-hero-content"><span class="instructor-eyebrow"><em></em> SAMNANGER IL · '+esc(data.year)+'</span>'+
+          '<div class="instructor-hero-icon" aria-hidden="true">⚽</div>'+
+          '<h1>Klar for<br><mark>fotballglede?</mark></h1>'+
+          '<p>Alt du treng for ein god dag på bana.</p>'+
+          '<div class="instructor-hero-footer"><span>INSTRUKTØRPORTAL</span><span> TINE FOTBALLSKULE <b>✦</b></span></div>'+
+        '</div>'+
+      '</section>'+
+      '<div class="instructor-action-intro"><div><span>DIN ARBEIDSFLATE</span><h2>Kom raskt i gang</h2></div><span class="instructor-action-line"></span></div>'+
       '<div class="instructor-primary-grid">'+
-        '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showChecklists\',\'home\')"><span>✓</span><strong>Oppmøte</strong><small>Kryss av barna</small></button>'+
-        '<button class="instructor-primary instructor-exercises" type="button" onclick="v2Open(\'showExercises\',\'home\')"><span>◈</span><strong>Øvelsesbank</strong><small>Finn ei øving</small></button>'+
+        '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showChecklists\',\'home\')"><span class="instructor-action-symbol" aria-hidden="true">✓</span><span class="instructor-action-copy"><strong>Oppmøte</strong><small>Registrer barna på gruppa di</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
+        '<button class="instructor-primary instructor-exercises" type="button" onclick="v2Open(\'showExercises\',\'home\')"><span class="instructor-action-symbol" aria-hidden="true">◈</span><span class="instructor-action-copy"><strong>Øvelsesbank</strong><small>Finn neste aktivitet på sekunder</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
       '</div>'+notice+
+      '<div class="instructor-bottom-note"><span>✦</span> SMÅ ØYEBLIKK. STORE FOTBALLMINNE. <span>✦</span></div>'+
       '</div>';
   }
 
