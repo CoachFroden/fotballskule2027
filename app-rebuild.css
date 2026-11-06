@@ -213,28 +213,29 @@ body.v2-enabled .match-actions .v2-action:nth-child(4) .v2-action-icon:after{con
 body.v2-enabled .match-actions .v2-action:nth-child(5) .v2-action-icon:after{content:"▦";font-size:24px;line-height:20px;background:none}
 body.v2-enabled .match-actions .v2-action:nth-child(6) .v2-action-icon:after{content:"⚙";font-size:23px;line-height:20px;background:none}
 
-/* Administration landing: transparent glass cards, consistent alignment and readable labels. */
-body.admin-landing #pageIntro .hero-card{position:relative;padding:26px 30px;border:1px solid #a7d3ff40;border-radius:20px;background:linear-gradient(120deg,#3674ad55,#102f5d65)!important;box-shadow:inset 0 1px #ffffff24,0 15px 32px #00000017}
-body.admin-landing #pageIntro .hero-card:after,body.admin-landing #pageIntro .hero-card:before{display:none!important;content:none!important}
-body.admin-landing #pageIntro .hero-card h2{color:#fff!important}
-body.admin-landing #pageIntro .hero-card p{color:#d9e9fa!important}
-body.admin-landing #mainMenu{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:13px;margin:0 0 18px}
-body.admin-landing #mainMenu .menu-button{display:grid!important;grid-template-columns:38px minmax(0,1fr);align-items:center;justify-content:start;gap:12px;width:100%;min-width:0;min-height:94px;margin:0!important;padding:15px!important;border:1px solid #a9d5ff55!important;border-radius:16px!important;background:linear-gradient(135deg,#65a9ec30,#17477740 65%,#061d3b50)!important;box-shadow:inset 0 1px #ffffff2b,0 9px 20px #0000001c;backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);color:#fff!important;text-align:left;transition:transform .16s ease,border-color .16s ease,background .16s ease}
-body.admin-landing #mainMenu .menu-button:hover{transform:translateY(-2px);border-color:#c9e4ff99!important;background:linear-gradient(135deg,#75b8f047,#1d57895e)!important}
-body.admin-landing #mainMenu .menu-button .menu-icon{display:grid!important;place-items:center;width:38px;height:38px;margin:0;padding:0;border:1px solid #d2eaff38;border-radius:11px;background:#c1e4ff1b;font-size:21px;line-height:1}
-body.admin-landing #mainMenu .menu-button .menu-copy{display:flex!important;flex-direction:column;gap:5px;min-width:0;margin:0;padding:0;text-align:left;line-height:1.2}
-body.admin-landing #mainMenu .menu-button .menu-copy>span{display:block;color:#fff!important;font-size:15px;font-weight:800;line-height:1.25;overflow-wrap:break-word}
-body.admin-landing #mainMenu .menu-button .menu-copy small{display:block!important;margin:0;color:#c4d9ef!important;font-size:12px;font-weight:450;line-height:1.35;white-space:normal;overflow-wrap:break-word}
-body.admin-landing #mainMenu .menu-button.danger{border-color:#ff8a9a70!important;background:linear-gradient(135deg,#d12c4b5c,#69112b55)!important}
-body.admin-landing #mainMenu .back-button{grid-column:1/-1;justify-self:start;min-height:42px;background:#ffffff16!important;border:1px solid #b5d7fa5c!important;color:#fff!important;padding:10px 16px}
-body.admin-landing .admin-year-panel{max-width:100%;padding:20px 24px!important;border:1px solid #a9d5ff55!important;border-radius:18px!important;background:linear-gradient(125deg,#4b8ac33b,#0d325f66)!important;box-shadow:inset 0 1px #ffffff20,0 12px 28px #00000016;color:#fff!important;backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
-body.admin-landing .admin-year-title{margin:0 0 10px;color:#fff;font-size:16px;font-weight:800}
-body.admin-landing .admin-year-panel .year-switcher{max-width:350px}
-body.admin-landing .admin-year-panel .year-switcher label{display:flex;flex-direction:column;gap:7px;color:#dcecff!important;font-size:12px;font-weight:700}
-body.admin-landing .admin-year-panel .year-switcher select{display:block;width:100%;min-height:46px;padding:10px 13px;border:1px solid #b6d9ff73;border-radius:11px;background:#092b50a8;color:#fff;font-size:15px}
-body.admin-landing .admin-year-hint{margin:10px 0 0;color:#bfd5ee!important;font-size:12px}
-@media(max-width:850px){body.admin-landing #mainMenu{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:550px){body.admin-landing #pageIntro .hero-card{padding:20px!important}body.admin-landing #mainMenu{gap:10px}body.admin-landing #mainMenu .menu-button{grid-template-columns:30px minmax(0,1fr);gap:8px;min-height:102px;padding:11px!important}body.admin-landing #mainMenu .menu-button .menu-icon{width:30px;height:30px;font-size:17px}body.admin-landing #mainMenu .menu-button .menu-copy>span{font-size:12px}body.admin-landing #mainMenu .menu-button .menu-copy small{font-size:10px}body.admin-landing .admin-year-panel{padding:17px!important}}
+/* Administration landing — restrained, compact, readable navigation. */
+body.admin-landing #pageIntro .hero-card{padding:20px 24px!important;min-height:0!important;border:1px solid #a6bed533!important;border-radius:14px!important;background:#142e4b!important;box-shadow:none!important}
+body.admin-landing #pageIntro .hero-card:before,body.admin-landing #pageIntro .hero-card:after{display:none!important;content:none!important}
+body.admin-landing #pageIntro .hero-card h2{font-size:24px!important;line-height:1.2;color:#f6f8fb!important}
+body.admin-landing #pageIntro .hero-card p{color:#cad7e5!important}
+body.admin-landing #mainMenu{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;align-items:stretch!important;margin:0 0 14px!important}
+body.admin-landing #mainMenu>button.menu-button{box-sizing:border-box!important;display:grid!important;grid-template-columns:24px minmax(0,1fr) 16px!important;align-items:center!important;gap:11px!important;min-width:0!important;width:100%!important;height:auto!important;min-height:64px!important;max-height:none!important;margin:0!important;padding:10px 13px!important;border:1px solid #7590a94d!important;border-radius:10px!important;background:#173451!important;background-image:none!important;box-shadow:none!important;color:#f7f9fc!important;text-align:left!important;transform:none!important}
+body.admin-landing #mainMenu>button.menu-button:hover,body.admin-landing #mainMenu>button.menu-button:focus-visible{border-color:#b3cadf!important;background:#234662!important;outline-offset:2px}
+body.admin-landing #mainMenu>button.menu-button .menu-icon{box-sizing:border-box!important;display:grid!important;place-items:center!important;width:24px!important;height:24px!important;min-width:24px!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:#c4d4e5!important;font-size:17px!important;line-height:1!important}
+body.admin-landing #mainMenu>button.menu-button .menu-copy{display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:flex-start!important;gap:3px!important;min-width:0!important;margin:0!important;padding:0!important;line-height:1.25!important;text-align:left!important}
+body.admin-landing #mainMenu>button.menu-button .menu-copy>span{display:block!important;margin:0!important;color:#f7f9fc!important;font-size:13px!important;font-weight:750!important;line-height:1.3!important;white-space:normal!important}
+body.admin-landing #mainMenu>button.menu-button .menu-copy small{display:block!important;margin:0!important;color:#afc2d5!important;font-size:11px!important;font-weight:400!important;line-height:1.35!important;white-space:normal!important}
+body.admin-landing #mainMenu>button.menu-button:after{content:"›"!important;position:static!important;display:block!important;grid-column:3!important;grid-row:1!important;align-self:center!important;justify-self:end!important;width:auto!important;height:auto!important;border:0!important;background:none!important;box-shadow:none!important;color:#b7c8d8!important;font-size:22px!important}
+body.admin-landing #mainMenu>button.menu-button.danger{border-color:#a66c7566!important;background:#3b2637!important}
+body.admin-landing #mainMenu>button.menu-button.danger .menu-icon{color:#ffadb7!important}
+body.admin-landing #mainMenu>.back-button{grid-column:1/-1!important;justify-self:start!important;min-height:36px!important;margin:3px 0!important;padding:7px 13px!important;border:1px solid #718ca855!important;border-radius:9px!important;background:#193854!important;color:#e8f0f9!important}
+body.admin-landing #content .admin-year-panel{box-sizing:border-box!important;padding:15px 18px!important;border:1px solid #7590a94d!important;border-radius:12px!important;background:#142e4b!important;background-image:none!important;box-shadow:none!important;color:#f4f7fb!important}
+body.admin-landing #content .admin-year-title{margin:0 0 9px;color:#f7f9fc!important;font-size:14px;font-weight:750}
+body.admin-landing #content .admin-year-panel .year-switcher{max-width:380px}
+body.admin-landing #content .admin-year-panel label{color:#d2e0ee!important;font-size:12px}
+body.admin-landing #content .admin-year-panel select{width:100%;min-height:42px;padding:8px 12px;border:1px solid #9db2c85c;border-radius:9px;background:#213f5c!important;color:#fff!important}
+body.admin-landing #content .admin-year-hint{margin:9px 0 0;color:#b5c7da!important;font-size:11px}
+@media(max-width:650px){body.admin-landing #pageIntro .hero-card{padding:15px 17px!important}body.admin-landing #pageIntro .hero-card h2{font-size:21px!important}body.admin-landing #mainMenu{grid-template-columns:1fr!important;gap:6px!important}body.admin-landing #mainMenu>button.menu-button{min-height:57px!important;padding:8px 12px!important;gap:10px!important}body.admin-landing #mainMenu>button.menu-button .menu-copy>span{font-size:13px!important}body.admin-landing #mainMenu>button.menu-button .menu-copy small{font-size:10px!important}body.admin-landing #content .admin-year-panel{padding:13px!important}}
 
 /* Missing attendance: dark translucent glass surface with accessible contrast. */
 #content .welcome-box.admin-missing{padding:24px!important;background:linear-gradient(140deg,#2a60945c,#0a28517a)!important;border:1px solid #a7d5ff55!important;border-radius:19px!important;box-shadow:inset 0 1px #ffffff29,0 15px 32px #00000020!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:#f5faff!important}
