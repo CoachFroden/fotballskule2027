@@ -301,6 +301,25 @@
     ];
   }
 
+  function responsibleQuickHome(data) {
+    const alert = data.healthCount ? '<div class="responsible-home-alert"><span>!</span><p><strong>Viktig helseinformasjon</strong><small>'+esc(data.healthCount)+' deltakarar har registrert helse- eller allergiinformasjon. Sjå Tryggleik og kontakt.</small></p></div>' : '';
+    return '<div class="instructor-mobile-home instructor-stadium responsible-stadium">'+
+      '<section class="instructor-welcome instructor-hero">'+
+        '<div class="instructor-hero-glow" aria-hidden="true"></div><div class="instructor-pitch" aria-hidden="true"><i></i><b></b></div>'+
+        '<div class="instructor-hero-content"><span class="instructor-eyebrow"><em></em> SAMNANGER IL · '+esc(data.year)+'</span>'+
+        '<div class="instructor-hero-icon" aria-hidden="true">⚽</div>'+
+        '<h1>Full kontroll.<br><mark>Meir fotballglede.</mark></h1>'+
+        '<p>Oversikta du treng for ein trygg og god dag.</p>'+
+        '<div class="instructor-hero-footer"><span>ANSVARLEGPORTAL</span><span>TINE FOTBALLSKULE <b>✦</b></span></div></div></section>'+
+      alert+
+      '<div class="instructor-action-intro"><div><span>DIN ARBEIDSFLATE</span><h2>Det viktigaste i dag</h2></div><span class="instructor-action-line"></span></div>'+
+      '<div class="instructor-primary-grid">'+
+        '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showResponsibleSafety\',\'safety\')"><span class="instructor-action-symbol" aria-hidden="true">✚</span><span class="instructor-action-copy"><strong>Tryggleik og kontakt</strong><small>Helse, allergi og føresette</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
+        '<button class="instructor-primary instructor-exercises" type="button" onclick="v2Open(\'showResponsibleDaily\',\'home\')"><span class="instructor-action-symbol" aria-hidden="true">✓</span><span class="instructor-action-copy"><strong>Dagens ansvar</strong><small>Oppgåver og plan gjennom dagen</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
+        '<button class="instructor-primary responsible-staff-action" type="button" onclick="v2Open(\'showResponsibleAdults\',\'home\')"><span class="instructor-action-symbol" aria-hidden="true">♙</span><span class="instructor-action-copy"><strong>Kven er på plass?</strong><small>Vaksne, roller og kontakt</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
+      '</div><div class="instructor-bottom-note"><span>✦</span> SAMAN SKAPAR VI FOTBALLGLEDE <span>✦</span></div></div>';
+  }
+
   function instructorQuickHome(data) {
     const notice = data.focusDay && data.focusDay.note ? '<div class="instructor-alert"><strong>Viktig beskjed</strong><p>'+esc(data.focusDay.note)+'</p></div>' : '';
     return '<div class="instructor-mobile-home instructor-stadium">'+
@@ -425,6 +444,11 @@
 
       intro.innerHTML = '';
       menu.innerHTML = '';
+      if (displayRole === 'responsible') {
+        content.innerHTML = responsibleQuickHome(data);
+        renderDock(displayRole, 'home');
+        return;
+      }
       if (displayRole === 'instructor') {
         content.innerHTML = `${previewControls()}${instructorQuickHome(data)}`;
         renderDock(displayRole, 'home');
