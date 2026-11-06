@@ -65,21 +65,23 @@
         <p>Det du treng under fotballskuledagen – enkelt og raskt.</p>
       </div>`;
 
+    document.body.classList.add('instructor-simple-home');
     menu.innerHTML = [
-      menuButton('📅', 'Dagsprogram & meny', 'Tidspunkt, mat, frukt og beskjedar', 'showDays()'),
-      menuButton('✅', 'Krysselister', 'Kryss av gruppa før og etter lunsj', 'showChecklists()', 'success'),
-      menuButton('🔄', 'Instruktørplan', 'Sjå kven som har kva gruppe i kvar økt', 'showInstructorSchedule()'),
-      menuButton('🎯', 'Øvingar', 'Finn ei øving som passar gruppa', 'showExercises()'),
-      menuButton('👥', 'Deltakargrupper', 'Sjå dei faste deltakargruppene', 'showGroups()'),
-      menuButton('📝', 'Tilbakemelding', 'Anonym evaluering etter fotballskulen', 'showInstructorFeedback()')
+      menuButton('✓', 'Registrer oppmøte', 'Dagens gruppe · før og etter lunsj', 'showChecklists()'),
+      menuButton('↗', 'Øvingsbank', 'Søk og finn øvingar på få sekund', 'showExercises()'),
+      menuButton('▦', 'Dagens program', 'Økter, tidspunkt og mat', 'showDays()')
     ].join('');
 
     content.innerHTML = `
-      <div class="welcome-box">
-        <h2>Klar for dagen</h2>
-        <p>Vel det du treng over. Du ser berre arbeidsverktøya for instruktørar.</p>
-        <button class="text-button" type="button" onclick="logout()">Logg ut</button>
-      </div>`;
+      <section class="instructor-more" aria-label="Andre instruktørverktøy">
+        <h3>Meir når du treng det</h3>
+        <div class="instructor-more-links">
+          <button type="button" onclick="showInstructorSchedule()">Instruktørplan <span aria-hidden="true">›</span></button>
+          <button type="button" onclick="showGroups()">Deltakargrupper <span aria-hidden="true">›</span></button>
+          <button type="button" onclick="showInstructorFeedback()">Tilbakemelding <span aria-hidden="true">›</span></button>
+        </div>
+      </section>`;
+
   }
 
   window.showHome = function () {
