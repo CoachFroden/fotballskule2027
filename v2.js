@@ -309,7 +309,6 @@
         '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showChecklists\',\'home\')"><span>✓</span><strong>Oppmøte</strong><small>Kryss av barna</small></button>'+
         '<button class="instructor-primary instructor-exercises" type="button" onclick="v2Open(\'showExercises\',\'home\')"><span>◈</span><strong>Øvelsesbank</strong><small>Finn ei øving</small></button>'+
       '</div>'+notice+
-      '<button class="instructor-today" type="button" onclick="v2Open(\'showGroups\',\'home\')"><span>Mine grupper</span><strong>Oversikt over barna</strong><small>Sjå gruppeoversikta →</small></button>'+
       '</div>';
   }
 
