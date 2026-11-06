@@ -325,3 +325,8 @@ body.v2-enabled[data-v2-role="instructor"] .instructor-secondary-grid strong{fon
 body.v2-enabled[data-v2-role="instructor"] .instructor-secondary-grid small{font-size:10px!important;color:#b8cee3!important}
 body.v2-enabled[data-v2-role="instructor"] .instructor-more-link{width:100%!important;min-height:36px!important;padding:8px 12px!important;border:1px solid #4c6d8b!important;border-radius:8px!important;background:#112f4d!important;color:#dceafa!important;text-align:left!important;font-size:12px!important}
 @media(max-width:390px){body.v2-enabled[data-v2-role="instructor"] .instructor-primary{padding:10px 9px!important;column-gap:6px!important}body.v2-enabled[data-v2-role="instructor"] .instructor-primary strong{font-size:13px!important}}
+
+/* Instructor: two calm, full-width actions */
+body.v2-enabled[data-v2-role="instructor"] .instructor-primary-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:12px!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-primary{width:100%!important;min-height:88px!important;background:#234765!important;border:1px solid rgba(180,212,232,.24)!important;box-shadow:none!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-exercises{background:#294e59!important}
