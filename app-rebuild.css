@@ -543,3 +543,8 @@ body.v2-enabled[data-v2-role="instructor"] .instructor-bottom-note span{color:#7
  body.v2-enabled[data-v2-role="instructor"] .instructor-stadium .instructor-primary{min-height:68px!important}
  body.v2-enabled[data-v2-role="instructor"] .instructor-bottom-note{display:none}
 }
+
+/* Official crest in shared header */
+.app-header .brand{display:flex;align-items:center;gap:11px;text-align:left}
+.app-header .brand-logo{display:block;width:38px;height:52px;object-fit:contain;flex:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))}
+@media(max-width:420px){.app-header .brand{gap:8px}.app-header .brand-logo{width:32px;height:44px}}
