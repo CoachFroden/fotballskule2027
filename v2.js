@@ -406,10 +406,11 @@
         return;
       }
       const data = await loadDashboardData(role, year);
+      const displayRole = role === 'admin' && previewRole ? previewRole : role;
       if (token !== renderToken || auth.currentUser?.uid !== user.uid) return;
 
       document.body.classList.add('v2-enabled');
-      document.body.dataset.v2Role = role;
+      document.body.dataset.v2Role = displayRole;
       const intro = document.getElementById('pageIntro');
       const menu = document.getElementById('mainMenu');
       const content = document.getElementById('content');
@@ -417,32 +418,32 @@
 
       intro.innerHTML = '';
       menu.innerHTML = '';
-      if (role === 'instructor') {
+      if (displayRole === 'instructor') {
         content.innerHTML = `${previewControls()}${instructorQuickHome(data)}`;
-        renderDock(role, 'home');
+        renderDock(displayRole, 'home');
         return;
       }
       content.innerHTML = `<div class="match-shell"><div class="v2-home">
-        ${previewRole ? previewControls() : ''}
-        ${renderHero(role, data)}
-        ${roleNotice(role, data)}
+        ${role === 'admin' ? previewControls() : ''}
+        ${renderHero(displayRole, data)}
+        ${roleNotice(displayRole, data)}
         <section class="v2-section match-actions">
           <div class="v2-section-head"><div><h2>På laget</h2><p>Alt du treng, eitt trykk unna</p></div></div>
-          <div class="v2-action-grid">${actionsFor(role).join('')}</div>
+          <div class="v2-action-grid">${actionsFor(displayRole).join('')}</div>
         </section>
         <div class="match-bottom">
           <section class="v2-section match-overview">
             <div class="v2-section-head"><div><h2>Oversikt ${esc(data.year)}</h2></div></div>
-            ${renderStats(role, data)}
+            ${renderStats(displayRole, data)}
           </section>
           <section class="v2-section match-program">
             <div class="v2-section-head"><div><h2>${esc(data.dayRelation || 'Program')}</h2></div></div>
-            ${todayCard(data, role)}
+            ${todayCard(data, displayRole)}
           </section>
         </div>
       </div></div>`;
 
-      renderDock(role, 'home');
+      renderDock(displayRole, 'home');
     } catch (error) {
       console.error('V2-dashboard:', error);
       if (token === renderToken) {
