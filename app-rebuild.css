@@ -304,3 +304,24 @@ body.instructor-simple-home .instructor-more-links button{display:flex;justify-c
 
 body.v2-enabled .v2-hero .v2-preview-buttons button,body.v2-enabled .v2-preview-banner button{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:37px!important;padding:8px 12px!important;border:1px solid rgba(185,213,239,.55)!important;border-radius:8px!important;background:#214e79!important;color:#fff!important;font-size:12px!important;font-weight:700!important;cursor:pointer!important}
 body.v2-enabled .v2-preview-banner{display:flex!important;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 14px;padding:12px;border:1px solid #87accb;border-radius:10px;background:#173d62;color:#fff;font-size:12px}
+
+/* Compact instructor workspace: no oversized tile buttons. */
+body.v2-enabled[data-v2-role="instructor"] .instructor-mobile-home{gap:9px!important;max-width:620px!important;padding:0 12px 82px!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-welcome{padding:10px 12px!important;border-radius:10px!important;min-height:0!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-welcome h1{font-size:19px!important;line-height:1.2!important;margin:4px 0!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-welcome p{font-size:12px!important;margin:0!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-today{display:flex!important;align-items:center!important;flex-wrap:wrap!important;gap:5px 12px!important;min-height:0!important;padding:12px 14px!important;border:1px solid #54718d!important;border-radius:10px!important;background:#183b5d!important;color:#f8fbff!important;box-shadow:none!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-today span{font-size:13px!important;font-weight:750!important;color:#fff!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-today strong{font-size:12px!important;color:#dce9f7!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-today small{width:100%;font-size:11px!important;color:#b8cde1!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-primary-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-primary{display:grid!important;grid-template-columns:24px 1fr!important;grid-template-rows:auto auto!important;align-content:center!important;align-items:center!important;column-gap:9px!important;row-gap:2px!important;min-height:74px!important;height:auto!important;padding:11px 12px!important;border:1px solid #54718d!important;border-radius:10px!important;background:#173b5e!important;background-image:none!important;box-shadow:none!important;text-align:left!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-primary span{grid-row:1/3!important;grid-column:1!important;font-size:19px!important;color:#dceafa!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-primary strong{grid-column:2!important;font-size:14px!important;line-height:1.2!important;color:#fff!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-primary small{grid-column:2!important;font-size:10px!important;line-height:1.3!important;color:#c8d9eb!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-secondary-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-secondary-grid button{display:flex!important;flex-direction:column!important;justify-content:center!important;gap:3px!important;min-height:56px!important;padding:10px 12px!important;border:1px solid #54718d!important;border-radius:9px!important;background:#123250!important;color:#fff!important;box-shadow:none!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-secondary-grid strong{font-size:12px!important;color:#fff!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-secondary-grid small{font-size:10px!important;color:#b8cee3!important}
+body.v2-enabled[data-v2-role="instructor"] .instructor-more-link{width:100%!important;min-height:36px!important;padding:8px 12px!important;border:1px solid #4c6d8b!important;border-radius:8px!important;background:#112f4d!important;color:#dceafa!important;text-align:left!important;font-size:12px!important}
+@media(max-width:390px){body.v2-enabled[data-v2-role="instructor"] .instructor-primary{padding:10px 9px!important;column-gap:6px!important}body.v2-enabled[data-v2-role="instructor"] .instructor-primary strong{font-size:13px!important}}
