@@ -98,3 +98,32 @@ body.v2-enabled .instructor-contact-card a{
  border-radius:10px;background:#176c65;color:#fff;text-decoration:none;font-weight:750;
 }
 body.v2-enabled .instructor-contact-no-phone{font-size:12px;color:#58718a}
+
+
+/* Responsible safety: clear hierarchy and phone-first layout */
+body.v2-enabled #content .safety-dashboard{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;display:grid;gap:15px}
+body.v2-enabled #content .safety-dashboard .safety-privacy{display:flex;flex-direction:column;gap:5px;background:#183d60!important;color:#fff!important;border:1px solid #447897!important;border-radius:15px;padding:16px 19px}
+body.v2-enabled #content .safety-dashboard .safety-privacy strong,body.v2-enabled #content .safety-dashboard .safety-privacy p{color:#e6f5ff!important;margin:0;line-height:1.5}
+body.v2-enabled #content .safety-dashboard .safety-privacy p{font-size:12px}
+body.v2-enabled #content .safety-dashboard .safety-summary-row{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important;margin:0!important}
+body.v2-enabled #content .safety-dashboard .safety-summary-row .contact-card{background:linear-gradient(125deg,#1d5687,#10355c)!important;color:#fff!important;border:1px solid #477c9c!important;border-radius:15px!important;min-height:94px!important;padding:17px!important;display:flex;flex-direction:column;justify-content:center;gap:5px}
+body.v2-enabled #content .safety-dashboard .safety-summary-row h3{color:#fff!important;font-size:30px!important;margin:0!important;line-height:1!important}
+body.v2-enabled #content .safety-dashboard .safety-summary-row p{color:#cde4f3!important;margin:0!important;font-size:12px!important}
+body.v2-enabled #content .safety-filter-panel{background:#f4f8fc!important;border:1px solid #c6dbe9!important;border-radius:16px!important;padding:16px!important;display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;margin:0!important}
+body.v2-enabled #content .safety-filter-panel>label{grid-column:1/-1;color:#193c59!important;font-size:13px;font-weight:800}
+body.v2-enabled #content .safety-filter-panel>input{grid-column:1/-1;width:100%;min-width:0;box-sizing:border-box}
+body.v2-enabled #content .safety-filter-panel>select{width:100%;min-width:0;box-sizing:border-box}
+body.v2-enabled #content .safety-results-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#e5f4ff;font-size:16px;padding:4px 3px 0}
+body.v2-enabled #content .safety-results-heading .muted{color:#aacde4!important;font-size:12px}
+body.v2-enabled #content .safety-person-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr));gap:12px}
+body.v2-enabled #content .safety-person-card{background:#fff!important;color:#17334e!important;border:1px solid #c8dce9!important;border-radius:16px!important;padding:19px!important;box-shadow:0 8px 20px #00152b22!important}
+body.v2-enabled #content .safety-person-card h3{font-size:19px!important;color:#102e49!important;margin:0 0 5px!important}
+body.v2-enabled #content .safety-person-card .safety-group{display:inline-flex;background:#e7f1f8;border-radius:20px;padding:5px 10px;color:#235574!important;font-size:12px!important;margin:0 0 15px!important}
+body.v2-enabled #content .safety-person-card .safety-contact-footer{border-top:1px solid #d9e6ef;padding-top:14px;margin-top:12px}
+body.v2-enabled #content .safety-person-card .safety-contact-footer p{display:grid;gap:6px;margin:0 0 12px!important}
+body.v2-enabled #content .safety-person-card .safety-contact-footer strong{color:#17334e!important}
+body.v2-enabled #content .safety-person-card .safety-contact-footer span{color:#425c70!important;line-height:1.5}
+body.v2-enabled #content .safety-person-card .safety-phone-actions{display:flex;flex-wrap:wrap;gap:8px}
+body.v2-enabled #content .safety-person-card .safety-phone-button{display:inline-flex;align-items:center;gap:6px;background:#176c65!important;color:#fff!important;text-decoration:none;border-radius:10px;padding:10px 12px;min-height:42px;font-size:13px;font-weight:750}
+body.v2-enabled #content .safety-person-card .safety-phone-button span{color:#fff!important}
+@media(max-width:420px){body.v2-enabled #content .safety-filter-panel{grid-template-columns:1fr!important}body.v2-enabled #content .safety-filter-panel>label,body.v2-enabled #content .safety-filter-panel>input{grid-column:1}body.v2-enabled #content .safety-summary-row .contact-card{padding:13px!important}}
