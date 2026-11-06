@@ -1,0 +1,62 @@
+/* Shared visual language for all app pages and roles. */
+body.v2-enabled{
+ --app-night:#071c38;--app-panel:#102e50;--app-blue:#2464a0;--app-teal:#18736c;
+ --app-mint:#8df3c5;--app-line:rgba(154,207,226,.25);
+}
+body.v2-enabled .container{max-width:1120px}
+body.v2-enabled #pageIntro .hero-card{
+ position:relative;overflow:hidden;isolation:isolate;
+ background:radial-gradient(ellipse at 100% 0%,rgba(64,171,166,.24),transparent 48%),linear-gradient(135deg,#164574,#0a294e 75%,#081d39)!important;
+ border:1px solid var(--app-line)!important;border-radius:18px!important;
+ padding:20px 22px!important;box-shadow:0 12px 28px #00122925!important;
+}
+body.v2-enabled #pageIntro .hero-card:after{
+ content:"";position:absolute;z-index:-1;right:-36px;top:-65px;width:170px;height:170px;
+ border:1px solid rgba(151,220,211,.14);border-radius:50%;pointer-events:none;
+}
+body.v2-enabled #pageIntro .hero-card .hero-kicker{
+ color:#91d9d8!important;font-size:10px!important;letter-spacing:.14em!important;
+}
+body.v2-enabled #pageIntro .hero-card h2,
+body.v2-enabled #pageIntro .hero-card h1{color:#fff!important;font-size:clamp(21px,3.5vw,27px)!important;margin:8px 0!important}
+body.v2-enabled #pageIntro .hero-card p{color:#d5e7f3!important;font-size:13px!important;line-height:1.5!important}
+body.v2-enabled #mainMenu{gap:9px;margin:0 0 14px}
+body.v2-enabled #mainMenu .back-button{
+ color:#e9f6ff!important;background:#1a446a!important;border:1px solid #497393!important;
+ border-radius:11px!important;box-shadow:none!important;
+}
+body.v2-enabled #mainMenu .menu-button{
+ background:linear-gradient(120deg,#215b90,#123b67)!important;border:1px solid #5c8bac!important;
+ border-radius:12px!important;color:#fff!important;box-shadow:0 4px 12px #00152c20!important;
+}
+body.v2-enabled #mainMenu .menu-button :is(span,strong,small){color:#fff!important}
+body.v2-enabled #content :is(.welcome-box,.panel,.card,.form-card,.section-card,.day-card,.exercise-card,.contact-card,.auth-card){
+ border-radius:16px;border:1px solid #c8dbe8;box-shadow:0 9px 22px #001a3018;
+}
+body.v2-enabled #content :is(.welcome-box,.panel,.card,.form-card,.section-card,.day-card,.exercise-card,.contact-card,.auth-card){
+ color:#17304c;
+}
+body.v2-enabled #content :is(.welcome-box,.panel,.card,.form-card,.section-card,.day-card,.exercise-card,.contact-card,.auth-card) :is(h1,h2,h3,h4){
+ color:#102c48;
+}
+body.v2-enabled #content :is(.welcome-box,.panel,.card,.form-card,.section-card,.day-card,.exercise-card,.contact-card,.auth-card) :is(p,li,label,small){
+ color:#38536b;
+}
+body.v2-enabled #content :is(.welcome-box,.panel,.card,.form-card,.section-card,.day-card,.exercise-card,.contact-card,.auth-card) :is(button[type="button"],button[type="submit"]):not(.danger):not(.danger-button):not(.back-button):not(.v2-action):not(.responsible-day-pill):not(.v2-staff-day-button){
+ border-radius:11px;
+}
+body.v2-enabled #content :is(input,select,textarea){
+ border-radius:10px;border-color:#a9c1d3;
+}
+body.v2-enabled #content :is(input,select,textarea):focus-visible,
+body.v2-enabled #mainMenu button:focus-visible{outline:3px solid #83e9c1;outline-offset:2px}
+body.v2-enabled .v2-dock{
+ background:linear-gradient(145deg,#0b2c54,#071b38 80%)!important;
+ border:1px solid #386c98!important;box-shadow:0 8px 25px #00142d55!important;
+}
+body.v2-enabled .v2-dock-button.is-active{background:linear-gradient(135deg,#ec2940,#b7112b)!important}
+@media(max-width:600px){
+ body.v2-enabled #pageIntro .hero-card{padding:17px 18px!important;border-radius:16px!important}
+ body.v2-enabled #pageIntro .hero-card h2{font-size:22px!important}
+ body.v2-enabled #content :is(.welcome-box,.panel,.card,.form-card,.section-card,.day-card,.exercise-card,.contact-card){padding:15px}
+}
