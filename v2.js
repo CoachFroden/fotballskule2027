@@ -374,6 +374,7 @@
         <span class="v2-role-pill"><span class="v2-live-dot"></span>${esc(ROLE[role]?.label || role)}</span>
         ${archived ? '<span class="v2-state-pill">Arkivert</span>' : ''}
         ${yearSelect(data, role)}
+        ${role === 'admin' ? previewControls() : ''}
       </div>
     </section>`;
   }
@@ -424,8 +425,8 @@
         return;
       }
       content.innerHTML = `<div class="match-shell"><div class="v2-home">
-        ${role === 'admin' ? previewControls() : ''}
-        ${renderHero(displayRole, data)}
+        ${renderHero(role, data)}
+        ${role === 'admin' && previewRole ? previewControls() : ''}
         ${roleNotice(displayRole, data)}
         <section class="v2-section match-actions">
           <div class="v2-section-head"><div><h2>På laget</h2><p>Alt du treng, eitt trykk unna</p></div></div>
