@@ -180,8 +180,9 @@
   };
 
   function markDock() {
-    document.querySelectorAll('.v2-dock-button').forEach(button => button.classList.remove('is-active'));
-    document.querySelector('.responsible-daily-dock')?.classList.add('is-active');
+    document.querySelectorAll('#v2Dock .v2-dock-button').forEach(button => {
+      button.classList.toggle('is-active', button.getAttribute('onclick')?.includes("'responsibility'") || false);
+    });
   }
 
   window.showResponsibleDaily = async function () {
@@ -195,7 +196,7 @@
     if (!intro || !menu || !content) return;
 
     intro.innerHTML = `<div class="hero-card"><p class="hero-kicker">Ansvarleg · Fotballskule ${esc(year)}</p><h2>Dagens ansvar</h2><p>Felles arbeidsplan for dei ansvarlege vaksne.</p></div>`;
-    menu.innerHTML = '<button class="back-button" type="button" onclick="showHome()">← Framside</button>';
+    menu.innerHTML = ''; // Heim is already available in the persistent bottom navigation.
     content.innerHTML = '<div class="welcome-box"><div class="status-box info">Hentar dagsplan…</div></div>';
 
     try {
@@ -218,7 +219,6 @@
         <div id="responsibleDailyBody"></div>
       </div>`;
       renderDay(first, year);
-      ensureResponsibleDock();
       markDock();
     } catch (error) {
       console.error('Dagens ansvar:', error);
@@ -229,44 +229,4 @@
   // Behald gamle lenker, men send dei til den praktiske dagsplanen.
   window.showResponsibleInstructions = window.showResponsibleDaily;
 
-  function ensureResponsibleDock() {
-    if (document.body.dataset.v2Role !== 'responsible') return;
-    const dock = document.getElementById('v2Dock');
-    if (!dock || dock.querySelector('.responsible-daily-dock')) return;
-
-    const button = document.createElement('button');
-    button.className = 'v2-dock-button responsible-daily-dock';
-    button.type = 'button';
-    button.innerHTML = '<span class="v2-dock-icon">☑</span><span class="v2-dock-label">Ansvar</span>';
-    button.addEventListener('click', window.showResponsibleDaily);
-
-    const plan = [...dock.querySelectorAll('.v2-dock-button')].find(item => /Plan/i.test(item.textContent || ''));
-    dock.insertBefore(button, plan || dock.lastElementChild);
-  }
-
-  function patchResponsibleHome() {
-    if (document.body.dataset.v2Role !== 'responsible') return;
-    document.querySelectorAll('.v2-action').forEach(button => {
-      const title = button.querySelector('.v2-action-copy strong');
-      const subtitle = button.querySelector('.v2-action-copy span');
-      if (title?.textContent.trim() === 'Ansvar & oppgåver') {
-        title.textContent = 'Dagens ansvar';
-        if (subtitle) subtitle.textContent = 'Felles arbeidsplan gjennom dagen';
-      }
-    });
-    ensureResponsibleDock();
-  }
-
-  let patchQueued = false;
-  const observer = new MutationObserver(() => {
-    if (patchQueued) return;
-    patchQueued = true;
-    requestAnimationFrame(() => {
-      patchQueued = false;
-      patchResponsibleHome();
-    });
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
-
-  window.setTimeout(patchResponsibleHome, 250);
 })();
