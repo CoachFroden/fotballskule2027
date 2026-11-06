@@ -554,7 +554,7 @@
     const target=document.getElementById('content');
     target.innerHTML='<div class="welcome-box">Hentar kontaktpersonar …</div>';
     try {
-      const year=String(document.getElementById('currentYearLabel')?.textContent||'').match(/20\\d{2}/)?.[0]||'2027';
+      const year=String(document.getElementById('currentYearLabel')?.textContent||'').match(/20\d{2}/)?.[0]||'2027';
       const ref=db.collection('years').doc(year);
       const [daysSnap,adultsSnap]=await Promise.all([ref.collection('days').get(),ref.collection('adults').get()]);
       const days=daysSnap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>String(a.date||a.id).localeCompare(String(b.date||b.id)));
@@ -585,7 +585,7 @@
         });
         document.getElementById('instructorContactList').innerHTML=people.length?people.map(a=>{
           const phone=String(a.phone||'').trim();
-          return '<article class="instructor-contact-card"><div><h3>'+esc(a.name||'Ansvarleg vaksen')+'</h3><p>'+esc(a.role||a.task||'Ansvarleg')+'</p></div>'+(phone?'<a href="tel:'+esc(phone.replace(/[^+\\d]/g,''))+'">Ring '+esc(phone)+'</a>':'<span class="instructor-contact-no-phone">Telefonnummer ikkje tilgjengeleg</span>')+'</article>';
+          return '<article class="instructor-contact-card"><div><h3>'+esc(a.name||'Ansvarleg vaksen')+'</h3><p>'+esc(a.role||a.task||'Ansvarleg')+'</p></div>'+(phone?'<a href="tel:'+esc(phone.replace(/[^+\d]/g,''))+'">Ring '+esc(phone)+'</a>':'<span class="instructor-contact-no-phone">Telefonnummer ikkje tilgjengeleg</span>')+'</article>';
         }).join(''):'<div class="welcome-box"><p>Ingen vaksne er registrerte denne dagen.</p></div>';
       };
       document.getElementById('instructorContactDay').addEventListener('change',e=>draw(e.target.value));
