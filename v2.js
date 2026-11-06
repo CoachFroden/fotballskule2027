@@ -340,7 +340,7 @@
   function previewControls() {
     if (cachedRole !== 'admin') return '';
     return previewRole
-      ? `<div class="v2-preview-banner"><strong>Førehandsvising: ${esc(ROLE[previewRole].label)}</strong><span>Du er framleis innlogga som administrator. Tilgangar blir ikkje simulerte.</span><button type="button" onclick="v2PreviewRole(null)">← Tilbake til administrator</button></div>`
+      ? ''
       : `<div class="v2-preview-buttons"><span>Test visning:</span><button type="button" onclick="v2PreviewRole('responsible')">Sjå som ansvarleg</button><button type="button" onclick="v2PreviewRole('instructor')">Sjå som instruktør</button></div>`;
   }
 
@@ -466,9 +466,12 @@
     ];
     return [
       ['home', '⌂', 'Heim', 'showHome'],
+      ...(previewRole && cachedRole === 'admin' ? [['exit-preview', '↩', 'Til admin', 'v2ExitPreview']] : []),
       ['more', '•••', 'Meir', 'v2ShowMore']
     ];
   }
+
+  window.v2ExitPreview = function () { return window.v2PreviewRole(null); };
 
   function ensureDock() {
     let dock = document.getElementById('v2Dock');
