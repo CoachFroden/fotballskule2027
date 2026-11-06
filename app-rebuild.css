@@ -92,7 +92,7 @@ body.v2-enabled .v2-dock{z-index:90}
 body.v2-enabled .match-sidebar{display:none!important}
 body.v2-enabled .v2-home>.match-brand,body.v2-enabled .v2-home>.match-masthead{display:none!important}
 body.v2-enabled .v2-hero~.match-brand,body.v2-enabled .v2-hero~.match-masthead{display:none!important}
-body.v2-enabled .match-shell .v2-preview-buttons{display:none!important}
+body.v2-enabled .match-shell .v2-preview-buttons{display:flex!important;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px;width:100%;margin-top:12px;padding:8px;border:1px solid rgba(180,210,238,.25);border-radius:10px;background:rgba(4,21,44,.28);color:#e7f2ff;font-size:12px}
 
 /* Glass edition: pure CSS, no photographic or remote background assets. */
 body.v2-enabled{--glass-border:rgba(156,202,255,.31);--glass-surface:rgba(25,77,135,.46);--glass-text:#f5f9ff;--glass-muted:#d1e3f8;background:radial-gradient(ellipse 55% 36% at 3% 30%,rgba(24,121,222,.44),transparent 74%),radial-gradient(ellipse 60% 42% at 96% 6%,rgba(29,91,180,.52),transparent 70%),linear-gradient(145deg,#08234b 0%,#061b3e 47%,#07152e 100%);background-attachment:fixed;color:var(--glass-text)}
@@ -301,3 +301,6 @@ body.instructor-simple-home .instructor-more h3{margin:0 0 11px;font-size:14px;c
 body.instructor-simple-home .instructor-more-links{display:flex;flex-wrap:wrap;gap:8px}
 body.instructor-simple-home .instructor-more-links button{display:flex;justify-content:space-between;gap:20px;align-items:center;min-height:41px;padding:9px 13px;border:1px solid #9bb5d050;border-radius:9px;background:#244463;color:#fff;font-size:12px;font-weight:650}
 @media(max-width:650px){body.instructor-simple-home #mainMenu{grid-template-columns:1fr;gap:9px}body.instructor-simple-home #mainMenu .menu-button{min-height:72px!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;padding:13px 15px!important}body.instructor-simple-home #mainMenu .menu-icon{width:32px!important;font-size:23px!important}body.instructor-simple-home #mainMenu .menu-copy>span{font-size:15px!important}body.instructor-simple-home .instructor-more-links{flex-direction:column}body.instructor-simple-home .instructor-more-links button{width:100%}}
+
+body.v2-enabled .v2-hero .v2-preview-buttons button,body.v2-enabled .v2-preview-banner button{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:37px!important;padding:8px 12px!important;border:1px solid rgba(185,213,239,.55)!important;border-radius:8px!important;background:#214e79!important;color:#fff!important;font-size:12px!important;font-weight:700!important;cursor:pointer!important}
+body.v2-enabled .v2-preview-banner{display:flex!important;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 14px;padding:12px;border:1px solid #87accb;border-radius:10px;background:#173d62;color:#fff;font-size:12px}
