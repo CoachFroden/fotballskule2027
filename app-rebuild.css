@@ -335,3 +335,43 @@ body.v2-enabled[data-v2-role="instructor"] .instructor-exercises{background:#294
 body.v2-enabled[data-v2-role="instructor"] .welcome-box:not(.smart-checklist-home),body.v2-enabled[data-v2-role="instructor"] .combined-checklist{color:#17304c!important}
 body.v2-enabled[data-v2-role="instructor"] .welcome-box:not(.smart-checklist-home) h2,body.v2-enabled[data-v2-role="instructor"] .welcome-box:not(.smart-checklist-home) h3,body.v2-enabled[data-v2-role="instructor"] .welcome-box:not(.smart-checklist-home) p,body.v2-enabled[data-v2-role="instructor"] .welcome-box:not(.smart-checklist-home) strong,body.v2-enabled[data-v2-role="instructor"] .combined-checklist strong{color:#17304c!important}
 body.v2-enabled[data-v2-role="instructor"] .combined-checklist small,body.v2-enabled[data-v2-role="instructor"] .welcome-box:not(.smart-checklist-home) small{color:#52647a!important}
+
+/* Unified contrast rules: light content surfaces use dark ink in every role. */
+body.v2-enabled #content .welcome-box,
+body.v2-enabled #content .instruction-section,
+body.v2-enabled #content .instructor-admin,
+body.v2-enabled #content .instructor-admin-row,
+body.v2-enabled #content .status-box,
+body.v2-enabled #content .attendance-card,
+body.v2-enabled #content .combined-row,
+body.v2-enabled #content .smart-day-row,
+body.v2-enabled #content .admin-year-panel,
+body.v2-enabled #content .quick-grid > section {
+  color:#172f49!important;
+}
+body.v2-enabled #content .welcome-box :is(h1,h2,h3,h4,h5,h6,p,li,dt,dd,strong,b,small,label,span),
+body.v2-enabled #content .instruction-section :is(h1,h2,h3,h4,p,li,strong,small,span),
+body.v2-enabled #content .instructor-admin-row :is(strong,label,small,span),
+body.v2-enabled #content .attendance-card :is(span,strong,small),
+body.v2-enabled #content .combined-row :is(strong,small,span) {
+  color:#172f49!important;
+}
+body.v2-enabled #content .welcome-box :is(input,select,textarea),
+body.v2-enabled #content .instructor-admin :is(input,select,textarea) {
+  color:#142b44!important;background:#fff!important;border-color:#9aafc2!important;
+}
+body.v2-enabled #content .welcome-box :is(button,.menu-button,.back-button,.smart-group-card,.smart-secondary-button),
+body.v2-enabled #content .instructor-admin :is(button,.menu-button,.back-button) {
+  color:#fff!important;background:#194b78!important;border-color:#406f98!important;
+}
+body.v2-enabled #content .welcome-box :is(button,.menu-button,.back-button,.smart-group-card,.smart-secondary-button) :is(span,strong,small),
+body.v2-enabled #content .instructor-admin button :is(span,strong,small) {
+  color:#fff!important;
+}
+body.v2-enabled #content .welcome-box .status-box,
+body.v2-enabled #content .welcome-box .instruction-section,
+body.v2-enabled #content .instructor-admin-row {
+  background:#f4f7fb!important;border-color:#d5e0ea!important;
+}
+body.v2-enabled #content .welcome-box a {color:#12588c!important;text-decoration:underline}
+body.v2-enabled #content .welcome-box :is(button,input,select,textarea):focus-visible{outline:3px solid #f1b83b!important;outline-offset:2px}
