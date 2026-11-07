@@ -12,11 +12,13 @@
   let refresh = null;
   let beforeOverride = false;
   let correctionMode = false;
+  let arrivalListener = null;
+  let firstDayIds = new Set();
   function refreshLock() {
     if (!active) return;
     const unlock = active.day.date === today() && minutes(active.day.lunchTime) !== null && clock() >= minutes(active.day.lunchTime);
     const beforeOpen = correctionMode || (active.day.date === today() && (!unlock || beforeOverride));
-    document.querySelectorAll('.combined-before').forEach(box => { box.disabled = !beforeOpen || active.archived; });
+    document.querySelectorAll('.combined-before').forEach(box => { box.disabled = !beforeOpen || active.archived || (active.firstDay && !active.registered.has(box.dataset.id)); });
     const correction = document.getElementById('combinedBeforeUnlock');
     if (correction) {
       correction.hidden = active.archived || correctionMode || !unlock;
@@ -24,7 +26,7 @@
     }
     const beforeTag = document.getElementById('combinedBeforeTag');
     if (beforeTag) beforeTag.textContent = beforeOpen ? 'Open' : 'Låst';
-    document.querySelectorAll('.combined-after').forEach(box => { box.disabled = !(unlock || correctionMode) || active.archived; });
+    document.querySelectorAll('.combined-after').forEach(box => { box.disabled = !(unlock || correctionMode) || active.archived || (active.firstDay && !active.registered.has(box.dataset.id)); });
     const manual = document.getElementById('combinedCorrectionMode');
     if (manual) { manual.hidden = active.archived; manual.textContent = correctionMode ? '🔒 Avslutt redigering' : '✏️ Rediger låst liste'; }
     const hint = document.getElementById('combinedAfterHint');
@@ -34,28 +36,35 @@
   }
   window.showCombinedChecklist = async function(dayId, group) {
     const y = year(), ref = db.collection('years').doc(y), sessionKey = slot => dayId+'_'+slot+'_g'+group;
-    const [peopleSnap, beforeSnap, afterSnap, daySnap, yearSnap] = await Promise.all([
+    if(arrivalListener){arrivalListener();arrivalListener=null;}
+    const [peopleSnap, beforeSnap, afterSnap, daySnap, yearSnap, daysSnap, arrivalsSnap] = await Promise.all([
       ref.collection('participants').get(),
       ref.collection('attendance').doc(sessionKey('for')).collection('entries').get(),
       ref.collection('attendance').doc(sessionKey('etter')).collection('entries').get(),
       ref.collection('days').doc(dayId).get(),
-      ref.get()
+      ref.get(),
+      ref.collection('days').get(),
+      ref.collection('arrivalRegistration').where('registered','==',true).get()
     ]);
     const day = {id:dayId,date:dayId,...(daySnap.data() || {})};
     const people = peopleSnap.docs.map(d => ({id:d.id,...d.data()})).filter(p => Number(p.group) === Number(group)).sort((a,b) => String(a.name||'').localeCompare(String(b.name||''),'no'));
     const before = new Map(beforeSnap.docs.map(d => [d.id,d.data().present===true]));
     const after = new Map(afterSnap.docs.map(d => [d.id,d.data().present===true]));
     const archived = yearSnap.data()?.status === 'archived';
-    active = {day,archived};
+    const orderedDays=daysSnap.docs.map(d=>({id:d.id,date:d.data().date||d.id})).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+    const firstDay=orderedDays[0]?.id===dayId;
+    active = {day,archived,firstDay,registered:new Set(arrivalsSnap.docs.map(d=>d.id))};
     beforeOverride = false;
     correctionMode = false;
     document.getElementById('pageIntro').innerHTML = '';
     document.getElementById('mainMenu').innerHTML = '';
     document.getElementById('content').innerHTML = '<section class="welcome-box combined-checklist"><button class="combined-back" type="button" onclick="showChecklists()">← Vel anna gruppe</button><div class="combined-heading"><strong>Oppmøte · Gruppe '+Number(group)+'</strong><small>'+escape(day.date)+' · Krysseliste før og etter lunsj</small></div>'+
       '<div class="combined-head"><span>Barn</span><span>☀️ Før <small id="combinedBeforeTag">Open</small></span><span>🌤️ Etter <small id="combinedAfterTag">Låst</small></span></div>'+
-      '<div class="combined-rows">'+people.map(p => '<div class="combined-row"><strong>'+escape(p.name)+'</strong><label aria-label="Før lunsj: '+escape(p.name)+'"><input type="checkbox" class="combined-before" data-id="'+escape(p.id)+'" '+(before.get(p.id)?'checked':'')+' '+(archived?'disabled':'')+'></label><label aria-label="Etter lunsj: '+escape(p.name)+'"><input type="checkbox" class="combined-after" data-id="'+escape(p.id)+'" '+(after.get(p.id)?'checked':'')+' disabled></label></div>').join('')+'</div>'+
+      '<div class="combined-rows">'+people.map(p => '<div class="combined-row" data-person="'+escape(p.id)+'"><strong>'+escape(p.name)+'</strong><small class="arrival-warning" '+(!firstDay||active.registered.has(p.id)?'hidden':'')+'>Må registrerast ved ankomst</small><label aria-label="Før lunsj: '+escape(p.name)+'"><input type="checkbox" class="combined-before" data-id="'+escape(p.id)+'" '+(before.get(p.id)?'checked':'')+' '+(archived?'disabled':'')+'></label><label aria-label="Etter lunsj: '+escape(p.name)+'"><input type="checkbox" class="combined-after" data-id="'+escape(p.id)+'" '+(after.get(p.id)?'checked':'')+' disabled></label></div>').join('')+'</div>'+
       '<div class="combined-foot"><strong id="combinedCount"></strong><span id="combinedAfterHint"></span></div><button id="combinedBeforeUnlock" class="combined-unlock" type="button" hidden>🔓 Lås opp før lunsj</button><button id="combinedCorrectionMode" class="combined-unlock" type="button">✏️ Rediger låst liste</button></section>';
     const host = document.querySelector('.combined-checklist');
+    function refreshArrival(){if(!host?.isConnected||!active)return;host.querySelectorAll('.combined-row[data-person]').forEach(row=>{const locked=active.firstDay&&!active.registered.has(row.dataset.person);row.classList.toggle('arrival-locked',locked);const warning=row.querySelector('.arrival-warning');if(warning)warning.hidden=!locked;});refreshLock();}
+    if(firstDay){arrivalListener=ref.collection('arrivalRegistration').where('registered','==',true).onSnapshot(s=>{if(active?.day.id!==dayId)return;active.registered=new Set(s.docs.map(d=>d.id));refreshArrival();},e=>console.error('Ankomstregistrering:',e));}
     host.querySelector('#combinedBeforeUnlock').addEventListener('click', () => { beforeOverride = !beforeOverride; refreshLock(); });
     host.querySelector('#combinedCorrectionMode').addEventListener('click', () => { correctionMode = !correctionMode; refreshLock(); });
     const update = () => { const all=host.querySelectorAll('.combined-row').length;const b=host.querySelectorAll('.combined-before:checked').length;const a=host.querySelectorAll('.combined-after:checked').length; document.getElementById('combinedCount').textContent='Før: '+b+'/'+all+' · Etter: '+a+'/'+all; };
@@ -64,10 +73,12 @@
       if (!box.matches('input[type=checkbox]')) return;
       const slot=box.classList.contains('combined-after')?'etter':'for';
       const current=box.checked;
+      if(active.firstDay&&!active.registered.has(box.dataset.id)){box.checked=false;alert('Barnet må registrerast ved ankomst før oppmøte kan kryssast av.');refreshLock();return;}
       box.disabled=true;
       try {
         if (!correctionMode && slot==='for' && (day.date!==today() || (minutes(day.lunchTime)!==null && clock()>=minutes(day.lunchTime) && !beforeOverride))) throw Error('Før lunsj er låst');
         if (!correctionMode && slot==='etter' && (day.date!==today() || minutes(day.lunchTime)===null || clock()<minutes(day.lunchTime))) throw Error('Etter lunsj er ikkje open enno');
+        if(active.firstDay){const arrival=await ref.collection('arrivalRegistration').doc(box.dataset.id).get();if(arrival.data()?.registered!==true)throw Error('Barnet er ikkje registrert ved ankomst');}
         await ref.collection('attendance').doc(sessionKey(slot)).collection('entries').doc(box.dataset.id).set({present:current,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:auth.currentUser.uid},{merge:true});
         update();
       } catch(err) {
@@ -77,7 +88,7 @@
     });
     update();refreshLock();
     if (refresh) clearInterval(refresh);
-    refresh=setInterval(() => {if (!document.querySelector('.combined-checklist')) {clearInterval(refresh);refresh=null;active=null;return;}refreshLock();},15000);
+    refresh=setInterval(() => {if (!document.querySelector('.combined-checklist')) {clearInterval(refresh);refresh=null;active=null;if(arrivalListener){arrivalListener();arrivalListener=null;}return;}refreshLock();},15000);
   };
   window.showChecklistSession = async function(dayId, slot, group) { return window.showCombinedChecklist(dayId,group); };
   window.openSmartChecklist = async function(group) {
