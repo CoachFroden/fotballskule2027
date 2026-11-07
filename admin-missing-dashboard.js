@@ -27,27 +27,21 @@
       const beforeActive=isToday&&(cut===null||!afterActive);
       const historical=(day.date||day.id)<today();
       const slotActive={for:beforeActive||afterActive||historical,etter:afterActive||historical};
-      let missingTotal=0,sections='',uncheckedSections='',uncheckedTotal=0;
+      let missingTotal=0,sections='';
       for(let gi=0;gi<groups.length;gi++){
         const group=groups[gi],members=people.filter(p=>Number(p.group)===group);
         const maps={for:new Map(docs[gi*2].docs.map(d=>[d.id,d.data().present])),etter:new Map(docs[gi*2+1].docs.map(d=>[d.id,d.data().present]))};
-        const missing=members.filter(p=>['for','etter'].some(slot=>slotActive[slot]&&maps[slot].get(p.id)===false));
-        const unchecked=members.filter(p=>!missing.includes(p)&&['for','etter'].some(slot=>slotActive[slot]&&!maps[slot].has(p.id)));
+        const missing=members.filter(p=>['for','etter'].some(slot=>slotActive[slot]&&maps[slot].get(p.id)!==true));
         missingTotal+=missing.length;
-        uncheckedTotal+=unchecked.length;
         if(missing.length){
           sections+='<section class="missing-group"><h3>Gruppe '+group+' <span>'+missing.length+' meldt manglande</span></h3>'+
             missing.map(p=>'<div class="missing-person"><strong>'+esc(p.name)+'</strong><small>'+['for','etter'].filter(slot=>slotActive[slot]&&maps[slot].get(p.id)===false).map(slot=>slot==='for'?'Før lunsj':'Etter lunsj').join(' og ')+'</small><button type="button" data-mark="'+esc(p.id)+'" data-group="'+group+'">✓ Marker møtt</button></div>').join('')+'</section>';
         }
-        if(unchecked.length){
-          uncheckedSections+='<section class="missing-group"><h3>Gruppe '+group+'</h3>'+
-            unchecked.map(p=>'<p>'+esc(p.name)+'</p>').join('')+'</section>';
-        }
+
       }
       const label=day.date||day.id;
-      root.innerHTML='<div class="missing-summary '+(missingTotal?'has-missing':'')+'"><strong>'+missingTotal+' barn registrerte som manglande</strong><span>'+esc(label)+'</span></div>'+
-        (sections?'<div class="missing-groups">'+sections+'</div>':'')+
-        (uncheckedTotal?'<div class="missing-unchecked"><strong>⚠️ '+uncheckedTotal+' barn ikkje ferdig registrerte</strong><p>Desse er ikkje registrerte som fråverande.</p></div><div class="missing-groups">'+uncheckedSections+'</div>':'');
+      root.innerHTML='<div class="missing-summary '+(missingTotal?'has-missing':'')+'"><strong>'+missingTotal+' barn som manglar oppmøte</strong><span>'+esc(label)+'</span></div>'+
+        (sections?'<div class="missing-groups">'+sections+'</div>':'');
       // Set readable colours directly on these generated elements; older theme rules
       // otherwise override the page-specific stylesheet on mobile.
       const paint=(selector,properties)=>root.querySelectorAll(selector).forEach(el=>{
@@ -58,12 +52,10 @@
       paint('.missing-summary span, .missing-group h3 span',{'color':'#395a78','opacity':'1'});
       paint('.missing-status',{'background-color':'#16416c','color':'#ffffff','border-color':'#52799e'});
       paint('.missing-status span',{'color':'#ffffff','opacity':'1'});
-      paint('.missing-unchecked',{'background-color':'#fff0d5','color':'#593708','border-color':'#d2a15c'});
-      paint('.missing-unchecked strong, .missing-unchecked p',{'color':'#593708','opacity':'1'});
       paint('.missing-summary.has-missing',{'background-color':'#fff0ed','border-color':'#cf968c'});
       root.querySelectorAll('[data-mark]').forEach(button=>button.addEventListener('click',async()=>{
         const id=button.dataset.mark,group=button.dataset.group;
-        const slot=docs[groups.indexOf(Number(group))*2].docs.find(d=>d.id===id&&d.data().present===false)?'for':'etter';
+        const slot=docs[groups.indexOf(Number(group))*2].docs.find(d=>d.id===id&&d.data().present!==true)?'for':'etter';
         button.disabled=true;
         try{const u=await admin();await ref.collection('attendance').doc(day.id+'_'+slot+'_g'+group).collection('entries').doc(id).set({present:true,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:u.uid},{merge:true});await load(day.id);}catch(e){alert('Kunne ikkje lagre: '+e.message);button.disabled=false;}
       }));
