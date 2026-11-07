@@ -33,3 +33,5 @@ body:has(.participant-admin-page) .participant-admin-actions select{box-sizing:b
 body:has(.participant-admin-page) .participant-admin-grid>p{color:#173959!important}
 @media(max-width:680px){body:has(.participant-admin-page) #pageIntro{margin:8px 9px;padding:10px 12px!important}body:has(.participant-admin-page) .participant-admin-page{margin:0 8px;padding:9px!important}body:has(.participant-admin-page) .participant-admin-page>.toolbar{grid-template-columns:1fr 125px;gap:6px}body:has(.participant-admin-page) .participant-admin-heading{padding:8px 10px!important;min-height:43px!important}body:has(.participant-admin-page) .participant-admin-name{font-size:13px}}
 @media(max-width:350px){body:has(.participant-admin-page) .participant-admin-page>.toolbar{grid-template-columns:1fr}body:has(.participant-admin-page) .participant-admin-actions{grid-template-columns:1fr}}
+
+body:has(.participant-admin-page) .participant-admin-delete{grid-column:1/-1;min-height:38px;border:1px solid #cf8f8f!important;border-radius:8px!important;background:#fff1f1!important;color:#9c2222!important;font-size:12px!important;font-weight:750;cursor:pointer}
