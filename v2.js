@@ -273,6 +273,7 @@
   function actionsFor(role) {
     if (role === 'admin') {
       return [
+        action('🎒', 'Registrering', 'Innsjekk første dag', 'showArrivalRegistration', 'green', 'arrival'),
         action('🚨', 'Mangler no', 'Oppmøte og føresette', 'showSimpleMissingAdmin', 'red', 'missing'),
         action('👟', 'Deltakarar', 'Søk, allergi og kontakt', 'showAdminParticipants', '', 'admin'),
         action('📅', 'Program & meny', 'Rediger det alle skal sjå', 'showAdminDays', 'orange', 'admin'),
@@ -281,6 +282,7 @@
     }
     if (role === 'responsible') {
       return [
+        action('🎒', 'Registrering', 'Innsjekk første dag', 'showArrivalRegistration', 'green', 'arrival'),
         action('🚑', 'Tryggleik & kontakt', 'Allergi, helse og ring foresatte', 'showResponsibleSafety', 'red', 'safety'),
         action('🧭', 'Dagens ansvar', 'Felles arbeidsplan gjennom dagen', 'showResponsibleDaily', 'green', 'more'),
         action('🔄', 'Instruktørplan', 'Kven har kva gruppe', 'showInstructorSchedule', 'violet', 'plan'),
@@ -312,6 +314,7 @@
       alert+
       '<div class="instructor-action-intro"><div><span>DIN ARBEIDSFLATE</span><h2>Det viktigaste i dag</h2></div><span class="instructor-action-line"></span></div>'+
       '<div class="instructor-primary-grid">'+
+        '<button class="instructor-primary instructor-attendance" type="button" onclick="showArrivalRegistration()"><span class="instructor-action-symbol" aria-hidden="true">🎒</span><span class="instructor-action-copy"><strong>Registrering</strong><small>Innsjekk første dag</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
         '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showResponsibleSafety\',\'safety\')"><span class="instructor-action-symbol" aria-hidden="true">✚</span><span class="instructor-action-copy"><strong>Tryggleik og kontakt</strong><small>Helse, allergi og føresette</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
         '<button class="instructor-primary instructor-exercises" type="button" onclick="v2Open(\'showResponsibleDaily\',\'responsibility\')"><span class="instructor-action-symbol" aria-hidden="true">✓</span><span class="instructor-action-copy"><strong>Dagens ansvar</strong><small>Oppgåver og plan gjennom dagen</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
         '<button class="instructor-primary responsible-staff-action" type="button" onclick="v2Open(\'showResponsibleAdults\',\'more\')"><span class="instructor-action-symbol" aria-hidden="true">♙</span><span class="instructor-action-copy"><strong>Kven er på plass?</strong><small>Vaksne, roller og kontakt</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
