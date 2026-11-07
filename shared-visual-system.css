@@ -406,3 +406,67 @@ body #adminMissingDashboard .missing-unchecked strong,
 body #adminMissingDashboard .missing-unchecked p{color:#5b3605!important;opacity:1!important}
 body #adminMissingDashboard .missing-summary.has-missing{background:#fff0ed!important;border-color:#cf968c!important}
 body #adminMissingDashboard .missing-person button{background:#126b62!important;color:#fff!important}
+
+/* Manglande oppmøte – kompakt mobilside. Isolert til denne visninga. */
+body:has(#adminMissingDashboard) #pageIntro,
+body:has(#adminMissingDashboard) #mainMenu{display:none!important}
+body:has(#adminMissingDashboard) #content{padding-top:76px!important;padding-bottom:130px!important;min-width:0!important}
+body:has(#adminMissingDashboard) .admin-missing{
+ display:block!important;width:100%!important;max-width:780px!important;min-width:0!important;
+ box-sizing:border-box!important;margin:0 auto!important;padding:14px!important;
+ border:1px solid #42678c!important;border-radius:15px!important;
+ background:#12365e!important;box-shadow:none!important;
+}
+body:has(#adminMissingDashboard) .missing-page-heading{display:block!important;margin:0 0 13px!important;padding:0!important;background:none!important}
+body:has(#adminMissingDashboard) .missing-page-heading h2{margin:0 0 3px!important;color:#fff!important;font-size:19px!important;line-height:1.25!important}
+body:has(#adminMissingDashboard) .missing-page-heading p{margin:0!important;color:#d7e8f7!important;font-size:12px!important}
+body:has(#adminMissingDashboard) .admin-missing .missing-toolbar{
+ display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:8px!important;
+ align-items:end!important;margin:0 0 12px!important;padding:0!important
+}
+body:has(#adminMissingDashboard) .admin-missing .missing-toolbar label{
+ display:grid!important;gap:5px!important;min-width:0!important;color:#fff!important;font-size:13px!important;font-weight:650!important
+}
+body:has(#adminMissingDashboard) .admin-missing .missing-toolbar select{
+ width:100%!important;min-width:0!important;height:40px!important;min-height:40px!important;
+ padding:7px 9px!important;font-size:13px!important;border-radius:9px!important;
+ background:#fff!important;color:#153452!important
+}
+body:has(#adminMissingDashboard) .admin-missing #missingReload{
+ width:auto!important;min-height:40px!important;height:40px!important;padding:7px 12px!important;
+ border-radius:9px!important;font-size:13px!important;background:#245b83!important;color:#fff!important
+}
+body:has(#adminMissingDashboard) .admin-missing .missing-summary{
+ display:flex!important;flex-wrap:wrap!important;align-items:center!important;justify-content:space-between!important;
+ gap:5px 12px!important;padding:11px 12px!important;margin:0 0 9px!important;border-radius:10px!important
+}
+body:has(#adminMissingDashboard) .admin-missing .missing-summary strong{font-size:15px!important;line-height:1.35!important}
+body:has(#adminMissingDashboard) .admin-missing .missing-summary span{font-size:12px!important}
+body:has(#adminMissingDashboard) .admin-missing .missing-status{
+ display:flex!important;flex-wrap:wrap!important;gap:6px 14px!important;
+ margin:0 0 10px!important;padding:9px 11px!important;border-radius:10px!important;
+ font-size:12px!important;line-height:1.35!important
+}
+body:has(#adminMissingDashboard) .admin-missing .missing-status span{font-size:12px!important}
+body:has(#adminMissingDashboard) .admin-missing .missing-groups{display:grid!important;gap:9px!important}
+body:has(#adminMissingDashboard) .admin-missing .missing-group{
+ padding:11px 12px!important;margin:0!important;border-radius:11px!important
+}
+body:has(#adminMissingDashboard) .admin-missing .missing-group h3{
+ margin:0 0 5px!important;font-size:15px!important;line-height:1.3!important
+}
+body:has(#adminMissingDashboard) .admin-missing .missing-group p{margin:5px 0!important;font-size:13px!important}
+body:has(#adminMissingDashboard) .admin-missing .missing-unchecked{
+ margin:8px 0 0!important;padding:9px 10px!important;border-radius:9px!important
+}
+body:has(#adminMissingDashboard) .admin-missing .missing-unchecked strong{font-size:13px!important}
+body:has(#adminMissingDashboard) .admin-missing .missing-person{padding:7px 0!important}
+body:has(#adminMissingDashboard) .admin-missing .missing-person button{
+ min-height:36px!important;padding:7px 10px!important;font-size:12px!important;border-radius:8px!important
+}
+@media(max-width:600px){
+ body:has(#adminMissingDashboard) #content{padding-top:78px!important;padding-bottom:145px!important}
+ body:has(#adminMissingDashboard) .admin-missing{padding:12px!important}
+ body:has(#adminMissingDashboard) .admin-missing .missing-toolbar{grid-template-columns:minmax(0,1fr) auto!important}
+ body:has(#adminMissingDashboard) .admin-missing #missingReload{width:auto!important}
+}
