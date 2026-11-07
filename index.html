@@ -21,6 +21,17 @@
   <style>.v2-day-delete{background:#fff0f0!important;color:#a32121!important;border:1px solid #d58a8a!important;border-radius:10px;padding:10px 13px;font-weight:700}.v2-day-delete[hidden]{display:none!important}.v2-day-delete:disabled{opacity:.55}</style>
   <link rel="stylesheet" href="arrival-registration.css?v=20261107-red2">
   <link rel="stylesheet" href="participant-admin-mobile.css?v=20261031-2">
+<style>
+.missing-choice{position:fixed;inset:0;z-index:99999;background:rgba(4,18,37,.7);display:flex;align-items:center;justify-content:center;padding:18px}
+.missing-choice-card{box-sizing:border-box;width:min(100%,370px);background:#f7fbff;color:#123252;border-radius:17px;padding:22px;box-shadow:0 16px 45px rgba(0,0,0,.35)}
+.missing-choice-card>strong{display:block;font-size:21px;color:#123252}
+.missing-choice-card p{margin:9px 0 13px;font-weight:700;color:#123252}
+.missing-choice-card small{display:block;margin-bottom:12px;color:#365672}
+.missing-choice-options{display:grid;gap:9px}
+.missing-choice-options button{background:#195582!important;color:white!important;border:0!important;border-radius:10px!important;min-height:46px;font-weight:750;cursor:pointer}
+.missing-choice-options button:last-child{background:#176c54!important}
+.missing-choice-cancel{display:block;margin:12px auto 0;background:transparent!important;border:0!important;color:#284d70!important;padding:10px 18px;font-weight:700;cursor:pointer}
+</style>
 </head>
 <body>
   <div class="app-shell">
@@ -92,7 +103,7 @@
   <script src="match-subpages.js"></script>
   <script src="checklists-combined.js?v=20261107-arrival1"></script>
   <script src="arrival-registration.js?v=20261107-red2"></script>
-  <script src="admin-missing-dashboard.js?v=20261107-simple4"></script>
+  <script src="admin-missing-dashboard.js?v=20261107-choice5"></script>
 <script src="instructor-admin-unified.js"></script>
 </body>
 </html>
