@@ -30,11 +30,11 @@ const target=document.getElementById('instructorAdminEditor');if(!target||!cache
 target.textContent='Hentar fordeling…';
 const doc=await ref().collection('instructorPlans').doc(dayId).get(),plan=doc.data()||{};
 const {instructors,groups,users}=cache;
-target.innerHTML='<p class="instructor-admin-hint">Endre gruppe i rullegardinane. Vel «Ikkje med» dersom instruktøren har fri. Begge øktene blir lagra samtidig.</p>'+
-'<div class="instructor-admin-header"><span>Instruktør</span><span>☀️ Før</span><span>🌤️ Etter</span></div>'+
-instructors.map(i=>'<div class="instructor-admin-row"><div><strong>'+e(i.name)+'</strong><label class="instructor-account-label">Innlogging<select data-link="'+e(i.id)+'"><option value="">Ikkje kopla</option>'+users.map(u=>'<option value="'+e(u.id)+'" '+(i.linkedUid===u.id?'selected':'')+'>'+e(u.name||u.email||u.id)+'</option>').join('')+'</select></label></div>'+
-['for','etter'].map(slot=>'<select aria-label="'+(slot==='for'?'Før':'Etter')+' lunsj: '+e(i.name)+'" data-slot="'+slot+'" data-id="'+e(i.id)+'"><option value="">Ikkje med</option>'+groups.map(g=>'<option value="'+g+'" '+(Number(plan[slot]?.[i.id])===g?'selected':'')+'>Gr. '+g+'</option>').join('')+'</select>').join('')+'</div>').join('')+
-'<div class="instructor-admin-actions"><button type="button" id="saveInstructorAssignments">💾 Lagre fordeling og koplingar</button><span id="instructorAdminStatus" role="status"></span></div>';
+target.innerHTML='<p class="instructor-admin-hint">Vel gruppe for kvar instruktør før og etter lunsj. Vel «Ikkje med» når instruktøren har fri.</p>'+
+'<div class="instructor-admin-list">'+instructors.map(i=>'<section class="instructor-admin-row"><h3>'+e(i.name)+'</h3><div class="instructor-admin-slots">'+
+['for','etter'].map(slot=>'<label class="instructor-admin-slot"><span>'+(slot==='for'?'☀️ Før lunsj':'🌤️ Etter lunsj')+'</span><select aria-label="'+(slot==='for'?'Før':'Etter')+' lunsj: '+e(i.name)+'" data-slot="'+slot+'" data-id="'+e(i.id)+'"><option value="">Ikkje med</option>'+groups.map(g=>'<option value="'+g+'" '+(Number(plan[slot]?.[i.id])===g?'selected':'')+'>Gruppe '+g+'</option>').join('')+'</select></label>').join('')+
+'</div><details class="instructor-admin-account"><summary>Brukarkonto / innlogging</summary><label class="instructor-account-label">Kopla til<select data-link="'+e(i.id)+'"><option value="">Ikkje kopla</option>'+users.map(u=>'<option value="'+e(u.id)+'" '+(i.linkedUid===u.id?'selected':'')+'>'+e(u.name||u.email||u.id)+'</option>').join('')+'</select></label></details></section>').join('')+'</div>'+
+'<div class="instructor-admin-actions"><button type="button" id="saveInstructorAssignments">💾 Lagre instruktørfordeling</button><span id="instructorAdminStatus" role="status"></span></div>';
 target.querySelector('#saveInstructorAssignments').addEventListener('click',()=>window.saveInstructorAdminDay(dayId));
 };
 window.saveInstructorAdminDay=async function(dayId){

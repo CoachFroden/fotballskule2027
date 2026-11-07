@@ -108,26 +108,45 @@
   const oldShowChecklists=window.showChecklists;
   window.showChecklists=async function() {
     const user=auth.currentUser;
-    if (user) {
-      const profile=await db.collection('users').doc(user.uid).get();
-      if (profile.data()?.role==='instructor') {
-        const y=year(), d=today(), ref=db.collection('years').doc(y);
-        const days=await ref.collection('days').get();
-        const day=days.docs.find(x=>(x.data().date||x.id)===d);
-        if(day) {
-          const plan=await ref.collection('instructorPlans').doc(day.id).get();
-          const time=minutes(day.data().lunchTime);
-          const slot=time!==null && clock()>=time?'etter':'for';
-          let group=Number(plan.data()?.[slot]?.[user.uid]);
-          if (!group) {
-            const instructors=await ref.collection('instructors').get();
-            const linked=instructors.docs.find(i=>i.data().linkedUid===user.uid);
-            if(linked) group=Number(plan.data()?.[slot]?.[linked.id]);
-          }
-          if(group) return window.showCombinedChecklist(day.id,group);
-        }
-      }
+    if (!user) return oldShowChecklists.apply(this,arguments);
+    const profile=await db.collection('users').doc(user.uid).get();
+    const isInstructor=profile.data()?.role==='instructor';
+    const isPreview=window.v2IsPreviewRole?.('instructor')===true;
+    if (!isInstructor && !isPreview) return oldShowChecklists.apply(this,arguments);
+    const y=year(), ref=db.collection('years').doc(y), d=today();
+    const [daysSnap,instructorsSnap]=await Promise.all([ref.collection('days').get(),ref.collection('instructors').get()]);
+    const days=daysSnap.docs.map(doc=>({id:doc.id,...doc.data()})).sort((a,b)=>String(a.date||a.id).localeCompare(String(b.date||b.id)));
+    const day=days.find(x=>(x.date||x.id)===d);
+    const intro=document.getElementById('pageIntro'),menu=document.getElementById('mainMenu'),content=document.getElementById('content');
+    if (!intro||!menu||!content)return;
+    const title=(detail)=>'<div class="hero-card"><p class="hero-kicker">Fotballskule '+escape(y)+'</p><h2>Oppmøte</h2><p>'+escape(detail)+'</p></div>';
+    menu.innerHTML='<button class="back-button" type="button" onclick="showHome()">← Framside</button>';
+    if (!day) {
+      intro.innerHTML=title('Ingen aktiv fotballskuledag i dag');
+      content.innerHTML='<div class="welcome-box"><h3>Ingen oppmøte i dag</h3><p>Oppmøtelista opnar automatisk på ein registrert fotballskuledag.</p><button type="button" onclick="showInstructorAttendanceArchive()">Sjå andre dagar og grupper</button></div>';
+      return;
     }
-    return oldShowChecklists.apply(this,arguments);
+    const switchAt=minutes(day.lunchTime);
+    const slot=switchAt!==null&&clock()>=switchAt?'etter':'for';
+    const linked=instructorsSnap.docs.find(i=>i.data().linkedUid===user.uid);
+    const plan=await ref.collection('instructorPlans').doc(day.id).get();
+    const group=isInstructor&&linked?Number(plan.data()?.[slot]?.[linked.id]):0;
+    if(group){
+      await window.showCombinedChecklist(day.id,group);
+      const back=document.getElementById('mainMenu');
+      if(back)back.innerHTML='<button class="back-button" type="button" onclick="showHome()">← Framside</button><button class="back-button" type="button" onclick="showInstructorAttendanceArchive()">Andre lister</button>';
+      return;
+    }
+    intro.innerHTML=title('Gruppe blir henta frå instruktørplanen');
+    const message=isPreview?'Dette er førehandsvising som administrator. Ingen instruktør er knytt til denne innlogginga.':'Du har ikkje fått tildelt ei gruppe '+(slot==='for'?'før':'etter')+' lunsj. Kontakt administrator.';
+    content.innerHTML='<div class="welcome-box"><h3>Ingen gruppe tildelt</h3><p>'+escape(message)+'</p><button type="button" onclick="showInstructorAttendanceArchive()">Opne andre lister manuelt</button></div>';
+  };
+  window.showInstructorAttendanceArchive=async function(){
+    const y=year(),ref=db.collection('years').doc(y);
+    const [days,people]=await Promise.all([ref.collection('days').get(),ref.collection('participants').get()]);
+    const groups=[...new Set(people.docs.map(p=>Number(p.data().group)).filter(Boolean))].sort((a,b)=>a-b);
+    document.getElementById('pageIntro').innerHTML='<div class="hero-card"><h2>Andre oppmøtelister</h2><p>Manuelt val ved behov for korrigering.</p></div>';
+    document.getElementById('mainMenu').innerHTML='<button class="back-button" type="button" onclick="showChecklists()">← Oppmøte</button>';
+    document.getElementById('content').innerHTML='<div class="welcome-box">'+days.docs.map(day=>'<section class="instruction-section"><h3>'+escape(day.data().date||day.id)+'</h3>'+groups.map(g=>'<button class="back-button" type="button" onclick="showCombinedChecklist(\''+escape(day.id)+'\','+g+')">Gruppe '+g+'</button>').join('')+'</section>').join('')+'</div>';
   };
 })();
