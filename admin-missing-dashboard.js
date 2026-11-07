@@ -37,7 +37,7 @@
         missingTotal+=missing.length;
         if(missing.length){
           sections+='<section class="missing-group"><h3>Gruppe '+group+' <span>'+missing.length+' meldt manglande</span></h3>'+
-            missing.map(p=>{const unregistered=firstDay&&!arrived.has(p.id);const slots=['for','etter'].filter(slot=>slotActive[slot]&&maps[slot].get(p.id)!==true);return '<div class="missing-person '+(unregistered?'missing-unregistered':'')+'"><strong>'+esc(p.name)+'</strong><small>'+(unregistered?'⚠ Ikkje registrert ved ankomst · Må registrerast først':slots.map(slot=>slot==='for'?'Før lunsj':'Etter lunsj').join(' og '))+'</small>'+(unregistered?'':slots.map(slot=>'<button type="button" data-mark="'+esc(p.id)+'" data-group="'+group+'" data-slot="'+slot+'">✓ Møtt '+(slot==='for'?'før':'etter')+' lunsj</button>').join(''))+'</div>';}).join('')+'</section>';
+            missing.map(p=>{const unregistered=!arrived.has(p.id);const slots=['for','etter'].filter(slot=>slotActive[slot]&&maps[slot].get(p.id)!==true);return '<div class="missing-person '+(unregistered?'missing-unregistered':'')+'"><strong>'+esc(p.name)+'</strong><small>'+(unregistered?'⚠ Ikkje registrert ved ankomst · Må registrerast først':slots.map(slot=>slot==='for'?'Før lunsj':'Etter lunsj').join(' og '))+'</small>'+(unregistered?'':'<button type="button" data-mark="'+esc(p.id)+'" data-group="'+group+'" data-slot="'+slots[0]+'">✓ Marker møtt</button>')+'</div>';}).join('')+'</section>';
         }
 
       }
@@ -55,12 +55,14 @@
       paint('.missing-status',{'background-color':'#16416c','color':'#ffffff','border-color':'#52799e'});
       paint('.missing-status span',{'color':'#ffffff','opacity':'1'});
       paint('.missing-summary.has-missing',{'background-color':'#fff0ed','border-color':'#cf968c'});
+      paint('.missing-person.missing-unregistered',{'background-color':'#ffe1e1','border':'2px solid #d32f2f','border-radius':'10px','padding':'12px','margin':'7px 0'});
+      paint('.missing-person.missing-unregistered strong, .missing-person.missing-unregistered small',{'color':'#8c1717'});
       root.querySelectorAll('[data-mark]').forEach(button=>button.addEventListener('click',async()=>{
         const id=button.dataset.mark,group=button.dataset.group;
         button.disabled=true;
         try{
           const u=await admin();
-          if(firstDay){
+          {
             const arrival=await ref.collection('arrivalRegistration').doc(id).get();
             if(arrival.data()?.registered!==true){alert('Barnet må registrerast ved ankomst først.');await load(day.id);return;}
           }
