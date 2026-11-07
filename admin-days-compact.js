@@ -158,7 +158,7 @@
         </div>
         ${form ? '<button class="v2-day-new" type="button" onclick="v2NewAdminDay()"><span>＋</span> Ny dag</button>' : ''}
       </div>
-      <div class="v2-day-pills">
+      <div class="v2-day-pills" aria-label="Vel programdag">
         ${days.length ? days.map(day => `
           <button class="v2-admin-day-pill" type="button" data-day-id="${escapeHtml(day.id)}" onclick="v2OpenAdminDay('${escapeHtml(day.id)}')">
             <span class="v2-admin-day-ball">⚽</span>
@@ -183,7 +183,7 @@
       header.className = 'v2-day-editor-head';
       header.innerHTML = `
         <div>
-          <span class="v2-day-admin-kicker">✏️ Rediger programdag</span>
+          <span class="v2-day-admin-kicker">PROGRAMDAG</span>
           <h3 id="v2DayEditorTitle">Programdag</h3>
           <p id="v2DayEditorCopy">Program, mat og beskjedar for denne dagen.</p>
         </div>
@@ -205,7 +205,17 @@
       labels.slice(0, 2).forEach(label => compactRow.appendChild(label));
       form.insertBefore(compactRow, form.firstChild);
 
-      labels.slice(2, 5).forEach((label, index) => {
+      const lunchLabel = labels.find(label => label.querySelector('#dayLunchTime'));
+      if (lunchLabel) {
+        const lunchSection = document.createElement('section');
+        lunchSection.className = 'v2-day-lunch-setting';
+        const hint = document.createElement('p');
+        hint.textContent = 'Etter lunsj kan instruktørane registrere oppmøte frå dette tidspunktet.';
+        lunchLabel.parentNode.insertBefore(lunchSection, lunchLabel);
+        lunchSection.appendChild(lunchLabel);
+        lunchSection.appendChild(hint);
+      }
+      labels.filter(label => ['dayMenu','dayProgram','dayNote'].some(id => label.querySelector('#'+id))).forEach((label, index) => {
         const section = makeAccordionSection(label, index + 2);
         if (section) form.insertBefore(section, form.querySelector('button[type="submit"]'));
       });
@@ -221,6 +231,9 @@
     }
 
     oldHeading?.remove();
+    const intro=document.getElementById('pageIntro');
+    if(intro){intro.innerHTML='';intro.style.display='none';}
+    box.classList.add('v2-day-admin-page');
     grid.remove();
     box.dataset.compactDayAdmin = '1';
   }
