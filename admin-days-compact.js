@@ -5,6 +5,10 @@
   const originalEditDay = window.editDay;
   if (!originalShowAdminDays || !originalEditDay) return;
 
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+  let editingDayId = '';
+
   function escapeHtml(value = '') {
     return String(value)
       .replaceAll('&', '&amp;')
@@ -184,6 +188,7 @@
           <p id="v2DayEditorCopy">Program, mat og beskjedar for denne dagen.</p>
         </div>
         <div class="v2-day-editor-actions">
+          <button class="v2-day-delete" type="button" id="v2DeleteAdminDay" onclick="v2DeleteAdminDay()" hidden>Slett dag</button>
           <button class="v2-day-close" type="button" onclick="v2CloseAdminDayEditor()">Lukk</button>
           <button class="v2-day-save-top" type="submit" form="v2DayAdminForm">Lagre</button>
         </div>`;
@@ -229,6 +234,9 @@
   window.v2OpenAdminDay = function (id) {
     originalEditDay(id);
     enhanceAdminDays();
+    editingDayId = id;
+    const deleteButton = document.getElementById('v2DeleteAdminDay');
+    if (deleteButton) deleteButton.hidden = false;
     const date = document.getElementById('dayDate')?.value || '';
     const title = document.getElementById('dayTitle')?.value || '';
     markActive(id);
@@ -237,14 +245,46 @@
 
   window.v2NewAdminDay = function () {
     window.showAdminDays();
+    editingDayId = '';
     markActive('');
     revealEditor('Ny programdag', 'Legg inn dato, program, mat og beskjedar.');
     window.setTimeout(() => document.getElementById('dayDate')?.focus(), 80);
   };
 
+  window.v2DeleteAdminDay = async function () {
+    const id = editingDayId;
+    if (!id) return;
+    const user = auth.currentUser;
+    if (!user) { alert('Du må logge inn.'); return; }
+    try {
+      const profile = await db.collection('users').doc(user.uid).get();
+      if (profile.data()?.role !== 'admin') throw Error('Berre administrator kan slette dagar.');
+      const year = document.getElementById('currentYearLabel')?.textContent?.match(/20\\d{2}/)?.[0];
+      if (!year) throw Error('Fann ikkje årgangen.');
+      const yearRef = db.collection('years').doc(year);
+      const yearSnap = await yearRef.get();
+      if (yearSnap.data()?.status === 'archived') throw Error('Arkiverte årgangar kan ikkje endrast.');
+      const dayRef = yearRef.collection('days').doc(id);
+      const snap = await dayRef.get();
+      if (!snap.exists) throw Error('Dagen finst ikkje lenger.');
+      const label = snap.data()?.date || id;
+      if (!confirm('Slette programdagen '+label+'?\\n\\nDette fjernar dagen frå programmet. Eventuelle oppmøteregistreringar for dagen blir ikkje sletta.')) return;
+      const button = document.getElementById('v2DeleteAdminDay');
+      if (button) { button.disabled = true; button.textContent = 'Slettar…'; }
+      await dayRef.delete();
+      alert('Programdagen er sletta.');
+      window.location.reload();
+    } catch (error) {
+      alert('Kunne ikkje slette dagen: '+error.message);
+      const button = document.getElementById('v2DeleteAdminDay');
+      if (button) { button.disabled = false; button.textContent = 'Slett dag'; }
+    }
+  };
+
   window.v2CloseAdminDayEditor = function () {
     const shell = document.getElementById('v2DayEditor');
     if (shell) shell.hidden = true;
+    editingDayId = '';
     markActive('');
     document.querySelector('.v2-day-admin-picker')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
