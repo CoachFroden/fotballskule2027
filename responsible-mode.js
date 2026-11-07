@@ -241,10 +241,10 @@
       const health = healthInfo(priv);
       const guardian = String(priv.guardian || '').trim();
       const phones = extractPhones(guardian);
-      const guardianParts = guardian.split(/\\s*[·;\\n]+\\s*/).map(part => part.trim()).filter(Boolean);
+      const guardianParts = guardian.split(/\s*[·;\n]+\s*/).map(part => part.trim()).filter(Boolean);
       const guardianCards = guardianParts.map(part => {
         const partPhones = extractPhones(part);
-        const contactName = part.replace(/(?:\\+47\\s*)?(?:\\d[\\s-]*){8}/g, '').replace(/^[\\s,–-]+|[\\s,–-]+$/g, '').trim();
+        const contactName = part.replace(/(?:\+47\s*)?(?:\d[\s-]*){8}/g, '').replace(/^[\s,–-]+|[\s,–-]+$/g, '').trim();
         return `<div class="safety-guardian-row"><span class="safety-guardian-name">${esc(contactName || part)}</span>${partPhones.map(phone => `<a class="safety-phone-button" href="tel:${esc(phone)}" aria-label="Ring ${esc(contactName || phone)}"><span aria-hidden="true">☎</span> ${esc(phone)}</a>`).join('')}</div>`;
       }).join('');
       return `<article class="contact-card safety-person-card ${allergy || health ? 'has-health-note' : 'no-health-note'}">
