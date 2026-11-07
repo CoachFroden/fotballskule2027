@@ -232,6 +232,7 @@
       const syncWrites = [];
       for (const doc of formsSnap.docs) {
         const f = doc.data();
+        if (f.excludedFromRoster === true) continue;
         const group = Number(f.manuellGruppe || f.standardGruppe);
         const id = 'forms-' + doc.id;
         const publicParticipant = { name: f.namn || '', group: Number.isFinite(group) ? group : 0, birthYear: f.fodselsar || null, formsId: doc.id };
@@ -247,7 +248,7 @@
         if (results.some(x => x.status === 'rejected')) console.warn('Nokre påmeldingar kunne ikkje synkroniserast til deltakarlista.');
       }
       state.participants.sort(sortByName);
-      state.formsPrivate = new Map(formsSnap.docs.map(doc => [doc.id, doc.data()]));
+      state.formsPrivate = new Map(formsSnap.docs.filter(doc => doc.data().excludedFromRoster !== true).map(doc => [doc.id, doc.data()]));
     } else {
       state.formsPrivate = new Map();
     }
@@ -743,6 +744,7 @@
           ${p.formsId ? `<div class="participant-admin-actions">
             <button type="button" class="participant-admin-edit" onclick="editFormsParticipant2027('${escapeHtml(p.formsId)}')">Rediger opplysningar</button>
             <label>Flytt til gruppe<select aria-label="Flytt ${escapeHtml(p.name)} til gruppe" onchange="changeFormsGroup2027('${escapeHtml(p.formsId)}', this.value)">${[1,2,3,4,5].map(g => `<option value="${g}" ${Number(p.group) === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>
+            <button type="button" class="participant-admin-delete" onclick="deleteFormsParticipant2027('${escapeHtml(p.formsId)}')">Slett deltakar</button>
           </div>` : ''}
         </div>
       </details>`;
@@ -777,6 +779,33 @@
       console.error(error);
       alert('Kunne ikkje lagre. Prøv igjen.');
       if (el('saveParticipantEdit')) el('saveParticipantEdit').disabled = false;
+    }
+  };
+
+  window.deleteFormsParticipant2027 = async function (formsId) {
+    if (!isAdmin() || String(state.yearId) !== '2027') return;
+    const participant = state.participants.find(p => p.formsId === formsId);
+    if (!participant) return;
+    const name = participant.name || 'deltakaren';
+    if (!confirm('Slette '+name+' frå fotballskulen?\\n\\nPåmeldinga blir bevart i Firebase, men blir sperra frå ny import. Dette fjernar også deltakaren frå oppmøtelistene.')) return;
+    const button = document.querySelector('.participant-admin-delete');
+    try {
+      if (button) button.disabled = true;
+      const source = db.collection('pameldingar2027').doc(formsId);
+      // Mark source first, so later Forms synchronization cannot recreate the roster entry.
+      await source.update({excludedFromRoster:true,excludedAt:serverTimestamp(),excludedBy:state.user.uid});
+      const id = 'forms-' + formsId;
+      const batch = db.batch();
+      batch.delete(yearPath('participants').doc(id));
+      batch.delete(yearPath('participantPrivate').doc(id));
+      batch.delete(yearPath('arrivalRegistration').doc(id));
+      await batch.commit();
+      await loadYear('2027');
+      showAdminParticipants();
+    } catch (error) {
+      console.error('Slett deltakar:',error);
+      alert('Kunne ikkje fullføre slettinga: '+error.message+'\\nPrøv å opne deltakarlista på nytt.');
+      if (button) button.disabled = false;
     }
   };
 
