@@ -71,16 +71,10 @@
     if (!menu()) return;
     appendUniqueButton('instructor-account-links', menuButton('👤', 'Instruktørar – brukarkontoar', 'Kople instruktørar til innlogging', 'showInstructorAccountLinks()'));
 
-    const missing = [...menu().querySelectorAll('.menu-button')].find(btn => btn.textContent.includes('Manglande oppmøte'));
-    if (missing) {
-      missing.setAttribute('onclick', 'showSimpleMissingAdmin()');
-      const title = missing.querySelector('.menu-copy > span');
-      const subtitle = missing.querySelector('.menu-copy > small');
-      if (title) title.textContent = 'Mangler nå';
-      if (subtitle) subtitle.textContent = 'Hvem mangler – med foresattkontakt';
-    } else {
-      appendUniqueButton('missing-now-admin', menuButton('🚨', 'Mangler nå', 'Hvem mangler – med foresattkontakt', 'showSimpleMissingAdmin()', 'danger'));
-    }
+    // Manglande oppmøte har snarveg på admin-forsida, ikkje her.
+    [...menu().querySelectorAll('.menu-button')].filter(btn =>
+      btn.textContent.includes('Manglande oppmøte') || btn.textContent.includes('Mangler nå')
+    ).forEach(btn => btn.remove());
 
     const feedback = [...menu().querySelectorAll('.menu-button')].find(btn => btn.textContent.includes('Tilbakemeldingar'));
     if (feedback) {
