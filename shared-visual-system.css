@@ -139,3 +139,16 @@ body.v2-enabled[data-v2-role="responsible"] #v2Dock.v2-dock{
 body.v2-enabled[data-v2-role="responsible"] #v2Dock.v2-dock>.v2-dock-button{
  width:100%!important;min-width:0!important;box-sizing:border-box!important;
 }
+
+/* Ansvar: kompakt ramme rundt dei fire navigasjonsknappane. */
+body.v2-enabled[data-v2-role="responsible"] #v2Dock.v2-dock{
+ width:min(460px,calc(100% - 24px))!important;
+ gap:5px!important;
+ padding:6px!important;
+ border-radius:19px!important;
+}
+body.v2-enabled[data-v2-role="responsible"] #v2Dock.v2-dock>.v2-dock-button{
+ min-height:48px!important;
+ padding:5px 4px!important;
+ border-radius:13px!important;
+}
