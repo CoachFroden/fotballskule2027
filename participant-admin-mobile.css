@@ -35,3 +35,19 @@ body:has(.participant-admin-page) .participant-admin-grid>p{color:#173959!import
 @media(max-width:350px){body:has(.participant-admin-page) .participant-admin-page>.toolbar{grid-template-columns:1fr}body:has(.participant-admin-page) .participant-admin-actions{grid-template-columns:1fr}}
 
 body:has(.participant-admin-page) .participant-admin-delete{grid-column:1/-1;min-height:38px;border:1px solid #cf8f8f!important;border-radius:8px!important;background:#fff1f1!important;color:#9c2222!important;font-size:12px!important;font-weight:750;cursor:pointer}
+
+body:has(.participant-admin-page) .participant-admin-top-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px}
+body:has(.participant-admin-page) .participant-admin-top-actions .menu-button{margin:0!important}
+body:has(.participant-admin-page) .participant-admin-restore-toggle{min-height:38px;padding:8px 12px;border:1px solid #9bb9d3!important;border-radius:9px!important;background:#fff!important;color:#164a70!important;font-size:12px!important;font-weight:750;cursor:pointer}
+body:has(.participant-admin-page) .participant-restore-list{background:#fff;border:1px solid #cbdce9;border-radius:11px;padding:12px;color:#173959}
+body:has(.participant-admin-page) .participant-restore-heading{display:flex;align-items:start;justify-content:space-between;gap:8px;margin-bottom:10px}
+body:has(.participant-admin-page) .participant-restore-heading h3{font-size:16px;margin:0 0 4px;color:#123556}
+body:has(.participant-admin-page) .participant-restore-heading p{font-size:12px;margin:0;color:#466780}
+body:has(.participant-admin-page) .participant-restore-heading button{flex-shrink:0;background:#e7f0f8;color:#174467;border:0;border-radius:8px;padding:9px;font-weight:700}
+body:has(.participant-admin-page) .participant-restore-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-top:1px solid #d9e5f0}
+body:has(.participant-admin-page) .participant-restore-row span{display:grid;gap:3px;min-width:0}
+body:has(.participant-admin-page) .participant-restore-row strong{font-size:13px;color:#153959;overflow-wrap:anywhere}
+body:has(.participant-admin-page) .participant-restore-row small{font-size:11px;color:#55718a}
+body:has(.participant-admin-page) .participant-restore-row button{flex-shrink:0;min-height:36px;background:#e5f5e9;color:#17643c;border:1px solid #8bc3a1;border-radius:8px;padding:7px 9px;font-size:12px;font-weight:750}
+body:has(.participant-admin-page) .participant-restore-row button:disabled{opacity:.6}
+@media(max-width:450px){body:has(.participant-admin-page) .participant-restore-heading{flex-wrap:wrap}}
