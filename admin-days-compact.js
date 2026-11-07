@@ -259,7 +259,7 @@
     try {
       const profile = await db.collection('users').doc(user.uid).get();
       if (profile.data()?.role !== 'admin') throw Error('Berre administrator kan slette dagar.');
-      const year = document.getElementById('currentYearLabel')?.textContent?.match(/20\\d{2}/)?.[0];
+      const year = document.getElementById('currentYearLabel')?.textContent?.match(/20\d{2}/)?.[0];
       if (!year) throw Error('Fann ikkje årgangen.');
       const yearRef = db.collection('years').doc(year);
       const yearSnap = await yearRef.get();
@@ -268,7 +268,7 @@
       const snap = await dayRef.get();
       if (!snap.exists) throw Error('Dagen finst ikkje lenger.');
       const label = snap.data()?.date || id;
-      if (!confirm('Slette programdagen '+label+'?\\n\\nDette fjernar dagen frå programmet. Eventuelle oppmøteregistreringar for dagen blir ikkje sletta.')) return;
+      if (!confirm('Slette programdagen '+label+'?\n\nDette fjernar dagen frå programmet. Eventuelle oppmøteregistreringar for dagen blir ikkje sletta.')) return;
       const button = document.getElementById('v2DeleteAdminDay');
       if (button) { button.disabled = true; button.textContent = 'Slettar…'; }
       await dayRef.delete();
