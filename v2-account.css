@@ -35,24 +35,3 @@ body.v2-enabled .year-switcher label {
     font-size: 8px;
   }
 }
-
-/* Kompakt navigasjonsramme når menyen har fire knappar. */
-body.v2-enabled .v2-dock:has(> .v2-dock-button:nth-child(4):last-child),
-body.v2-enabled .v2-dock.has-admin-more:has(> .v2-dock-button:nth-child(4):last-child) {
-  width: min(calc(100% - 24px), 460px);
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 5px;
-  padding: 6px;
-  border-radius: 19px;
-}
-body.v2-enabled .v2-dock:has(> .v2-dock-button:nth-child(4):last-child) > .v2-dock-button {
-  min-height: 48px;
-  padding: 5px 4px;
-  border-radius: 13px;
-}
-@media (max-width: 520px) {
-  body.v2-enabled .v2-dock:has(> .v2-dock-button:nth-child(4):last-child),
-  body.v2-enabled .v2-dock.has-admin-more:has(> .v2-dock-button:nth-child(4):last-child) {
-    width: calc(100% - 16px);
-  }
-}
