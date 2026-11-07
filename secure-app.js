@@ -228,6 +228,8 @@
     // Berre administrator får lese kontakt- og helseopplysningar.
     if (isAdmin() && String(state.yearId) === '2027') {
       const formsSnap = await db.collection('pameldingar2027').get();
+      const excludedIds = new Set(formsSnap.docs.filter(doc => doc.data().excludedFromRoster === true).map(doc => 'forms-' + doc.id));
+      state.participants = state.participants.filter(p => !excludedIds.has(p.id));
       const existingIds = new Set(state.participants.map(p => p.id));
       const syncWrites = [];
       for (const doc of formsSnap.docs) {
