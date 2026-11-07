@@ -66,9 +66,9 @@
   window.showSimpleMissingAdmin=async function(){
     const y=year();
     try{await admin();}catch(e){alert(e.message);return;}
-    document.getElementById('pageIntro').innerHTML='<div class="hero-card"><p class="hero-kicker">Fotballskule '+esc(y)+'</p><h2>🚨 Manglande oppmøte</h2><p>Samla oversikt før og etter lunsj</p></div>';
+    document.getElementById('pageIntro').innerHTML='';
     document.getElementById('mainMenu').innerHTML='';
-    document.getElementById('content').innerHTML='<div class="welcome-box admin-missing"><div class="missing-toolbar"><label>Vel dag <select id="missingDaySelect"></select></label><button type="button" id="missingReload">↻ Oppdater</button></div><div id="adminMissingDashboard"></div></div>';
+    document.getElementById('content').innerHTML='<section class="welcome-box admin-missing"><header class="missing-page-heading"><h2>🚨 Manglande oppmøte</h2><p>Oversikt før og etter lunsj</p></header><div class="missing-toolbar"><label>Vel dag <select id="missingDaySelect"></select></label><button type="button" id="missingReload">↻ Oppdater</button></div><div id="adminMissingDashboard"></div></section>';
     const snap=await db.collection('years').doc(y).collection('days').get();
     const days=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>String(a.date||a.id).localeCompare(String(b.date||b.id)));
     const chosen=days.find(d=>(d.date||d.id)===today())||days[days.length-1];
