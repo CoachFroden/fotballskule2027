@@ -69,6 +69,7 @@
 
   function enhanceAdmin() {
     if (!menu()) return;
+    appendUniqueButton('instructor-account-links', menuButton('👤', 'Instruktørar – brukarkontoar', 'Kople instruktørar til innlogging', 'showInstructorAccountLinks()'));
 
     const missing = [...menu().querySelectorAll('.menu-button')].find(btn => btn.textContent.includes('Manglande oppmøte'));
     if (missing) {
