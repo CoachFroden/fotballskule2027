@@ -69,6 +69,15 @@
     document.getElementById('pageIntro').innerHTML='';
     document.getElementById('mainMenu').innerHTML='';
     document.getElementById('content').innerHTML='<section class="welcome-box admin-missing"><header class="missing-page-heading"><h2>🚨 Manglande oppmøte</h2><p>Oversikt før og etter lunsj</p></header><div class="missing-toolbar"><label>Vel dag <select id="missingDaySelect"></select></label><button type="button" id="missingReload">↻ Oppdater</button></div><div id="adminMissingDashboard"></div></section>';
+    // The global welcome-box theme uses high-specificity dark heading colours.
+    // Explicitly enforce contrast on this page's title and subtitle.
+    const heading=document.querySelector('.admin-missing .missing-page-heading');
+    if(heading){
+      heading.style.setProperty('background','transparent','important');
+      const title=heading.querySelector('h2'),subtitle=heading.querySelector('p');
+      if(title){title.style.setProperty('color','#ffffff','important');title.style.setProperty('opacity','1','important');title.style.setProperty('text-shadow','none','important');}
+      if(subtitle){subtitle.style.setProperty('color','#e1efff','important');subtitle.style.setProperty('opacity','1','important');subtitle.style.setProperty('text-shadow','none','important');}
+    }
     const snap=await db.collection('years').doc(y).collection('days').get();
     const days=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>String(a.date||a.id).localeCompare(String(b.date||b.id)));
     const chosen=days.find(d=>(d.date||d.id)===today())||days[days.length-1];
