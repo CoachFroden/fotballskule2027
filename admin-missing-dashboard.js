@@ -40,7 +40,7 @@
       }
       const label=day.date||day.id;
       root.innerHTML='<div class="missing-summary '+(missingTotal?'has-missing':'')+'"><strong>'+missingTotal+' barn registrerte som manglande</strong><span>'+esc(label)+'</span></div>'+
-        '<div class="missing-status">☀️ Før lunsj: '+(slotActive.for?'Viser registreringar':'Ikkje starta')+' · 🌤️ Etter lunsj: '+(slotActive.etter?'Viser registreringar':'Ikkje starta')+'</div>'+
+        '<div class="missing-status"><span>☀️ Før lunsj: '+(slotActive.for?'Viser registreringar':'Ikkje starta')+'</span><span>🌤️ Etter lunsj: '+(slotActive.etter?'Viser registreringar':'Ikkje starta')+'</span></div>'+
         '<div class="missing-groups">'+sections+'</div>';
       root.querySelectorAll('[data-mark]').forEach(button=>button.addEventListener('click',async()=>{
         const id=button.dataset.mark,group=button.dataset.group;
@@ -54,7 +54,7 @@
     const y=year();
     try{await admin();}catch(e){alert(e.message);return;}
     document.getElementById('pageIntro').innerHTML='<div class="hero-card"><p class="hero-kicker">Fotballskule '+esc(y)+'</p><h2>🚨 Manglande oppmøte</h2><p>Samla oversikt før og etter lunsj</p></div>';
-    document.getElementById('mainMenu').innerHTML='<button class="back-button" onclick="showHome()">← Framside</button>';
+    document.getElementById('mainMenu').innerHTML='';
     document.getElementById('content').innerHTML='<div class="welcome-box admin-missing"><div class="missing-toolbar"><label>Vel dag <select id="missingDaySelect"></select></label><button type="button" id="missingReload">↻ Oppdater</button></div><div id="adminMissingDashboard"></div></div>';
     const snap=await db.collection('years').doc(y).collection('days').get();
     const days=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>String(a.date||a.id).localeCompare(String(b.date||b.id)));
