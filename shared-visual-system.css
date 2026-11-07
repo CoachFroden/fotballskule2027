@@ -343,3 +343,36 @@ body.v2-enabled .admin-missing .missing-unchecked{background:#fff7e9!important;c
  body.v2-enabled .admin-missing #missingReload{width:100%!important}
  body.v2-enabled:has(#adminMissingDashboard) .container{padding-bottom:120px!important}
 }
+
+/* Programdagar på framsida: same mørkeblå formspråk som resten av kontrollpanelet. */
+body.v2-enabled .v2-home-day-picker,
+body.v2-enabled .v2-dashboard-day-picker{
+ display:flex!important;flex-wrap:wrap!important;align-items:stretch!important;gap:8px!important;
+ margin:0 0 14px!important;padding:0!important;overflow:visible!important;
+}
+body.v2-enabled .v2-home-day-chip,
+body.v2-enabled .v2-dashboard-day-button{
+ appearance:none!important;display:flex!important;align-items:center!important;gap:8px!important;
+ flex:0 1 auto!important;min-width:0!important;min-height:43px!important;
+ padding:8px 12px!important;border:1px solid #50779e!important;border-radius:11px!important;
+ background:#1a426d!important;color:#f0f7ff!important;box-shadow:none!important;
+ font:inherit!important;text-align:left!important;cursor:pointer!important;
+}
+body.v2-enabled .v2-home-day-chip strong,
+body.v2-enabled .v2-dashboard-day-button span{font-size:13px!important;font-weight:700!important;color:inherit!important;white-space:normal!important}
+body.v2-enabled .v2-home-day-chip small,
+body.v2-enabled .v2-dashboard-day-button small{font-size:11px!important;color:#b9d2e8!important;white-space:normal!important}
+body.v2-enabled .v2-home-day-chip>span:nth-child(2){display:grid!important;gap:2px!important}
+body.v2-enabled .v2-home-day-dot{display:grid!important;place-items:center!important;flex:0 0 27px!important;width:27px!important;height:27px!important;border-radius:8px!important;background:#285783!important}
+body.v2-enabled .v2-home-day-chip.is-active,
+body.v2-enabled .v2-dashboard-day-button.is-active{
+ background:#176b86!important;border-color:#72d3db!important;color:#fff!important;
+ box-shadow:inset 0 0 0 1px #72d3db!important;
+}
+body.v2-enabled .v2-home-day-chip.is-active .v2-home-day-dot{background:#23849a!important}
+@media(max-width:600px){
+ body.v2-enabled .v2-home-day-picker,
+ body.v2-enabled .v2-dashboard-day-picker{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.v2-enabled .v2-home-day-chip,
+ body.v2-enabled .v2-dashboard-day-button{width:100%!important;min-width:0!important;min-height:51px!important;padding:8px!important}
+}
