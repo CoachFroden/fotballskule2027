@@ -27,20 +27,27 @@
       const beforeActive=isToday&&(cut===null||!afterActive);
       const historical=(day.date||day.id)<today();
       const slotActive={for:beforeActive||afterActive||historical,etter:afterActive||historical};
-      let missingTotal=0,sections='';
+      let missingTotal=0,sections='',uncheckedSections='',uncheckedTotal=0;
       for(let gi=0;gi<groups.length;gi++){
         const group=groups[gi],members=people.filter(p=>Number(p.group)===group);
         const maps={for:new Map(docs[gi*2].docs.map(d=>[d.id,d.data().present])),etter:new Map(docs[gi*2+1].docs.map(d=>[d.id,d.data().present]))};
         const missing=members.filter(p=>['for','etter'].some(slot=>slotActive[slot]&&maps[slot].get(p.id)===false));
-        const unchecked=members.filter(p=>['for','etter'].some(slot=>slotActive[slot]&&!maps[slot].has(p.id)));
+        const unchecked=members.filter(p=>!missing.includes(p)&&['for','etter'].some(slot=>slotActive[slot]&&!maps[slot].has(p.id)));
         missingTotal+=missing.length;
-        sections+='<section class="missing-group"><h3>Gruppe '+group+' <span>'+missing.length+' meldt manglande</span></h3>'+
-          (missing.length?missing.map(p=>'<div class="missing-person"><strong>'+esc(p.name)+'</strong><small>'+['for','etter'].filter(slot=>maps[slot].get(p.id)===false).map(slot=>slot==='for'?'Før lunsj':'Etter lunsj').join(' og ')+'</small><button type="button" data-mark="'+esc(p.id)+'" data-group="'+group+'">✓ Marker møtt</button></div>').join(''):'<p>Ingen registrerte fråvær.</p>')+
-          (unchecked.length?'<div class="missing-unchecked"><strong>⚠️ '+unchecked.length+' barn ikkje ferdig registrerte</strong>'+unchecked.map(p=>'<p>'+esc(p.name)+'</p>').join('')+'</div>':'')+'</section>';
+        uncheckedTotal+=unchecked.length;
+        if(missing.length){
+          sections+='<section class="missing-group"><h3>Gruppe '+group+' <span>'+missing.length+' meldt manglande</span></h3>'+
+            missing.map(p=>'<div class="missing-person"><strong>'+esc(p.name)+'</strong><small>'+['for','etter'].filter(slot=>slotActive[slot]&&maps[slot].get(p.id)===false).map(slot=>slot==='for'?'Før lunsj':'Etter lunsj').join(' og ')+'</small><button type="button" data-mark="'+esc(p.id)+'" data-group="'+group+'">✓ Marker møtt</button></div>').join('')+'</section>';
+        }
+        if(unchecked.length){
+          uncheckedSections+='<section class="missing-group"><h3>Gruppe '+group+'</h3>'+
+            unchecked.map(p=>'<p>'+esc(p.name)+'</p>').join('')+'</section>';
+        }
       }
       const label=day.date||day.id;
       root.innerHTML='<div class="missing-summary '+(missingTotal?'has-missing':'')+'"><strong>'+missingTotal+' barn registrerte som manglande</strong><span>'+esc(label)+'</span></div>'+
-        '<div class="missing-groups">'+sections+'</div>';
+        (sections?'<div class="missing-groups">'+sections+'</div>':'')+
+        (uncheckedTotal?'<div class="missing-unchecked"><strong>⚠️ '+uncheckedTotal+' barn ikkje ferdig registrerte</strong><p>Desse er ikkje registrerte som fråverande.</p></div><div class="missing-groups">'+uncheckedSections+'</div>':'');
       // Set readable colours directly on these generated elements; older theme rules
       // otherwise override the page-specific stylesheet on mobile.
       const paint=(selector,properties)=>root.querySelectorAll(selector).forEach(el=>{
