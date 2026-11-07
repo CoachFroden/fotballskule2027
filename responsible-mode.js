@@ -241,13 +241,20 @@
       const health = healthInfo(priv);
       const guardian = String(priv.guardian || '').trim();
       const phones = extractPhones(guardian);
+      const guardianParts = guardian.split(/\\s*[·;\\n]+\\s*/).map(part => part.trim()).filter(Boolean);
+      const guardianCards = guardianParts.map(part => {
+        const partPhones = extractPhones(part);
+        const contactName = part.replace(/(?:\\+47\\s*)?(?:\\d[\\s-]*){8}/g, '').replace(/^[\\s,–-]+|[\\s,–-]+$/g, '').trim();
+        return `<div class="safety-guardian-row"><span class="safety-guardian-name">${esc(contactName || part)}</span>${partPhones.map(phone => `<a class="safety-phone-button" href="tel:${esc(phone)}" aria-label="Ring ${esc(contactName || phone)}"><span aria-hidden="true">☎</span> ${esc(phone)}</a>`).join('')}</div>`;
+      }).join('');
       return `<article class="contact-card safety-person-card ${allergy || health ? 'has-health-note' : 'no-health-note'}">
         <h3>${esc(row.name || 'Utan namn')}</h3>
         <p class="safety-group">Gruppe ${esc(row.group || '-')}</p>
         ${allergy ? `<div class="alert-box"><strong>⚠️ Allergi/mat:</strong><br>${esc(allergy)}</div>` : ''}
         ${health ? `<div class="important-box"><strong>🩺 Helse/merknad:</strong><br>${esc(health)}</div>` : ''}
-        <div class="safety-contact-footer"><p><strong>Føresette</strong><span>${guardian ? esc(guardian) : 'Ingen kontaktinfo registrert.'}</span></p>
-        ${phones.length ? `<div class="safety-phone-actions">${phones.map(phone => `<a class="safety-phone-button" href="tel:${esc(phone)}" aria-label="Ring ${esc(phone)}"><span aria-hidden="true">☎</span> ${esc(phone)}</a>`).join('')}</div>` : '<span class="safety-no-phone">Telefonnummer manglar</span>'}</div>
+        <div class="safety-contact-footer"><strong>Føresette</strong>
+        ${guardian ? guardianCards : '<span class="safety-no-phone">Ingen kontaktinfo registrert.</span>'}
+        ${guardian && !phones.length ? '<span class="safety-no-phone">Telefonnummer manglar</span>' : ''}</div>
       </article>`;
     }).join('')}</div>`;
   };
