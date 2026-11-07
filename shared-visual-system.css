@@ -288,3 +288,26 @@ body.v2-enabled[data-v2-role="admin"] .match-shell .match-bottom .v2-stat{
   padding-bottom:125px!important;
  }
 }
+
+/* Instruktørfordeling: tydelege kort og eigne felt for før/etter lunsj. */
+body.v2-enabled .instructor-admin{max-width:920px!important;width:100%;min-width:0;padding:16px!important}
+body.v2-enabled .instructor-admin>label{display:grid!important;gap:7px!important;margin-bottom:16px!important;font-weight:700!important}
+body.v2-enabled .instructor-admin select{width:100%!important;min-width:0!important;max-width:100%!important;min-height:44px!important;height:auto!important;box-sizing:border-box!important;padding:9px 12px!important;border:1px solid #a8bdd2!important;border-radius:10px!important;background:#fff!important;color:#142d4c!important;font-size:15px!important}
+body.v2-enabled .instructor-admin-hint{font-size:13px!important;line-height:1.5!important;margin:0 0 14px!important;color:#425a73!important}
+body.v2-enabled .instructor-admin-list{display:grid!important;gap:12px!important}
+body.v2-enabled .instructor-admin .instructor-admin-row{display:block!important;min-height:0!important;height:auto!important;min-width:0!important;margin:0!important;padding:16px!important;background:#f5f9fd!important;border:1px solid #d2e1ef!important;border-radius:14px!important;overflow:visible!important}
+body.v2-enabled .instructor-admin-row h3{margin:0 0 13px!important;font-size:17px!important;color:#102e50!important;line-height:1.35!important}
+body.v2-enabled .instructor-admin-slots{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+body.v2-enabled .instructor-admin-slot{display:grid!important;min-width:0!important;gap:6px!important;font-size:13px!important;font-weight:700!important;color:#24435f!important}
+body.v2-enabled .instructor-admin-account{margin-top:13px!important;padding-top:10px!important;border-top:1px solid #d5e2ed!important}
+body.v2-enabled .instructor-admin-account summary{cursor:pointer!important;color:#315c80!important;font-size:13px!important;font-weight:650!important}
+body.v2-enabled .instructor-admin-account .instructor-account-label{display:grid!important;gap:6px!important;margin-top:10px!important;font-size:13px!important}
+body.v2-enabled .instructor-admin-actions{position:static!important;display:flex!important;flex-wrap:wrap!important;gap:10px!important;align-items:center!important;margin-top:18px!important;padding:12px 0 0!important;background:transparent!important}
+body.v2-enabled .instructor-admin-actions button{min-height:46px!important;padding:10px 15px!important;border:0!important;border-radius:10px!important;background:#125b77!important;color:#fff!important;font-weight:750!important}
+body.v2-enabled #instructorAdminStatus{font-size:13px!important;overflow-wrap:anywhere!important}
+@media(max-width:520px){
+ body.v2-enabled .instructor-admin{padding:13px!important}
+ body.v2-enabled .instructor-admin .instructor-admin-row{padding:13px!important}
+ body.v2-enabled .instructor-admin-slots{grid-template-columns:minmax(0,1fr)!important;gap:11px!important}
+ body.v2-enabled .instructor-admin-actions button{width:100%!important}
+}
