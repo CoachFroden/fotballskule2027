@@ -273,7 +273,7 @@
   function actionsFor(role) {
     if (role === 'admin') {
       return [
-        action('💬', 'Tilbakemeldingar', 'Sjå svar og mønster', 'showSimpleFeedbackAdmin', 'violet', 'feedback'),
+        action('🚨', 'Mangler no', 'Oppmøte og føresette', 'showSimpleMissingAdmin', 'red', 'missing'),
         action('👟', 'Deltakarar', 'Søk, allergi og kontakt', 'showAdminParticipants', '', 'admin'),
         action('📅', 'Program & meny', 'Rediger det alle skal sjå', 'showAdminDays', 'orange', 'admin'),
         action('🛡️', 'Administrasjon', 'Import, årgangar og persondata', 'showAdmin', '', 'admin')
