@@ -63,8 +63,6 @@
 
   function enhanceHome() {
     if (!isAdminMenuVisible()) return;
-    appendUniqueButton('missing-now', menuButton('🚨', 'Mangler nå', 'Se hvem som ikke er møtt og ring foresatte', 'showSimpleMissingAdmin()', 'danger'));
-    appendUniqueButton('read-feedback', menuButton('💬', 'Les tilbakemeldinger', 'Administrator · alle instruktørsvar', 'showSimpleFeedbackAdmin()'));
   }
 
   function enhanceAdmin() {
@@ -133,104 +131,6 @@
     const days = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => String(a.date || a.id).localeCompare(String(b.date || b.id)));
     return days.length ? days : (year === '2026' ? fallback2026Days() : []);
   }
-
-  window.showSimpleMissingAdmin = async function () {
-    const year = currentYear();
-    try {
-      await ensureAdmin();
-      if (!year) throw new Error('Ingen årgang er vald.');
-      const days = await loadDays(year);
-
-      setIntro('Mangler nå', 'Vel dag og tidspunkt. Du får ei kort liste over alle som ikkje er kryssa av.', `Fotballskule ${year}`);
-      menu().innerHTML = backButton('Framside', 'showHome()');
-      content().innerHTML = `<div class="welcome-box">
-        ${days.length ? `<div class="day-grid">${days.map(day => {
-          const label = formatDate(day.date) || day.title || day.id;
-          return `<article class="day-card"><h3>${esc(label)}</h3><div class="quick-grid"><button class="menu-button compact" type="button" onclick="loadSimpleMissing('${esc(day.id)}','for')">Før lunsj</button><button class="menu-button compact" type="button" onclick="loadSimpleMissing('${esc(day.id)}','etter')">Etter lunsj</button></div></article>`;
-        }).join('')}</div>` : '<div class="status-box warning">Ingen dagar er registrerte.</div>'}
-        <div id="simpleMissingResult"></div>
-      </div>`;
-    } catch (error) {
-      console.error(error);
-      content().innerHTML = `<div class="welcome-box"><div class="status-box error">${esc(error.message)}</div></div>`;
-    }
-  };
-
-  function extractPhones(text = '') {
-    const matches = String(text).match(/(?:\+47\s*)?(?:\d[\s-]*){8}/g) || [];
-    const unique = [];
-    matches.forEach(match => {
-      const normalized = match.replace(/[^+\d]/g, '').replace(/^0047/, '+47');
-      if (!unique.includes(normalized)) unique.push(normalized);
-    });
-    return unique;
-  }
-
-  function contactHtml(guardian = '') {
-    const phones = extractPhones(guardian);
-    if (!guardian) return '<p class="muted">Ingen foresattkontakt registrert.</p>';
-    const buttons = phones.map(phone => `<a class="menu-button compact" href="tel:${esc(phone)}">📞 Ring ${esc(phone)}</a>`).join('');
-    return `<p><strong>Foresatt:</strong><br>${esc(guardian)}</p>${buttons || '<p class="muted">Ingen telefonnummer funne i kontaktfeltet.</p>'}`;
-  }
-
-  window.loadSimpleMissing = async function (dayId, slot) {
-    const year = currentYear();
-    const target = document.getElementById('simpleMissingResult');
-    if (!target) return;
-    target.innerHTML = '<div class="status-box info">Hentar oppmøte…</div>';
-
-    try {
-      await ensureAdmin();
-      const [pSnap, privSnap, days] = await Promise.all([
-        db.collection('years').doc(year).collection('participants').get(),
-        db.collection('years').doc(year).collection('participantPrivate').get(),
-        loadDays(year)
-      ]);
-
-      const participants = pSnap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => String(a.name || '').localeCompare(String(b.name || ''), 'no'));
-      const priv = new Map(privSnap.docs.map(d => [d.id, d.data()]));
-      const groups = [...new Set(participants.map(p => Number(p.group)).filter(Boolean))].sort((a, b) => a - b);
-      const attendanceSnaps = await Promise.all(groups.map(group => db.collection('years').doc(year).collection('attendance').doc(`${dayId}_${slot}_g${group}`).collection('entries').get()));
-
-      let totalMissing = 0;
-      let sections = '';
-
-      groups.forEach((group, index) => {
-        const present = new Set(attendanceSnaps[index].docs.filter(d => d.data().present === true).map(d => d.id));
-        const groupPeople = participants.filter(p => Number(p.group) === group);
-        const missing = groupPeople.filter(p => !present.has(p.id));
-        totalMissing += missing.length;
-
-        sections += `<section class="attendance-overview-section"><h3>Gruppe ${group} · ${missing.length} mangler</h3>${missing.length ? `<div class="contact-grid">${missing.map(p => {
-          const guardian = priv.get(p.id)?.guardian || '';
-          return `<article class="contact-card"><h3>${esc(p.name)}</h3>${contactHtml(guardian)}<button class="text-button" type="button" onclick="markPresentFromMissing('${esc(dayId)}','${esc(slot)}',${group},'${esc(p.id)}')">✓ Marker møtt</button></article>`;
-        }).join('')}</div>` : '<p>✅ Alle er kryssa av.</p>'}</section>`;
-      });
-
-      const day = days.find(d => d.id === dayId) || { date: dayId, title: dayId };
-      target.innerHTML = `<div class="important-box"><h3>${esc(formatDate(day.date) || day.title || dayId)} · ${slot === 'for' ? 'før lunsj' : 'etter lunsj'}</h3><p><strong>${totalMissing} mangler totalt</strong></p></div>${sections}`;
-    } catch (error) {
-      console.error(error);
-      target.innerHTML = `<div class="status-box error">${esc(error.message || 'Kunne ikkje hente oppmøte.')}</div>`;
-    }
-  };
-
-  window.markPresentFromMissing = async function (dayId, slot, group, participantId) {
-    const year = currentYear();
-    try {
-      const user = await ensureAdmin();
-      const sessionId = `${dayId}_${slot}_g${group}`;
-      await db.collection('years').doc(year).collection('attendance').doc(sessionId).collection('entries').doc(participantId).set({
-        present: true,
-        updatedAt: serverTimestamp(),
-        updatedBy: user.uid
-      }, { merge: true });
-      await window.loadSimpleMissing(dayId, slot);
-    } catch (error) {
-      console.error(error);
-      alert('Kunne ikkje markere som møtt.');
-    }
-  };
 
   function average(rows, field) {
     const values = rows.map(r => Number(r[field])).filter(v => v >= 1 && v <= 5);
