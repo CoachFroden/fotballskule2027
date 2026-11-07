@@ -120,10 +120,10 @@
     const intro=document.getElementById('pageIntro'),menu=document.getElementById('mainMenu'),content=document.getElementById('content');
     if (!intro||!menu||!content)return;
     const title=(detail)=>'<div class="hero-card"><p class="hero-kicker">Fotballskule '+escape(y)+'</p><h2>Oppmøte</h2><p>'+escape(detail)+'</p></div>';
-    menu.innerHTML='<button class="back-button" type="button" onclick="showHome()">← Framside</button>';
+    menu.innerHTML='';
     if (!day) {
-      intro.innerHTML=title('Ingen aktiv fotballskuledag i dag');
-      content.innerHTML='<div class="welcome-box"><h3>Ingen oppmøte i dag</h3><p>Oppmøtelista opnar automatisk på ein registrert fotballskuledag.</p><button type="button" onclick="showInstructorAttendanceArchive()">Sjå andre dagar og grupper</button></div>';
+      intro.innerHTML='';
+      content.innerHTML='<section class="welcome-box combined-empty-state"><h2>Ingen oppmøte i dag</h2><p>Det er ingen fotballskuledag registrert for i dag. Du kan opne ei anna krysseliste ved behov.</p><button class="combined-empty-action" type="button" onclick="showInstructorAttendanceArchive()">Sjå andre dagar og grupper</button></section>';
       return;
     }
     const switchAt=minutes(day.lunchTime);
@@ -134,12 +134,12 @@
     if(group){
       await window.showCombinedChecklist(day.id,group);
       const back=document.getElementById('mainMenu');
-      if(back)back.innerHTML='<button class="back-button" type="button" onclick="showHome()">← Framside</button><button class="back-button" type="button" onclick="showInstructorAttendanceArchive()">Andre lister</button>';
+      if(back)back.innerHTML='';
       return;
     }
-    intro.innerHTML=title('Gruppe blir henta frå instruktørplanen');
+    intro.innerHTML='';
     const message=isPreview?'Dette er førehandsvising som administrator. Ingen instruktør er knytt til denne innlogginga.':'Du har ikkje fått tildelt ei gruppe '+(slot==='for'?'før':'etter')+' lunsj. Kontakt administrator.';
-    content.innerHTML='<div class="welcome-box"><h3>Ingen gruppe tildelt</h3><p>'+escape(message)+'</p><button type="button" onclick="showInstructorAttendanceArchive()">Opne andre lister manuelt</button></div>';
+    content.innerHTML='<section class="welcome-box combined-empty-state"><h2>Ingen gruppe tildelt</h2><p>'+escape(message)+'</p><button class="combined-empty-action" type="button" onclick="showInstructorAttendanceArchive()">Opne andre lister</button></section>';
   };
   window.showInstructorAttendanceArchive=async function(){
     const y=year(),ref=db.collection('years').doc(y);
