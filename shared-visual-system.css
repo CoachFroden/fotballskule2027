@@ -168,3 +168,76 @@ body.v2-enabled[data-v2-role="responsible"] #mainMenu > button.back-button[oncli
  body.v2-enabled[data-v2-role="responsible"] #content .safety-guardian-name{font-weight:600;color:#17334e!important;overflow-wrap:anywhere;flex:1 1 125px}
  body.v2-enabled[data-v2-role="responsible"] #content .safety-phone-button{min-height:40px;padding:8px 10px;white-space:nowrap}
 }
+
+/* Admin-forside 2027: rolegare kontrollpanel. Berre admin si forside. */
+body.v2-enabled[data-v2-role="admin"]:has(.match-shell) .match-shell{
+ max-width:1120px!important;margin:0 auto!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .v2-home{
+ gap:18px!important;padding:18px 20px 112px!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .v2-home>.v2-hero{
+ min-height:0!important;padding:22px 26px!important;gap:12px!important;
+ border-radius:16px!important;background:linear-gradient(130deg,#123b67,#081e3c)!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .v2-brand-lockup{
+ transform:none!important;scale:.78!important;transform-origin:left center!important;
+ margin:-17px 0 -21px!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .v2-hero-clean-motto{
+ margin:0!important;font-size:12px!important;letter-spacing:.01em!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .v2-hero-row{
+ margin:0!important;gap:8px!important;justify-content:flex-start!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .v2-preview-buttons{
+ justify-content:flex-start!important;padding:7px 10px!important;gap:7px!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .v2-section-head h2{
+ font-size:19px!important;line-height:1.25!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .v2-action-grid{
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .v2-action-grid>.v2-action:nth-child(n){
+ grid-column:auto!important;min-height:88px!important;padding:14px!important;
+ border-radius:13px!important;background:#123b68!important;
+ border:1px solid #416b94!important;box-shadow:none!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .v2-action-grid>.v2-action:nth-child(n):hover{
+ background:#1c507e!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .v2-action-grid>.v2-action:nth-child(1){
+ background:#683047!important;border-color:#a35c70!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .v2-action-grid>.v2-action:nth-child(n) .v2-action-copy strong{
+ font-size:14px!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .v2-action-grid>.v2-action:nth-child(n) .v2-action-copy span{
+ font-size:11px!important;line-height:1.4!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .match-bottom{
+ display:grid!important;grid-template-columns:1fr 1.25fr!important;gap:12px!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .match-bottom>.v2-section{
+ padding:17px!important;border-radius:14px!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .match-bottom .v2-stats{
+ grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important;
+}
+body.v2-enabled[data-v2-role="admin"] .match-shell .match-bottom .v2-stat{
+ padding:12px!important;min-height:75px!important;
+}
+@media(max-width:800px){
+ body.v2-enabled[data-v2-role="admin"] .match-shell .match-bottom{grid-template-columns:1fr!important}
+ body.v2-enabled[data-v2-role="admin"] .match-shell .v2-action-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:520px){
+ body.v2-enabled[data-v2-role="admin"] .match-shell .v2-home{padding:12px 12px 110px!important;gap:14px!important}
+ body.v2-enabled[data-v2-role="admin"] .match-shell .v2-home>.v2-hero{padding:16px!important}
+ body.v2-enabled[data-v2-role="admin"] .match-shell .v2-brand-lockup{scale:.6!important;margin:-29px 0 -37px!important}
+ body.v2-enabled[data-v2-role="admin"] .match-shell .v2-action-grid{gap:8px!important}
+ body.v2-enabled[data-v2-role="admin"] .match-shell .v2-action-grid>.v2-action:nth-child(n){min-height:84px!important;padding:11px!important}
+ body.v2-enabled[data-v2-role="admin"] .match-shell .v2-action-grid .v2-action-icon{display:none!important}
+ body.v2-enabled[data-v2-role="admin"] .match-shell .v2-action-grid .v2-action-copy strong{font-size:13px!important}
+}
