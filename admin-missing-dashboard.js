@@ -42,6 +42,19 @@
       root.innerHTML='<div class="missing-summary '+(missingTotal?'has-missing':'')+'"><strong>'+missingTotal+' barn registrerte som manglande</strong><span>'+esc(label)+'</span></div>'+
         '<div class="missing-status"><span>☀️ Før lunsj: '+(slotActive.for?'Viser registreringar':'Ikkje starta')+'</span><span>🌤️ Etter lunsj: '+(slotActive.etter?'Viser registreringar':'Ikkje starta')+'</span></div>'+
         '<div class="missing-groups">'+sections+'</div>';
+      // Set readable colours directly on these generated elements; older theme rules
+      // otherwise override the page-specific stylesheet on mobile.
+      const paint=(selector,properties)=>root.querySelectorAll(selector).forEach(el=>{
+        Object.entries(properties).forEach(([property,value])=>el.style.setProperty(property,value,'important'));
+      });
+      paint('.missing-summary, .missing-group',{'background-color':'#f2f7fd','color':'#122f50','border-color':'#c7d9eb'});
+      paint('.missing-summary strong, .missing-group h3, .missing-group p, .missing-person, .missing-person strong, .missing-person small',{'color':'#122f50','opacity':'1'});
+      paint('.missing-summary span, .missing-group h3 span',{'color':'#395a78','opacity':'1'});
+      paint('.missing-status',{'background-color':'#16416c','color':'#ffffff','border-color':'#52799e'});
+      paint('.missing-status span',{'color':'#ffffff','opacity':'1'});
+      paint('.missing-unchecked',{'background-color':'#fff0d5','color':'#593708','border-color':'#d2a15c'});
+      paint('.missing-unchecked strong, .missing-unchecked p',{'color':'#593708','opacity':'1'});
+      paint('.missing-summary.has-missing',{'background-color':'#fff0ed','border-color':'#cf968c'});
       root.querySelectorAll('[data-mark]').forEach(button=>button.addEventListener('click',async()=>{
         const id=button.dataset.mark,group=button.dataset.group;
         const slot=docs[groups.indexOf(Number(group))*2].docs.find(d=>d.id===id&&d.data().present===false)?'for':'etter';
