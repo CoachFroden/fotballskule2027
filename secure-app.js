@@ -886,12 +886,28 @@
 
   window.saveDay = async function (event) {
     event.preventDefault();
-    assertWritable();
-    const date = el('dayDate').value;
-    const id = slugify(date);
-    await yearPath('days').doc(id).set({ date, title: el('dayTitle').value.trim(), menu: el('dayMenu').value.trim(), program: el('dayProgram').value.trim(), lunchTime: el('dayLunchTime').value, note: el('dayNote').value.trim(), updatedAt: serverTimestamp(), updatedBy: state.user.uid }, { merge: true });
-    await loadYear(state.yearId);
-    showAdminDays();
+    const form = event.currentTarget;
+    const saveButtons = [...document.querySelectorAll('#v2DayAdminForm button[type="submit"], button[form="v2DayAdminForm"]')];
+    try {
+      assertWritable();
+      const date = el('dayDate')?.value;
+      if (!date || !/^\\d{4}-\\d{2}-\\d{2}$/.test(date)) throw new Error('Vel ein gyldig dato for programdagen.');
+      const id = slugify(date);
+      const payload = {
+        date, title: el('dayTitle').value.trim(), menu: el('dayMenu').value.trim(),
+        program: el('dayProgram').value.trim(), lunchTime: el('dayLunchTime').value,
+        note: el('dayNote').value.trim(), updatedAt: serverTimestamp(), updatedBy: state.user.uid
+      };
+      saveButtons.forEach(button => { button.disabled = true; button.dataset.originalText = button.textContent; button.textContent = 'Lagrar…'; });
+      await yearPath('days').doc(id).set(payload, { merge: true });
+      await loadYear(state.yearId);
+      showAdminDays();
+      alert('Programdagen '+date+' er lagra.');
+    } catch (error) {
+      console.error('Kunne ikkje lagre programdag:', error);
+      alert('Kunne ikkje lagre programdagen: '+(error?.message || 'Ukjend feil')+'\\n\\nKontroller at du er innlogga som administrator og prøv igjen.');
+      saveButtons.forEach(button => { button.disabled = false; button.textContent = button.dataset.originalText || 'Lagre'; });
+    }
   };
 
   window.editDay = function (id) {
