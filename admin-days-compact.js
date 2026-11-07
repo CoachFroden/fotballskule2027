@@ -232,7 +232,7 @@
 
     oldHeading?.remove();
     const intro=document.getElementById('pageIntro');
-    if(intro){intro.innerHTML='';intro.style.display='none';}
+    if(intro){intro.innerHTML='';intro.style.display='';}
     box.classList.add('v2-day-admin-page');
     grid.remove();
     box.dataset.compactDayAdmin = '1';
