@@ -376,3 +376,33 @@ body.v2-enabled .v2-home-day-chip.is-active .v2-home-day-dot{background:#23849a!
  body.v2-enabled .v2-home-day-chip,
  body.v2-enabled .v2-dashboard-day-button{width:100%!important;min-width:0!important;min-height:51px!important;padding:8px!important}
 }
+
+/* Kontrastgaranti for Manglande oppmøte, også når eldre globale reglar slår inn. */
+body #adminMissingDashboard .missing-summary,
+body #adminMissingDashboard .missing-group{
+ background:#f2f7fd!important;color:#122f50!important;border:1px solid #c7d9eb!important;
+}
+body #adminMissingDashboard .missing-summary strong,
+body #adminMissingDashboard .missing-summary span,
+body #adminMissingDashboard .missing-group h3,
+body #adminMissingDashboard .missing-group h3 span,
+body #adminMissingDashboard .missing-group p,
+body #adminMissingDashboard .missing-person,
+body #adminMissingDashboard .missing-person strong,
+body #adminMissingDashboard .missing-person small{
+ color:#123455!important;opacity:1!important;text-shadow:none!important;
+}
+body #adminMissingDashboard .missing-summary strong{font-size:18px!important;line-height:1.35!important}
+body #adminMissingDashboard .missing-summary span,
+body #adminMissingDashboard .missing-group h3 span{color:#385b7a!important}
+body #adminMissingDashboard .missing-status,
+body #adminMissingDashboard .missing-status span{
+ color:#f1f8ff!important;opacity:1!important;text-shadow:none!important;
+ font-size:13px!important;font-weight:600!important;
+}
+body #adminMissingDashboard .missing-status{background:#16416c!important;border:1px solid #426c93!important;border-radius:11px!important;padding:12px!important;margin:12px 0!important}
+body #adminMissingDashboard .missing-unchecked{background:#fff0d5!important;border:1px solid #d2a15c!important;color:#5b3605!important}
+body #adminMissingDashboard .missing-unchecked strong,
+body #adminMissingDashboard .missing-unchecked p{color:#5b3605!important;opacity:1!important}
+body #adminMissingDashboard .missing-summary.has-missing{background:#fff0ed!important;border-color:#cf968c!important}
+body #adminMissingDashboard .missing-person button{background:#126b62!important;color:#fff!important}
