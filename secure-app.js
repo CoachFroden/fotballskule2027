@@ -724,7 +724,7 @@
     try { await loadYear(state.yearId); } catch (error) { console.error('Oppdatering av deltakarlista:',error); }
     setIntro('Deltakarar', 'Sensitive opplysningar er skilde frå data instruktørane kan lese.', `Fotballskule ${state.yearId}`);
     setMenu([], back('Administrasjon', 'showAdmin()'));
-    content().innerHTML = `<div class="welcome-box participant-admin-page">${String(state.yearId) === '2027' && state.year?.status !== 'archived' ? '<button class="menu-button compact success" onclick="showManualRegistration2027()">＋ Legg til deltakar</button>' : ''}<div class="toolbar"><input id="participantSearch" type="search" placeholder="Søk namn…" oninput="renderAdminParticipants()"><select id="participantGroup" onchange="renderAdminParticipants()"><option value="">Alle grupper</option>${[1,2,3,4,5,6,7,8].map(g => `<option value="${g}">Gruppe ${g}</option>`).join('')}</select></div><div id="adminParticipantList"></div></div>`;
+    content().innerHTML = `<div class="welcome-box participant-admin-page">${String(state.yearId) === '2027' && state.year?.status !== 'archived' ? '<div class="participant-admin-top-actions"><button class="menu-button compact success" onclick="showManualRegistration2027()">＋ Legg til deltakar</button><button type="button" class="participant-admin-restore-toggle" onclick="showDeletedParticipants2027()">↩ Vis sletta deltakarar</button></div>' : ''}<div class="toolbar"><input id="participantSearch" type="search" placeholder="Søk namn…" oninput="renderAdminParticipants()"><select id="participantGroup" onchange="renderAdminParticipants()"><option value="">Alle grupper</option>${[1,2,3,4,5,6,7,8].map(g => `<option value="${g}">Gruppe ${g}</option>`).join('')}</select></div><div id="adminParticipantList"></div></div>`;
     renderAdminParticipants();
   };
 
@@ -781,6 +781,43 @@
       console.error(error);
       alert('Kunne ikkje lagre. Prøv igjen.');
       if (el('saveParticipantEdit')) el('saveParticipantEdit').disabled = false;
+    }
+  };
+
+  window.showDeletedParticipants2027 = async function () {
+    if (!isAdmin() || String(state.yearId) !== '2027') return;
+    const list = el('adminParticipantList');
+    if (!list) return;
+    list.innerHTML = '<p class="participant-restore-loading">Hentar sletta deltakarar…</p>';
+    try {
+      const snap = await db.collection('pameldingar2027').where('excludedFromRoster', '==', true).get();
+      const rows = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+        .sort((a,b) => String(a.namn || '').localeCompare(String(b.namn || ''), 'no'));
+      list.innerHTML = '<section class="participant-restore-list"><div class="participant-restore-heading"><div><h3>Sletta deltakarar</h3><p>Påmeldingane er bevarte og kan hentast tilbake.</p></div><button type="button" onclick="renderAdminParticipants()">Tilbake til lista</button></div>' +
+        (rows.length ? rows.map(p => '<div class="participant-restore-row"><span><strong>'+escapeHtml(p.namn || 'Utan namn')+'</strong><small>Gruppe '+escapeHtml(p.manuellGruppe || p.standardGruppe || '-')+'</small></span><button type="button" data-restore-id="'+escapeHtml(p.id)+'">↩ Gjenopprett</button></div>').join('') : '<p class="participant-restore-empty">Ingen sletta deltakarar.</p>') + '</section>';
+      list.querySelectorAll('[data-restore-id]').forEach(button => button.addEventListener('click', () => restoreFormsParticipant2027(button.dataset.restoreId, button)));
+    } catch (error) {
+      console.error('Hent sletta deltakarar:', error);
+      list.innerHTML = '<p class="participant-restore-error">Kunne ikkje hente sletta deltakarar: '+escapeHtml(error.message)+'</p><button type="button" onclick="renderAdminParticipants()">Tilbake til lista</button>';
+    }
+  };
+
+  window.restoreFormsParticipant2027 = async function (formsId, button) {
+    if (!isAdmin() || String(state.yearId) !== '2027') return;
+    if (!confirm('Gjenopprette deltakaren i deltakarlista og oppmøtelistene?')) return;
+    if (button) { button.disabled = true; button.textContent = 'Gjenopprettar…'; }
+    try {
+      const source = db.collection('pameldingar2027').doc(formsId);
+      const doc = await source.get();
+      if (!doc.exists || doc.data().excludedFromRoster !== true) throw Error('Påmeldinga er ikkje lenger markert som sletta.');
+      // Removing the exclusion allows loadYear to rebuild public and private roster documents.
+      await source.update({ excludedFromRoster: false, restoredAt: serverTimestamp(), restoredBy: state.user.uid });
+      await loadYear('2027');
+      await showDeletedParticipants2027();
+    } catch (error) {
+      console.error('Gjenopprett deltakar:', error);
+      alert('Kunne ikkje gjenopprette deltakaren: '+error.message);
+      if (button) { button.disabled = false; button.textContent = '↩ Gjenopprett'; }
     }
   };
 
