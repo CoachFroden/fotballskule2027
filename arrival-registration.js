@@ -26,7 +26,7 @@
       const group=root.querySelector('#arrivalGroup').value,status=root.querySelector('#arrivalStatus').value;
       const filtered=people.filter(p=>(!group||String(p.group)===group)&&String(p.name||'').toLocaleLowerCase('no').includes(q)&&(status==='all'||(status==='done')===registered.has(p.id)));
       stats.textContent=registered.size+' av '+people.length+' registrerte · '+(people.length-registered.size)+' står att';
-      list.innerHTML=filtered.length?filtered.map(p=>'<label class="arrival-person '+(registered.has(p.id)?'is-registered':'')+'"><span><strong>'+esc(p.name)+'</strong><small>Gruppe '+esc(p.group)+'</small></span><span class="arrival-check"><input type="checkbox" data-id="'+esc(p.id)+'" '+(registered.has(p.id)?'checked':'')+' '+(busy.has(p.id)?'disabled':'')+'> Registrert</span></label>').join(''):'<p>Ingen deltakarar funne.</p>';
+      list.innerHTML=filtered.length?filtered.map(p=>'<label class="arrival-person '+(registered.has(p.id)?'is-registered':'is-pending')+'"><span><strong>'+esc(p.name)+'</strong><small>Gruppe '+esc(p.group)+'</small><em class="arrival-status">'+(registered.has(p.id)?'✓ Registrert':'● IKKJE REGISTRERT')+'</em></span><span class="arrival-check"><input type="checkbox" data-id="'+esc(p.id)+'" '+(registered.has(p.id)?'checked':'')+' '+(busy.has(p.id)?'disabled':'')+'> Registrert</span></label>').join(''):'<p>Ingen deltakarar funne.</p>';
     }
     try{
       const snap=await ref.collection('participants').get();
