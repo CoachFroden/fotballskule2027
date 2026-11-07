@@ -49,9 +49,9 @@
     active = {day,archived};
     beforeOverride = false;
     correctionMode = false;
-    document.getElementById('pageIntro').innerHTML = '<div class="hero-card"><p class="hero-kicker">Fotballskule '+escape(y)+'</p><h2>Gruppe '+Number(group)+'</h2><p>'+escape(day.date)+' · Krysseliste</p></div>';
-    document.getElementById('mainMenu').innerHTML = '<button class="back-button" type="button" onclick="showChecklists()">← Vel anna gruppe</button>';
-    document.getElementById('content').innerHTML = '<section class="welcome-box combined-checklist"><div class="combined-heading"><strong>Oppmøte · Gruppe '+Number(group)+'</strong><small>Før og etter lunsj på same liste</small></div>'+
+    document.getElementById('pageIntro').innerHTML = '';
+    document.getElementById('mainMenu').innerHTML = '';
+    document.getElementById('content').innerHTML = '<section class="welcome-box combined-checklist"><button class="combined-back" type="button" onclick="showChecklists()">← Vel anna gruppe</button><div class="combined-heading"><strong>Oppmøte · Gruppe '+Number(group)+'</strong><small>'+escape(day.date)+' · Krysseliste før og etter lunsj</small></div>'+
       '<div class="combined-head"><span>Barn</span><span>☀️ Før <small id="combinedBeforeTag">Open</small></span><span>🌤️ Etter <small id="combinedAfterTag">Låst</small></span></div>'+
       '<div class="combined-rows">'+people.map(p => '<div class="combined-row"><strong>'+escape(p.name)+'</strong><label aria-label="Før lunsj: '+escape(p.name)+'"><input type="checkbox" class="combined-before" data-id="'+escape(p.id)+'" '+(before.get(p.id)?'checked':'')+' '+(archived?'disabled':'')+'></label><label aria-label="Etter lunsj: '+escape(p.name)+'"><input type="checkbox" class="combined-after" data-id="'+escape(p.id)+'" '+(after.get(p.id)?'checked':'')+' disabled></label></div>').join('')+'</div>'+
       '<div class="combined-foot"><strong id="combinedCount"></strong><span id="combinedAfterHint"></span></div><button id="combinedBeforeUnlock" class="combined-unlock" type="button" hidden>🔓 Lås opp før lunsj</button><button id="combinedCorrectionMode" class="combined-unlock" type="button">✏️ Rediger låst liste</button></section>';
