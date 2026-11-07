@@ -118,21 +118,6 @@
 
     const yearDoc = common[0];
     const participants = common[1].docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    // 2027 registrations live in the authoritative Firebase signup collection.
-    // Read it only for administrators: instructor/responsible roles must not
-    // receive personal registration details from this private collection.
-    if (role === 'admin' && String(year) === '2027') {
-      try {
-        const registrations = await db.collection('pameldingar2027').get();
-        const knownIds = new Set(participants.map(item => String(item.formsId || item.registrationId || item.id)));
-        registrations.docs.forEach(doc => {
-          if (knownIds.has(doc.id) || knownIds.has('forms-' + doc.id)) return;
-          participants.push({ id: 'forms-' + doc.id });
-        });
-      } catch (error) {
-        console.warn('Kunne ikkje hente talet på påmeldingar for 2027', error);
-      }
-    }
     const instructors = common[2].docs.map(doc => ({ id: doc.id, ...doc.data() }));
     const adults = common[3].docs.map(doc => ({ id: doc.id, ...doc.data() }));
     const days = common[4].docs
@@ -273,16 +258,16 @@
   function actionsFor(role) {
     if (role === 'admin') {
       return [
-        action('🚨', 'Mangler nå', 'Oppmøte og foresattkontakt', 'showSimpleMissingAdmin', 'red', 'missing'),
-        action('💬', 'Tilbakemeldingar', 'Sjå svar og mønster', 'showSimpleFeedbackAdmin', 'violet', 'feedback'),
+        action('🎒', 'Registrering', 'Innsjekk første dag', 'showArrivalRegistration', 'green', 'arrival'),
+        action('🚨', 'Mangler no', 'Oppmøte og føresette', 'showSimpleMissingAdmin', 'red', 'missing'),
         action('👟', 'Deltakarar', 'Søk, allergi og kontakt', 'showAdminParticipants', '', 'admin'),
-        action('🔄', 'Instruktørplan', 'Fordel bemanning raskt', 'showInstructorScheduleAdmin', 'green', 'admin'),
         action('📅', 'Program & meny', 'Rediger det alle skal sjå', 'showAdminDays', 'orange', 'admin'),
         action('🛡️', 'Administrasjon', 'Import, årgangar og persondata', 'showAdmin', '', 'admin')
       ];
     }
     if (role === 'responsible') {
       return [
+        action('🎒', 'Registrering', 'Innsjekk første dag', 'showArrivalRegistration', 'green', 'arrival'),
         action('🚑', 'Tryggleik & kontakt', 'Allergi, helse og ring foresatte', 'showResponsibleSafety', 'red', 'safety'),
         action('🧭', 'Dagens ansvar', 'Felles arbeidsplan gjennom dagen', 'showResponsibleDaily', 'green', 'more'),
         action('🔄', 'Instruktørplan', 'Kven har kva gruppe', 'showInstructorSchedule', 'violet', 'plan'),
@@ -301,20 +286,46 @@
     ];
   }
 
-  function instructorQuickHome(data) {
-    const day = data.focusDay;
-    const dayLabel = day ? dateParts(day.date || day.id).long : 'Programdagane er ikkje lagde inn enno';
-    const notice = day && day.note ? '<div class="instructor-alert"><strong>Viktig beskjed</strong><p>'+esc(day.note)+'</p></div>' : '';
-    return '<div class="instructor-mobile-home">'+
-      '<section class="instructor-welcome"><span>SAMNANGER IL · FOTBALLSKULE '+esc(data.year)+'</span><h1>Velkomen som instruktør! ⚽</h1><p>Her finn du det du treng. Bruk tida på barna!</p></section>'+
-      '<button class="instructor-today" type="button" onclick="v2Open(\'showDays\',\'home\')"><span>📅 Dagens program</span><strong>'+esc(dayLabel)+'</strong><small>Aktivitetar, tidspunkt, mat og beskjedar →</small></button>'+notice+
+  function responsibleQuickHome(data) {
+    const alert = data.healthCount ? '<div class="responsible-home-alert"><span>!</span><p><strong>Viktig helseinformasjon</strong><small>'+esc(data.healthCount)+' deltakarar har registrert helse- eller allergiinformasjon. Sjå Tryggleik og kontakt.</small></p></div>' : '';
+    return '<div class="instructor-mobile-home instructor-stadium responsible-stadium">'+
+      '<section class="instructor-welcome instructor-hero">'+
+        '<div class="instructor-hero-glow" aria-hidden="true"></div><div class="instructor-pitch" aria-hidden="true"><i></i><b></b></div>'+
+        '<div class="instructor-hero-content"><span class="instructor-eyebrow"><em></em> SAMNANGER IL · '+esc(data.year)+'</span>'+
+        '<div class="instructor-hero-icon" aria-hidden="true">⚽</div>'+
+        '<h1>Full kontroll.<br><mark>Meir fotballglede.</mark></h1>'+
+        '<p>Oversikta du treng for ein trygg og god dag.</p>'+
+        '<div class="instructor-hero-footer"><span>ANSVARLEGPORTAL</span><span>TINE FOTBALLSKULE <b>✦</b></span></div></div></section>'+
+      alert+
+      '<div class="instructor-action-intro"><div><span>DIN ARBEIDSFLATE</span><h2>Det viktigaste i dag</h2></div><span class="instructor-action-line"></span></div>'+
       '<div class="instructor-primary-grid">'+
-        '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showChecklists\',\'attendance\')"><span>✓</span><strong>Krysseliste</strong><small>Registrer oppmøte</small></button>'+
-        '<button class="instructor-primary instructor-exercises" type="button" onclick="v2Open(\'showExercises\',\'exercises\')"><span>⚽</span><strong>Øvingar</strong><small>Finn neste aktivitet</small></button>'+
-      '</div><div class="instructor-secondary-grid">'+
-        '<button type="button" onclick="v2Open(\'showGroups\',\'home\')"><strong>👥 Grupper</strong><small>Oversikt over barna</small></button>'+
-        '<button type="button" onclick="v2Open(\'showInstructorSchedule\',\'plan\')"><strong>🔄 Instruktørplan</strong><small>Før og etter lunsj</small></button>'+
-      '</div><button class="instructor-more-link" type="button" onclick="v2ShowMore()">☰ Meir · instruksar, tilbakemelding og anna →</button></div>';
+        '<button class="instructor-primary instructor-attendance" type="button" onclick="showArrivalRegistration()"><span class="instructor-action-symbol" aria-hidden="true">🎒</span><span class="instructor-action-copy"><strong>Registrering</strong><small>Innsjekk første dag</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
+        '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showResponsibleSafety\',\'safety\')"><span class="instructor-action-symbol" aria-hidden="true">✚</span><span class="instructor-action-copy"><strong>Tryggleik og kontakt</strong><small>Helse, allergi og føresette</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
+        '<button class="instructor-primary instructor-exercises" type="button" onclick="v2Open(\'showResponsibleDaily\',\'responsibility\')"><span class="instructor-action-symbol" aria-hidden="true">✓</span><span class="instructor-action-copy"><strong>Dagens ansvar</strong><small>Oppgåver og plan gjennom dagen</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
+        '<button class="instructor-primary responsible-staff-action" type="button" onclick="v2Open(\'showResponsibleAdults\',\'more\')"><span class="instructor-action-symbol" aria-hidden="true">♙</span><span class="instructor-action-copy"><strong>Kven er på plass?</strong><small>Vaksne, roller og kontakt</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
+      '</div><div class="instructor-bottom-note"><span>✦</span> SAMAN SKAPAR VI FOTBALLGLEDE <span>✦</span></div></div>';
+  }
+
+  function instructorQuickHome(data) {
+    const notice = data.focusDay && data.focusDay.note ? '<div class="instructor-alert"><strong>Viktig beskjed</strong><p>'+esc(data.focusDay.note)+'</p></div>' : '';
+    return '<div class="instructor-mobile-home instructor-stadium">'+
+      '<section class="instructor-welcome instructor-hero">'+
+        '<div class="instructor-hero-glow" aria-hidden="true"></div>'+
+        '<div class="instructor-pitch" aria-hidden="true"><i></i><b></b></div>'+
+        '<div class="instructor-hero-content"><span class="instructor-eyebrow"><em></em> SAMNANGER IL · '+esc(data.year)+'</span>'+
+          '<div class="instructor-hero-icon" aria-hidden="true">⚽</div>'+
+          '<h1>Klar for<br><mark>fotballglede?</mark></h1>'+
+          '<p>Alt du treng for ein god dag på bana.</p>'+
+          '<div class="instructor-hero-footer"><span>INSTRUKTØRPORTAL</span><span> TINE FOTBALLSKULE <b>✦</b></span></div>'+
+        '</div>'+
+      '</section>'+
+      '<div class="instructor-action-intro"><div><span>DIN ARBEIDSFLATE</span><h2>Kom raskt i gang</h2></div><span class="instructor-action-line"></span></div>'+
+      '<div class="instructor-primary-grid">'+
+        '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showChecklists\',\'home\')"><span class="instructor-action-symbol" aria-hidden="true">✓</span><span class="instructor-action-copy"><strong>Oppmøte</strong><small>Registrer barna på gruppa di</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
+        '<button class="instructor-primary instructor-exercises" type="button" onclick="v2Open(\'showExercises\',\'home\')"><span class="instructor-action-symbol" aria-hidden="true">◈</span><span class="instructor-action-copy"><strong>Øvelsesbank</strong><small>Finn neste aktivitet på sekunder</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
+      '</div>'+notice+
+      '<div class="instructor-bottom-note"><span>✦</span> SMÅ ØYEBLIKK. STORE FOTBALLMINNE. <span>✦</span></div>'+
+      '</div>';
   }
 
   function statsFor(role, data) {
@@ -345,7 +356,7 @@
   function previewControls() {
     if (cachedRole !== 'admin') return '';
     return previewRole
-      ? `<div class="v2-preview-banner"><strong>Førehandsvising: ${esc(ROLE[previewRole].label)}</strong><span>Du er framleis innlogga som administrator. Tilgangar blir ikkje simulerte.</span><button type="button" onclick="v2PreviewRole(null)">← Tilbake til administrator</button></div>`
+      ? ''
       : `<div class="v2-preview-buttons"><span>Test visning:</span><button type="button" onclick="v2PreviewRole('responsible')">Sjå som ansvarleg</button><button type="button" onclick="v2PreviewRole('instructor')">Sjå som instruktør</button></div>`;
   }
 
@@ -362,11 +373,20 @@
 
   function renderHero(role, data) {
     const archived = data.yearData?.status === 'archived';
-    return `<section class="v2-hero">
-      <p class="v2-eyebrow"><span class="v2-role-pill"><span class="v2-live-dot"></span>${esc(ROLE[role]?.label || role)}</span>${archived ? '<span class="v2-state-pill">Arkivert</span>' : ''}</p>
-      <h1>${esc(roleHeroTitle(role, data.year))}</h1>
-      <p class="v2-hero-copy">${esc(greeting())}. ${esc(roleDescription(role))}</p>
-      <div class="v2-hero-row"><div class="v2-eyebrow">Samnanger IL · TINE Fotballskule</div>${yearSelect(data, role)}</div>
+    return `<section class="v2-hero v2-hero-clean">
+      <div class="v2-brand-lockup" role="img" aria-label="Samnanger IL TINE Fotballskule ${esc(data.year)}">
+        <div class="v2-brand-ball" aria-hidden="true"><svg viewBox="0 0 100 100" width="100%" height="100%"><circle cx="50" cy="50" r="46" fill="#f8fbff" stroke="#9ac7f0" stroke-width="3"/><path d="M50 29 66 40 61 59 40 62 32 44Z" fill="#0c2448"/><path d="M50 29 48 6M66 40 89 31M61 59 77 78M40 62 26 83M32 44 10 34" stroke="#0c2448" stroke-width="8" stroke-linejoin="round"/><path d="M50 29 66 40 61 59 40 62 32 44Z" fill="#0c2448"/></svg></div>
+        <div class="v2-brand-club"><span>SAMNANGER IL</span></div>
+        <div class="v2-brand-name"><span>TINE</span> <span>FOTBALLSKULE</span></div>
+        <div class="v2-brand-year"><span>${esc(data.year)}</span></div>
+      </div>
+      <p class="v2-hero-clean-motto">Fotballglede · Meistring · Fellesskap</p>
+      <div class="v2-hero-row">
+        <span class="v2-role-pill"><span class="v2-live-dot"></span>${esc(ROLE[role]?.label || role)}</span>
+        ${archived ? '<span class="v2-state-pill">Arkivert</span>' : ''}
+        ${yearSelect(data, role)}
+        ${role === 'admin' ? previewControls() : ''}
+      </div>
     </section>`;
   }
 
@@ -398,10 +418,11 @@
         return;
       }
       const data = await loadDashboardData(role, year);
+      const displayRole = role === 'admin' && previewRole ? previewRole : role;
       if (token !== renderToken || auth.currentUser?.uid !== user.uid) return;
 
       document.body.classList.add('v2-enabled');
-      document.body.dataset.v2Role = role;
+      document.body.dataset.v2Role = displayRole;
       const intro = document.getElementById('pageIntro');
       const menu = document.getElementById('mainMenu');
       const content = document.getElementById('content');
@@ -409,32 +430,37 @@
 
       intro.innerHTML = '';
       menu.innerHTML = '';
-      if (role === 'instructor') {
-        content.innerHTML = `${previewControls()}${instructorQuickHome(data)}`;
-        renderDock(role, 'home');
+      if (displayRole === 'responsible') {
+        content.innerHTML = responsibleQuickHome(data);
+        renderDock(displayRole, 'home');
         return;
       }
-      content.innerHTML = `<div class="match-shell">${sidebar(role, data.year)}<div class="v2-home">
-        ${previewControls()}
+      if (displayRole === 'instructor') {
+        content.innerHTML = `${previewControls()}${instructorQuickHome(data)}`;
+        renderDock(displayRole, 'home');
+        return;
+      }
+      content.innerHTML = `<div class="match-shell"><div class="v2-home">
         ${renderHero(role, data)}
-        ${roleNotice(role, data)}
+        ${role === 'admin' && previewRole ? previewControls() : ''}
+        ${roleNotice(displayRole, data)}
         <section class="v2-section match-actions">
           <div class="v2-section-head"><div><h2>På laget</h2><p>Alt du treng, eitt trykk unna</p></div></div>
-          <div class="v2-action-grid">${actionsFor(role).join('')}</div>
+          <div class="v2-action-grid">${actionsFor(displayRole).join('')}</div>
         </section>
         <div class="match-bottom">
           <section class="v2-section match-overview">
             <div class="v2-section-head"><div><h2>Oversikt ${esc(data.year)}</h2></div></div>
-            ${renderStats(role, data)}
+            ${renderStats(displayRole, data)}
           </section>
           <section class="v2-section match-program">
             <div class="v2-section-head"><div><h2>${esc(data.dayRelation || 'Program')}</h2></div></div>
-            ${todayCard(data, role)}
+            ${todayCard(data, displayRole)}
           </section>
         </div>
       </div></div>`;
 
-      renderDock(role, 'home');
+      renderDock(displayRole, 'home');
     } catch (error) {
       console.error('V2-dashboard:', error);
       if (token === renderToken) {
@@ -456,16 +482,17 @@
     if (role === 'responsible') return [
       ['home', '⌂', 'Heim', 'showHome'],
       ['safety', '✚', 'Tryggleik', 'showResponsibleSafety'],
-      ['plan', '↻', 'Plan', 'showInstructorSchedule'],
+      ['responsibility', '✓', 'Ansvar', 'showResponsibleDaily'],
       ['more', '•••', 'Meir', 'v2ShowMore']
     ];
     return [
       ['home', '⌂', 'Heim', 'showHome'],
-      ['attendance', '✓', 'Oppmøte', 'showChecklists'],
-      ['plan', '↻', 'Plan', 'showInstructorSchedule'],
+      ...(previewRole && cachedRole === 'admin' ? [['exit-preview', '↩', 'Til admin', 'v2ExitPreview']] : []),
       ['more', '•••', 'Meir', 'v2ShowMore']
     ];
   }
+
+  window.v2ExitPreview = function () { return window.v2PreviewRole(null); };
 
   function ensureDock() {
     let dock = document.getElementById('v2Dock');
@@ -514,6 +541,68 @@
     if (typeof window.changeYear === 'function') return window.changeYear(year);
   };
 
+  function instructorSubpage(title, description) {
+    document.getElementById('pageIntro').innerHTML = '<div class="hero-card"><p class="hero-kicker">INSTRUKTØR · TINE FOTBALLSKULE</p><h2>'+esc(title)+'</h2><p>'+esc(description)+'</p></div>';
+    document.getElementById('mainMenu').innerHTML = '<button class="back-button" type="button" onclick="v2ShowMore()">← Meir</button>';
+    renderDock('instructor','more');
+  }
+
+  window.showInstructorInstructions = function () {
+    instructorSubpage('Instruksar for instruktørar','Det viktigaste før, under og etter aktivitetane.');
+    const items = [
+      ['Før oppstart','Møt i god tid, finn gruppa di og registrer oppmøte. Kontroller at alle barna er på plass.'],
+      ['Under aktivitetane','Sjå alle barna, forklar kort og tydeleg, og sørg for mykje aktivitet og meistring. Tilpass øvingane etter nivå og behov.'],
+      ['Tryggleik','Ha oversikt over barna til ei kvar tid. Meld frå til ein ansvarleg vaksen ved skade, sjukdom eller andre hendingar.'],
+      ['Ved lunsj og gruppebyte','Hald oversikt over barna ved overgangane. Kontroller oppmøtet på nytt etter lunsj.'],
+      ['Ved avslutning','Sørg for at alle barna blir følgde til avtalt avslutning eller overlevering. Meld frå om noko viktig har skjedd.']
+    ];
+    document.getElementById('content').innerHTML = '<div class="instructor-guide">'+items.map((item,i)=>'<article class="instructor-guide-card"><span class="instructor-guide-number">'+String(i+1).padStart(2,'0')+'</span><div><h3>'+esc(item[0])+'</h3><p>'+esc(item[1])+'</p></div></article>').join('')+'<p class="instructor-guide-note">Dette er generelle instruksar. Lokale rutinar og kontaktpersonar må stadfestast av administrator før fotballskulen.</p></div>';
+  };
+
+  window.showInstructorDayContacts = async function () {
+    instructorSubpage('Kontaktpersonar','Vaksne som er registrerte på fotballskulen den valde dagen.');
+    const target=document.getElementById('content');
+    target.innerHTML='<div class="welcome-box">Hentar kontaktpersonar …</div>';
+    try {
+      const year=String(document.getElementById('currentYearLabel')?.textContent||'').match(/20\d{2}/)?.[0]||'2027';
+      const ref=db.collection('years').doc(year);
+      const [daysSnap,adultsSnap]=await Promise.all([ref.collection('days').get(),ref.collection('adults').get()]);
+      const days=daysSnap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>String(a.date||a.id).localeCompare(String(b.date||b.id)));
+      const adults=adultsSnap.docs.map(d=>({id:d.id,...d.data()}));
+      if(!days.length){target.innerHTML='<div class="welcome-box"><p>Ingen fotballskuledagar er registrerte enno.</p></div>';return;}
+      const today=new Date(),todayStr=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+      const chosen=days.find(d=>(d.date||d.id)===todayStr)||days.find(d=>(d.date||d.id)>todayStr)||days[days.length-1];
+      const available=adults.filter(a=>{
+        const ids=Array.isArray(a.dayIds)?a.dayIds.map(String):[];
+        if(ids.length)return ids.includes(String(chosen.id))||ids.includes(String(chosen.date||''));
+        const raw=String(a.days||'').trim();
+        if(!raw||/alle/i.test(raw))return true;
+        const date=new Date((chosen.date||chosen.id)+'T12:00:00');
+        const weekday=isNaN(date.getTime())?'':new Intl.DateTimeFormat('nn-NO',{weekday:'long'}).format(date).toLowerCase();
+        return raw.toLowerCase().includes(weekday)||raw.includes(String(chosen.date||chosen.id));
+      });
+      target.innerHTML='<div class="instructor-contacts"><label class="instructor-day-select">Vel dag<select id="instructorContactDay">'+days.map(d=>'<option value="'+esc(d.id)+'" '+(d.id===chosen.id?'selected':'')+'>'+esc(d.date||d.title||d.id)+'</option>').join('')+'</select></label><div id="instructorContactList"></div></div>';
+      const draw=id=>{
+        const day=days.find(d=>d.id===id)||chosen;
+        const people=adults.filter(a=>{
+          const ids=Array.isArray(a.dayIds)?a.dayIds.map(String):[];
+          if(ids.length)return ids.includes(String(day.id))||ids.includes(String(day.date||''));
+          const raw=String(a.days||'').trim();
+          if(!raw||/alle/i.test(raw))return true;
+          const date=new Date((day.date||day.id)+'T12:00:00');
+          const weekday=isNaN(date.getTime())?'':new Intl.DateTimeFormat('nn-NO',{weekday:'long'}).format(date).toLowerCase();
+          return raw.toLowerCase().includes(weekday)||raw.includes(String(day.date||day.id));
+        });
+        document.getElementById('instructorContactList').innerHTML=people.length?people.map(a=>{
+          const phone=String(a.phone||'').trim();
+          return '<article class="instructor-contact-card"><div><h3>'+esc(a.name||'Ansvarleg vaksen')+'</h3><p>'+esc(a.role||a.task||'Ansvarleg')+'</p></div>'+(phone?'<a href="tel:'+esc(phone.replace(/[^+\d]/g,''))+'">Ring '+esc(phone)+'</a>':'<span class="instructor-contact-no-phone">Telefonnummer ikkje tilgjengeleg</span>')+'</article>';
+        }).join(''):'<div class="welcome-box"><p>Ingen vaksne er registrerte denne dagen.</p></div>';
+      };
+      document.getElementById('instructorContactDay').addEventListener('change',e=>draw(e.target.value));
+      draw(chosen.id);
+    }catch(error){console.error(error);target.innerHTML='<div class="welcome-box"><p>Kunne ikkje hente kontaktpersonane. Kontroller tilgangen eller prøv igjen.</p></div>';}
+  };
+
   window.v2ShowMore = async function () {
     const role = await getRole();
     if (!role) return;
@@ -526,24 +615,22 @@
     menu.innerHTML = '<button class="back-button" type="button" onclick="showHome()">← Framside</button>';
 
     const rows = role === 'responsible' ? [
-      ['📅', 'Dagsprogram & meny', 'showDays'],
-      ['🧭', 'Ansvar & oppgåver', 'showResponsibleInstructions'],
-      ['👥', 'Deltakargrupper', 'showGroups'],
-      ['🧑‍🤝‍🧑', 'Ansvarsfordeling', 'showResponsibleAdults']
+      ['📅', 'Dagsprogram og meny', 'showDays'],
+      ['📋', 'Rutinar og instruksar', 'showResponsibleInstructions'],
+      ['👥', 'Ansvarlege på plass', 'showResponsibleAdults']
     ] : role === 'admin' ? [
       ['📅', 'Program & meny', 'showAdminDays'],
       ['🔄', 'Instruktørplan', 'showInstructorScheduleAdmin'],
       ['👟', 'Deltakarar', 'showAdminParticipants'],
       ['🛡️', 'Administrasjon', 'showAdmin']
     ] : [
-      ['📅', 'Dagsprogram & meny', 'showDays'],
-      ['🎯', 'Øvingar', 'showExercises'],
-      ['👥', 'Deltakargrupper', 'showGroups'],
-      ['📋', 'Instruksar', 'showInstructorInstructions'],
+      ['📅', 'Fast dagsprogram og meny', 'showDays'],
+      ['📋', 'Instruksar for instruktørar', 'showInstructorInstructions'],
+      ['👥', 'Kontaktpersonar', 'showInstructorDayContacts'],
       ['📝', 'Tilbakemelding', 'showInstructorFeedback']
     ];
 
-    content.innerHTML = `${previewRole ? previewControls() : ''}<div class="welcome-box"><div class="v2-more-sheet">${rows.map(([icon, title, fn]) => `<button class="v2-more-row" type="button" onclick="v2Open('${fn}','more')"><span>${icon}</span><span>${esc(title)}</span></button>`).join('')}<button class="v2-more-row" type="button" onclick="logout()"><span>↪</span><span>Logg ut</span></button></div></div>`;
+    content.innerHTML = `<div class="v2-more-sheet">${rows.map(([icon, title, fn]) => `<button class="v2-more-row" type="button" onclick="v2Open('${fn}','more')"><span>${icon}</span><span>${esc(title)}</span></button>`).join('')}<button class="v2-more-row" type="button" onclick="logout()"><span>↪</span><span>Logg ut</span></button></div>`;
     renderDock(role, 'more');
   };
 

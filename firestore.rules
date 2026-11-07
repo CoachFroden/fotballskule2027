@@ -74,6 +74,10 @@ service cloud.firestore {
         allow read: if staffYear(year);
         allow write: if admin();
       }
+      match /arrivalRegistration/{id} {
+        allow read: if staffYear(year);
+        allow write: if admin() || annualRole(year) == 'responsible';
+      }
       match /attendance/{session}/entries/{id} {
         allow read: if admin() || annualRole(year) == 'instructor';
         allow write: if admin() || annualRole(year) == 'instructor';

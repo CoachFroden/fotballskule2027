@@ -118,7 +118,16 @@
   }
 
   function tasksFor(day, year) {
-    return DAY_TASKS_2026[dayKey(day)] || genericTasks(day);
+    const tasks = (DAY_TASKS_2026[dayKey(day)] || genericTasks(day)).slice();
+    // First actual programme day always needs participant reception and registration.
+    const firstDay = cachedDays.length ? dayKey(cachedDays[0]) : '';
+    if (firstDay && dayKey(day) === firstDay) {
+      const registration = ['📝', 'Registrering og mottak', 'Ta imot barna og føresette, kontroller påmelding, registrer oppmøte og hjelp alle til rett gruppe.'];
+      const handout = ['🎒', 'Utdeling av utstyr', 'Del ut t-skjorter og anna utstyr som er klargjort, og hald oversikt over kva som er delt ut.'];
+      if (!tasks.some(task => /registr|oppmøte|mottak/i.test(task[1]))) tasks.unshift(registration);
+      if (!tasks.some(task => /utdeling/i.test(task[1]))) tasks.splice(1, 0, handout);
+    }
+    return tasks;
   }
 
   function renderTask(task) {
@@ -143,8 +152,8 @@
 
     target.innerHTML = `
       <div class="responsible-shared-banner">
-        <span>🤝</span>
-        <div><strong>Felles ansvar</strong><p>Alle ansvarlege har ansvar for desse oppgåvene. Fordel dei mellom dykk slik det passar gjennom dagen.</p></div>
+        <span aria-hidden="true">🤝</span>
+        <div><strong>Felles ansvar</strong><p>Fordel oppgåvene mellom dei ansvarlege gjennom dagen.</p></div>
       </div>
 
       <section class="responsible-daily-section">
@@ -159,10 +168,10 @@
 
       ${note ? `<section class="responsible-note"><strong>📌 Beskjed for dagen</strong><p>${esc(note).replaceAll('\n', '<br>')}</p></section>` : ''}
 
-      <section class="responsible-daily-section">
-        <div class="responsible-section-head"><div><span class="responsible-kicker">Heile dagen</span><h3>Dette gjeld alltid</h3></div></div>
+      <details class="responsible-always-details">
+        <summary><span><small>HEILE DAGEN</small><strong>Faste rutinar og tryggleik</strong></span><span class="responsible-details-count">${GENERAL_TASKS.length} punkt <span aria-hidden="true">⌄</span></span></summary>
         <div class="responsible-task-grid compact">${GENERAL_TASKS.map(renderTask).join('')}</div>
-      </section>`;
+      </details>`;
   }
 
   window.selectResponsibleDay = function (id) {
@@ -171,8 +180,9 @@
   };
 
   function markDock() {
-    document.querySelectorAll('.v2-dock-button').forEach(button => button.classList.remove('is-active'));
-    document.querySelector('.responsible-daily-dock')?.classList.add('is-active');
+    document.querySelectorAll('#v2Dock .v2-dock-button').forEach(button => {
+      button.classList.toggle('is-active', button.getAttribute('onclick')?.includes("'responsibility'") || false);
+    });
   }
 
   window.showResponsibleDaily = async function () {
@@ -186,7 +196,7 @@
     if (!intro || !menu || !content) return;
 
     intro.innerHTML = `<div class="hero-card"><p class="hero-kicker">Ansvarleg · Fotballskule ${esc(year)}</p><h2>Dagens ansvar</h2><p>Felles arbeidsplan for dei ansvarlege vaksne.</p></div>`;
-    menu.innerHTML = '<button class="back-button" type="button" onclick="showHome()">← Framside</button>';
+    menu.innerHTML = ''; // Heim is already available in the persistent bottom navigation.
     content.innerHTML = '<div class="welcome-box"><div class="status-box info">Hentar dagsplan…</div></div>';
 
     try {
@@ -209,7 +219,6 @@
         <div id="responsibleDailyBody"></div>
       </div>`;
       renderDay(first, year);
-      ensureResponsibleDock();
       markDock();
     } catch (error) {
       console.error('Dagens ansvar:', error);
@@ -220,44 +229,4 @@
   // Behald gamle lenker, men send dei til den praktiske dagsplanen.
   window.showResponsibleInstructions = window.showResponsibleDaily;
 
-  function ensureResponsibleDock() {
-    if (document.body.dataset.v2Role !== 'responsible') return;
-    const dock = document.getElementById('v2Dock');
-    if (!dock || dock.querySelector('.responsible-daily-dock')) return;
-
-    const button = document.createElement('button');
-    button.className = 'v2-dock-button responsible-daily-dock';
-    button.type = 'button';
-    button.innerHTML = '<span class="v2-dock-icon">☑</span><span class="v2-dock-label">Ansvar</span>';
-    button.addEventListener('click', window.showResponsibleDaily);
-
-    const plan = [...dock.querySelectorAll('.v2-dock-button')].find(item => /Plan/i.test(item.textContent || ''));
-    dock.insertBefore(button, plan || dock.lastElementChild);
-  }
-
-  function patchResponsibleHome() {
-    if (document.body.dataset.v2Role !== 'responsible') return;
-    document.querySelectorAll('.v2-action').forEach(button => {
-      const title = button.querySelector('.v2-action-copy strong');
-      const subtitle = button.querySelector('.v2-action-copy span');
-      if (title?.textContent.trim() === 'Ansvar & oppgåver') {
-        title.textContent = 'Dagens ansvar';
-        if (subtitle) subtitle.textContent = 'Felles arbeidsplan gjennom dagen';
-      }
-    });
-    ensureResponsibleDock();
-  }
-
-  let patchQueued = false;
-  const observer = new MutationObserver(() => {
-    if (patchQueued) return;
-    patchQueued = true;
-    requestAnimationFrame(() => {
-      patchQueued = false;
-      patchResponsibleHome();
-    });
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
-
-  window.setTimeout(patchResponsibleHome, 250);
 })();

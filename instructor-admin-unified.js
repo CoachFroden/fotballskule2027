@@ -17,7 +17,7 @@ return {days,instructors,groups:groups.length?groups:[1,2,3,4,5],users};
 function dateText(d){try{return new Intl.DateTimeFormat('nn-NO',{weekday:'long',day:'numeric',month:'long'}).format(new Date((d.date||d.id)+'T12:00:00'))}catch(_){return d.date||d.id}}
 window.showInstructorScheduleAdmin=async function(){
 try{await verify();cache=await fetchData();
-document.getElementById('pageIntro').innerHTML='<div class="hero-card"><p class="hero-kicker">Fotballskule '+e(yr())+'</p><h2>Instruktørfordeling</h2><p>Plasser instruktørar før og etter lunsj. Kople dei til innlogginga for automatisk krysseliste.</p></div>';
+document.getElementById('pageIntro').innerHTML='<div class="hero-card"><p class="hero-kicker">Fotballskule '+e(yr())+'</p><h2>Instruktørfordeling</h2><p>Plasser instruktørar på grupper før og etter lunsj.</p></div>';
 document.getElementById('mainMenu').innerHTML='<button class="back-button" type="button" onclick="showAdmin()">← Administrasjon</button>';
 document.getElementById('content').innerHTML='<div class="welcome-box instructor-admin"><label>Dag<select id="instructorAdminDay">'+cache.days.map(d=>'<option value="'+e(d.id)+'">'+e(dateText(d))+'</option>').join('')+'</select></label><div id="instructorAdminEditor"></div></div>';
 document.getElementById('instructorAdminDay').addEventListener('change',ev=>window.renderInstructorAdminDay(ev.target.value));
@@ -30,25 +30,47 @@ const target=document.getElementById('instructorAdminEditor');if(!target||!cache
 target.textContent='Hentar fordeling…';
 const doc=await ref().collection('instructorPlans').doc(dayId).get(),plan=doc.data()||{};
 const {instructors,groups,users}=cache;
-target.innerHTML='<p class="instructor-admin-hint">Endre gruppe i rullegardinane. Vel «Ikkje med» dersom instruktøren har fri. Begge øktene blir lagra samtidig.</p>'+
-'<div class="instructor-admin-header"><span>Instruktør</span><span>☀️ Før</span><span>🌤️ Etter</span></div>'+
-instructors.map(i=>'<div class="instructor-admin-row"><div><strong>'+e(i.name)+'</strong><label class="instructor-account-label">Innlogging<select data-link="'+e(i.id)+'"><option value="">Ikkje kopla</option>'+users.map(u=>'<option value="'+e(u.id)+'" '+(i.linkedUid===u.id?'selected':'')+'>'+e(u.name||u.email||u.id)+'</option>').join('')+'</select></label></div>'+
-['for','etter'].map(slot=>'<select aria-label="'+(slot==='for'?'Før':'Etter')+' lunsj: '+e(i.name)+'" data-slot="'+slot+'" data-id="'+e(i.id)+'"><option value="">Ikkje med</option>'+groups.map(g=>'<option value="'+g+'" '+(Number(plan[slot]?.[i.id])===g?'selected':'')+'>Gr. '+g+'</option>').join('')+'</select>').join('')+'</div>').join('')+
-'<div class="instructor-admin-actions"><button type="button" id="saveInstructorAssignments">💾 Lagre fordeling og koplingar</button><span id="instructorAdminStatus" role="status"></span></div>';
+target.innerHTML='<p class="instructor-admin-hint">Vel gruppe for kvar instruktør før og etter lunsj. Vel «Ikkje med» når instruktøren har fri.</p>'+
+'<div class="instructor-admin-list">'+instructors.map(i=>'<section class="instructor-admin-row"><h3>'+e(i.name)+'</h3><div class="instructor-admin-slots">'+
+['for','etter'].map(slot=>'<label class="instructor-admin-slot"><span>'+(slot==='for'?'☀️ Før lunsj':'🌤️ Etter lunsj')+'</span><select aria-label="'+(slot==='for'?'Før':'Etter')+' lunsj: '+e(i.name)+'" data-slot="'+slot+'" data-id="'+e(i.id)+'"><option value="">Ikkje med</option>'+groups.map(g=>'<option value="'+g+'" '+(Number(plan[slot]?.[i.id])===g?'selected':'')+'>Gruppe '+g+'</option>').join('')+'</select></label>').join('')+
+'</div></section>').join('')+'</div>'+
+'<div class="instructor-admin-actions"><button type="button" id="saveInstructorAssignments">💾 Lagre instruktørfordeling</button><span id="instructorAdminStatus" role="status"></span></div>';
 target.querySelector('#saveInstructorAssignments').addEventListener('click',()=>window.saveInstructorAdminDay(dayId));
 };
 window.saveInstructorAdminDay=async function(dayId){
 const target=document.getElementById('instructorAdminEditor'),button=target.querySelector('#saveInstructorAssignments'),status=target.querySelector('#instructorAdminStatus');
 button.disabled=true;status.textContent='Lagrar…';
 try{
-const u=await verify(),plan={for:{},etter:{}},links={};target.querySelectorAll('[data-slot]').forEach(s=>{if(s.value)plan[s.dataset.slot][s.dataset.id]=Number(s.value)});
-target.querySelectorAll('[data-link]').forEach(s=>{links[s.dataset.link]=s.value});
-const used=Object.values(links).filter(Boolean);if(new Set(used).size!==used.length)throw Error('Same innlogging kan ikkje koplast til fleire instruktørar.');
-const writes=[ref().collection('instructorPlans').doc(dayId).set({...plan,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:u.uid},{merge:true})];
-for(const i of cache.instructors){if((i.linkedUid||'')!==(links[i.id]||''))writes.push(ref().collection('instructors').doc(i.id).set({linkedUid:links[i.id]||'',updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:u.uid},{merge:true}));}
-await Promise.all(writes);
-cache.instructors.forEach(i=>{i.linkedUid=links[i.id]||''});
-status.textContent='✓ Lagra. Instruktørane får automatisk riktig gruppe.';
+const u=await verify(),plan={for:{},etter:{}};target.querySelectorAll('[data-slot]').forEach(s=>{if(s.value)plan[s.dataset.slot][s.dataset.id]=Number(s.value)});
+await ref().collection('instructorPlans').doc(dayId).set({...plan,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:u.uid},{merge:true});
+status.textContent='✓ Instruktørfordelinga er lagra.';
 }catch(err){status.textContent='Kunne ikkje lagre: '+err.message;}finally{button.disabled=false;}
+};
+
+window.showInstructorAccountLinks=async function(){
+try{
+ await verify();cache=await fetchData();
+ document.getElementById('pageIntro').innerHTML='<div class="hero-card"><p class="hero-kicker">Administrasjon</p><h2>Instruktørar – brukarkontoar</h2><p>Kople kvar instruktør til kontoen dei loggar inn med. Dette treng vanlegvis berre gjerast éin gong.</p></div>';
+ document.getElementById('mainMenu').innerHTML='<button class="back-button" type="button" onclick="showAdmin()">← Administrasjon</button>';
+ const {instructors,users}=cache;
+ const target=document.getElementById('content');
+ target.innerHTML='<div class="welcome-box instructor-admin"><div class="instructor-admin-list">'+instructors.map(i=>'<section class="instructor-admin-row"><h3>'+e(i.name)+'</h3><label class="instructor-account-label">Brukarkonto<select data-link="'+e(i.id)+'"><option value="">Ikkje kopla</option>'+users.map(u=>'<option value="'+e(u.id)+'" '+(i.linkedUid===u.id?'selected':'')+'>'+e(u.name||u.email||u.id)+'</option>').join('')+'</select></label></section>').join('')+'</div><div class="instructor-admin-actions"><button type="button" id="saveInstructorLinks">Lagre brukarkontoar</button><span id="instructorLinkStatus" role="status"></span></div></div>';
+ target.querySelector('#saveInstructorLinks').addEventListener('click',window.saveInstructorAccountLinks);
+}catch(err){alert(err.message);}
+};
+window.saveInstructorAccountLinks=async function(){
+ const target=document.getElementById('content'),button=target.querySelector('#saveInstructorLinks'),status=target.querySelector('#instructorLinkStatus');
+ button.disabled=true;status.textContent='Lagrar…';
+ try{
+  const u=await verify(),links={};
+  target.querySelectorAll('[data-link]').forEach(s=>{links[s.dataset.link]=s.value});
+  const used=Object.values(links).filter(Boolean);
+  if(new Set(used).size!==used.length)throw Error('Same innlogging kan ikkje koplast til fleire instruktørar.');
+  const writes=[];
+  for(const i of cache.instructors)if((i.linkedUid||'')!==(links[i.id]||''))writes.push(ref().collection('instructors').doc(i.id).set({linkedUid:links[i.id]||'',updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:u.uid},{merge:true}));
+  await Promise.all(writes);
+  cache.instructors.forEach(i=>{i.linkedUid=links[i.id]||''});
+  status.textContent='✓ Brukarkontoane er lagra.';
+ }catch(err){status.textContent='Kunne ikkje lagre: '+err.message;}finally{button.disabled=false;}
 };
 })();

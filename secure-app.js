@@ -65,6 +65,7 @@
   }
 
   function setIntro(title, text = '', kicker = '') {
+    document.body.classList.remove('login-screen', 'admin-landing');
     if (!intro()) return;
     const name = String(title || '').toLowerCase();
     document.body.dataset.matchPage = /deltakar|påmelding|gruppe/.test(name) ? 'participants'
@@ -121,15 +122,30 @@
     state.profile = null;
     state.yearId = null;
     updateHeader();
-    setIntro('Trygg innlogging', 'Personopplysningar og oppmøte er berre tilgjengeleg for godkjende brukarar.', 'Samnanger IL');
+    if (intro()) intro().innerHTML = '';
     setMenu([]);
+    document.body.classList.add('login-screen');
     content().innerHTML = `
-      <div class="welcome-box auth-card">
-        <h2>Logg inn</h2>
-        ${error ? status(error, 'error') : ''}
-        <button class="menu-button compact" type="button" onclick="loginGoogle()">Logg inn med Google</button><button class="menu-button compact" type="button" onclick="staffAuthForm('login')">Logg inn med e-post / opprett konto</button>
-        <p class="muted">Berre godkjende administratorar og medarbeidarar får tilgang til deltakaropplysningar.</p>
-      </div>`;
+      <section class="login-layout" aria-labelledby="loginTitle">
+        <div class="login-brand">
+          <span class="login-eyebrow">SAMNANGER IL · TINE FOTBALLSKULE</span>
+          <img class="login-brand-logo" src="./fotballskule-logo-2027.png" alt="Samnanger IL TINE Fotballskule 2027">
+          <h1 id="loginTitle">Velkomen til fotballskulen</h1>
+          <p>Éin trygg stad for instruktørar, ansvarlege og administrasjon.</p>
+          <div class="login-brand-foot">Fotballskule 2027 <span aria-hidden="true">·</span> Samnanger IL</div>
+        </div>
+        <div class="login-panel">
+          <div class="login-panel-top"><span class="login-lock" aria-hidden="true">🔒</span><span>Trygg innlogging</span></div>
+          <h2>Logg inn</h2>
+          <p class="login-panel-desc">Bruk kontoen din for å få tilgang til fotballskulen.</p>
+          ${error ? status(error, 'error') : ''}
+          <div class="login-actions">
+            <button class="menu-button login-google" type="button" onclick="loginGoogle()">Logg inn med Google</button>
+            <button class="menu-button login-email" type="button" onclick="staffAuthForm('login')">Logg inn med e-post</button>
+          </div>
+          <p class="login-help">Berre godkjende medarbeidarar har tilgang til deltakaropplysningar.</p>
+        </div>
+      </section>`;
   }
 
   window.loginGoogle = async function () {
@@ -137,7 +153,7 @@
       await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
     } catch (error) {
       console.error(error);
-      renderLogin('Google-innlogging mislukkast: ' + (error.code || 'ukjend feil'));
+      renderLogin(error.code === 'auth/unauthorized-domain' ? 'Denne testadressa er ikkje godkjend for Google-innlogging i Firebase enno. Bruk e-postinnlogging, eller legg domenet til under Firebase Authentication → Authorized domains.' : 'Google-innlogging mislukkast: ' + (error.code || 'ukjend feil'));
     }
   };
 
@@ -446,6 +462,7 @@
   window.showAdmin = function () {
     if (!isAdmin()) return showHome();
     setIntro('Administrasjon', 'Persondata, import og årgangar er berre synleg for administrator.', `Fotballskule ${state.yearId || ''}`);
+    document.body.classList.add('admin-landing');
     setMenu([
       card('🔐', 'Tilgangssøknader', 'Godkjenn nye medarbeidarar', 'staffAccessAdmin()'),
       card('📥', 'Importer Excel/CSV', 'Deltakarar, instruktørar eller vaksne', 'showImport()'),
@@ -458,7 +475,7 @@
       card('🗂️', 'Årgangar og arkiv', 'Opprett neste år og arkiver ferdige år', 'showYearAdmin()'),
       card('🚨', 'Manglande oppmøte', 'Samla oversikt og kontaktinfo for admin', 'showMissingAdmin()', 'danger')
     ], back('Framside', 'showHome()'));
-    content().innerHTML = `<div class="welcome-box">${yearSelector()}${state.year?.status === 'archived' ? status('Årgangen er arkivert. Du kan sjå data, men import og redigering er sperra i appen.', 'warning') : '<p>Vel funksjon over.</p>'}</div>`;
+    content().innerHTML = `<div class="welcome-box admin-year-panel"><div class="admin-year-title">Aktiv årgang</div>${yearSelector()}${state.year?.status === 'archived' ? status('Årgangen er arkivert. Du kan sjå data, men import og redigering er sperra i appen.', 'warning') : '<p class="admin-year-hint">Vel ein funksjon frå korta ovanfor.</p>'}</div>`;
   };
 
   function assertWritable() {
@@ -703,8 +720,14 @@
     }
   }
 
-  window.showAdminParticipants = function () {
+  window.refreshParticipants2027 = async function () {
+    if (!isAdmin() || String(state.yearId) !== '2027') return;
+    await loadYear(state.yearId);
+  };
+
+  window.showAdminParticipants = async function () {
     if (!isAdmin()) return;
+    try { await loadYear(state.yearId); } catch (error) { console.error('Oppdatering av deltakarlista:',error); }
     setIntro('Deltakarar', 'Sensitive opplysningar er skilde frå data instruktørane kan lese.', `Fotballskule ${state.yearId}`);
     setMenu([], back('Administrasjon', 'showAdmin()'));
     content().innerHTML = `<div class="welcome-box participant-admin-page">${String(state.yearId) === '2027' && state.year?.status !== 'archived' ? '<button class="menu-button compact success" onclick="showManualRegistration2027()">＋ Legg til deltakar</button>' : ''}<div class="toolbar"><input id="participantSearch" type="search" placeholder="Søk namn…" oninput="renderAdminParticipants()"><select id="participantGroup" onchange="renderAdminParticipants()"><option value="">Alle grupper</option>${[1,2,3,4,5,6,7,8].map(g => `<option value="${g}">Gruppe ${g}</option>`).join('')}</select></div><div id="adminParticipantList"></div></div>`;

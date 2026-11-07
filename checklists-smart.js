@@ -132,7 +132,9 @@
     if (context.day && auth.currentUser) {
       try {
         const planDoc = await db.collection('years').doc(year).collection('instructorPlans').doc(context.day.id).get();
-        const assignedGroup = Number(planDoc.data()?.[context.slot]?.[auth.currentUser.uid]);
+        const instructorSnap = await db.collection('years').doc(year).collection('instructors').get();
+        const linked = instructorSnap.docs.find(doc => doc.data().linkedUid === auth.currentUser.uid);
+        const assignedGroup = linked ? Number(planDoc.data()?.[context.slot]?.[linked.id]) : 0;
         if (assignedGroup && groups.includes(assignedGroup)) {
           await originalShowChecklistSession(context.day.id, context.slot, assignedGroup);
           injectSmartSessionTools(assignedGroup, context);
@@ -143,7 +145,7 @@
       }
     }
 
-    setIntro('Krysseliste no', 'Vel gruppa du har no. Rett liste blir vald automatisk ut frå dag og klokkeslett.', `Fotballskule ${year}`);
+    setIntro('Oppmøte', context.day ? 'Gruppa di blir henta frå instruktørfordelinga. Du kan velje manuelt ved behov.' : 'Ingen aktiv fotballskuledag i dag. Vel ei gruppe for å sjå tidlegare eller komande lister.', `Fotballskule ${year}`);
     smartNav();
 
     const content = document.getElementById('content');
