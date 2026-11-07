@@ -37,7 +37,7 @@
         missingTotal+=missing.length;
         if(missing.length){
           sections+='<section class="missing-group"><h3>Gruppe '+group+' <span>'+missing.length+' meldt manglande</span></h3>'+
-            missing.map(p=>{const unregistered=!arrived.has(p.id);const slots=['for','etter'].filter(slot=>slotActive[slot]&&maps[slot].get(p.id)!==true);return '<div class="missing-person '+(unregistered?'missing-unregistered':'')+'"><strong>'+esc(p.name)+'</strong><small>'+(unregistered?'⚠ Ikkje registrert ved ankomst · Må registrerast først':slots.map(slot=>slot==='for'?'Før lunsj':'Etter lunsj').join(' og '))+'</small>'+(unregistered?'':'<button type="button" data-mark="'+esc(p.id)+'" data-group="'+group+'" data-slot="'+slots[0]+'">✓ Marker møtt</button>')+'</div>';}).join('')+'</section>';
+            missing.map(p=>{const unregistered=!arrived.has(p.id);const slots=['for','etter'].filter(slot=>slotActive[slot]&&maps[slot].get(p.id)!==true);return '<div class="missing-person '+(unregistered?'missing-unregistered':'')+'"><strong>'+esc(p.name)+'</strong><small>'+(unregistered?'⚠ Ikkje registrert ved ankomst · Må registrerast først':slots.map(slot=>slot==='for'?'Før lunsj':'Etter lunsj').join(' og '))+'</small>'+(unregistered?'':'<button type="button" data-mark="'+esc(p.id)+'" data-group="'+group+'" data-slots="'+slots.join(',')+'" data-name="'+esc(p.name)+'">✓ Marker møtt</button>')+'</div>';}).join('')+'</section>';
         }
 
       }
@@ -57,22 +57,48 @@
       paint('.missing-summary.has-missing',{'background-color':'#fff0ed','border-color':'#cf968c'});
       paint('.missing-person.missing-unregistered',{'background-color':'#ffe1e1','border':'2px solid #d32f2f','border-radius':'10px','padding':'12px','margin':'7px 0'});
       paint('.missing-person.missing-unregistered strong, .missing-person.missing-unregistered small',{'color':'#8c1717'});
-      root.querySelectorAll('[data-mark]').forEach(button=>button.addEventListener('click',async()=>{
-        const id=button.dataset.mark,group=button.dataset.group;
+      async function markPresent(id,group,slots,button){
         button.disabled=true;
         try{
           const u=await admin();
-          {
-            const arrival=await ref.collection('arrivalRegistration').doc(id).get();
-            if(arrival.data()?.registered!==true){alert('Barnet må registrerast ved ankomst først.');await load(day.id);return;}
+          const arrival=await ref.collection('arrivalRegistration').doc(id).get();
+          if(arrival.data()?.registered!==true){
+            alert('Barnet må registrerast ved ankomst først.');
+            await load(day.id);return;
           }
-          const slot=button.dataset.slot;
-          if(!['for','etter'].includes(slot)||!slotActive[slot])throw Error('Ugyldig økt.');
-          const entry=ref.collection('attendance').doc(day.id+'_'+slot+'_g'+group).collection('entries').doc(id);
-          await entry.set({present:true,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:u.uid},{merge:true});
+          if(!slots.length||slots.some(slot=>!['for','etter'].includes(slot)||!slotActive[slot]))throw Error('Ugyldig økt.');
+          const batch=db.batch();
+          slots.forEach(slot=>{
+            const entry=ref.collection('attendance').doc(day.id+'_'+slot+'_g'+group).collection('entries').doc(id);
+            batch.set(entry,{present:true,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:u.uid},{merge:true});
+          });
+          await batch.commit();
           await load(day.id);
         }catch(e){alert('Kunne ikkje lagre: '+e.message);button.disabled=false;}
+      }
+      root.querySelectorAll('[data-mark]').forEach(button=>button.addEventListener('click',()=>{
+        const id=button.dataset.mark,group=button.dataset.group;
+        const slots=(button.dataset.slots||'').split(',').filter(Boolean);
+        if(slots.length===1){void markPresent(id,group,slots,button);return;}
+        const name=button.dataset.name||'deltakaren';
+        const existing=root.querySelector('.missing-choice');if(existing)existing.remove();
+        const dialog=document.createElement('div');
+        dialog.className='missing-choice';
+        dialog.setAttribute('role','dialog');
+        dialog.setAttribute('aria-label','Vel oppmøte for '+name);
+        dialog.innerHTML='<div class="missing-choice-card"><strong>Marker oppmøte</strong><p>'+esc(name)+'</p><small>Vel når barnet var til stades:</small><div class="missing-choice-options"><button type="button" data-choice="for">Før lunsj</button><button type="button" data-choice="etter">Etter lunsj</button><button type="button" data-choice="begge">Begge økter</button></div><button type="button" class="missing-choice-cancel">Avbryt</button></div>';
+        root.appendChild(dialog);
+        const close=()=>dialog.remove();
+        dialog.querySelector('.missing-choice-cancel').addEventListener('click',close);
+        dialog.addEventListener('click',e=>{if(e.target===dialog)close();});
+        dialog.querySelectorAll('[data-choice]').forEach(choice=>choice.addEventListener('click',()=>{
+          const selected=choice.dataset.choice==='begge'?['for','etter']:[choice.dataset.choice];
+          close();
+          void markPresent(id,group,selected,button);
+        }));
+        dialog.querySelector('[data-choice]').focus();
       }));
+
     }catch(e){root.innerHTML='<p role="alert">'+esc(e.message)+'</p>';}
   }
   window.showSimpleMissingAdmin=async function(){
