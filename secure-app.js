@@ -463,10 +463,10 @@
       card('🧑', 'Vaksne', 'Ansvarlege, kjøkken, førstehjelp og andre roller', 'showAdminAdults()'),
       card('☑', 'Krysselister', 'Kontroller oppmøte per gruppe og dag', 'showChecklists()'),
       card('📅', 'Dagar, program og meny', 'Legg inn det instruktørane skal sjå', 'showAdminDays()'),
-      card('🗂️', 'Årgangar og arkiv', 'Opprett neste år og arkiver ferdige år', 'showYearAdmin()'),
+      card('🗂️', 'Administrer årgangar', 'Opprett nye og arkiver ferdige år', 'showYearAdmin()'),
       card('🚨', 'Manglande oppmøte', 'Samla oversikt og kontaktinfo for admin', 'showMissingAdmin()', 'danger')
-    ], back('Framside', 'showHome()'));
-    content().innerHTML = `<div class="welcome-box admin-year-panel"><div class="admin-year-title">Aktiv årgang</div>${yearSelector()}${state.year?.status === 'archived' ? status('Årgangen er arkivert. Du kan sjå data, men import og redigering er sperra i appen.', 'warning') : '<p class="admin-year-hint">Vel ein funksjon frå korta ovanfor.</p>'}</div>`;
+    ], '');
+    content().innerHTML = `<div class="welcome-box admin-year-panel"><div class="admin-year-title">Vel årgang</div>${yearSelector()}${state.year?.status === 'archived' ? status('Årgangen er arkivert. Du kan sjå data, men import og redigering er sperra i appen.', 'warning') : '<p class="admin-year-hint">Vel ein funksjon frå korta ovanfor.</p>'}</div>`;
   };
 
   function assertWritable() {
