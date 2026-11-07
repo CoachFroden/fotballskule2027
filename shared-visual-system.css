@@ -152,3 +152,8 @@ body.v2-enabled[data-v2-role="responsible"] #v2Dock.v2-dock>.v2-dock-button{
  padding:5px 4px!important;
  border-radius:13px!important;
 }
+
+/* Ansvar har Heim i botnmenyen: ikkje vis dobbel Framside-knapp. */
+body.v2-enabled[data-v2-role="responsible"] #mainMenu > button.back-button[onclick="showHome()"]{
+ display:none!important;
+}
