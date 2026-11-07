@@ -731,19 +731,21 @@
     const rows = state.participants.filter(p => (!q || String(p.name).toLowerCase().includes(q)) && (!group || Number(p.group) === group));
     el('adminParticipantList').innerHTML = `<div class="participant-admin-grid">${rows.map(p => {
       const priv = state.participantPrivate.get(p.id) || {};
-      return `<article class="participant-admin-card">
-        <div class="participant-admin-heading"><h3>${escapeHtml(p.name)}</h3><span>Gruppe ${escapeHtml(p.group || '-')}</span></div>
-        <p class="participant-admin-meta">Født ${escapeHtml(p.birthYear || '-')} · T-skjorte ${escapeHtml(p.tshirt || '-')}</p>
-        <div class="participant-admin-info">
-          ${priv.allergy ? `<div class="participant-admin-allergy"><strong>Allergi/mat:</strong> ${escapeHtml(priv.allergy)}</div>` : ''}
-          ${priv.guardian ? `<p><strong>Føresett:</strong> ${escapeHtml(priv.guardian)}</p>` : ''}
-          ${priv.notes ? `<p><strong>Merknad:</strong> ${escapeHtml(priv.notes)}</p>` : ''}
+      return `<details class="participant-admin-card">
+        <summary class="participant-admin-heading"><span class="participant-admin-name">${escapeHtml(p.name)}</span><span class="participant-admin-group">Gruppe ${escapeHtml(p.group || '-')}</span><span class="participant-admin-expand" aria-hidden="true">⌄</span></summary>
+        <div class="participant-admin-details">
+          <p class="participant-admin-meta">Født ${escapeHtml(p.birthYear || '-')} · T-skjorte ${escapeHtml(p.tshirt || '-')}</p>
+          <div class="participant-admin-info">
+            ${priv.allergy ? `<div class="participant-admin-allergy"><strong>Allergi/mat:</strong> ${escapeHtml(priv.allergy)}</div>` : ''}
+            ${priv.guardian ? `<p><strong>Føresett:</strong> ${escapeHtml(priv.guardian)}</p>` : ''}
+            ${priv.notes ? `<p><strong>Merknad:</strong> ${escapeHtml(priv.notes)}</p>` : ''}
+          </div>
+          ${p.formsId ? `<div class="participant-admin-actions">
+            <button type="button" class="participant-admin-edit" onclick="editFormsParticipant2027('${escapeHtml(p.formsId)}')">Rediger opplysningar</button>
+            <label>Flytt til gruppe<select aria-label="Flytt ${escapeHtml(p.name)} til gruppe" onchange="changeFormsGroup2027('${escapeHtml(p.formsId)}', this.value)">${[1,2,3,4,5].map(g => `<option value="${g}" ${Number(p.group) === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>
+          </div>` : ''}
         </div>
-        ${p.formsId ? `<div class="participant-admin-actions">
-          <button type="button" class="participant-admin-edit" onclick="editFormsParticipant2027('${escapeHtml(p.formsId)}')">Rediger opplysningar</button>
-          <label>Flytt til gruppe<select aria-label="Flytt ${escapeHtml(p.name)} til gruppe" onchange="changeFormsGroup2027('${escapeHtml(p.formsId)}', this.value)">${[1,2,3,4,5].map(g => `<option value="${g}" ${Number(p.group) === g ? 'selected' : ''}>${g}</option>`).join('')}</select></label>
-        </div>` : ''}
-      </article>`;
+      </details>`;
     }).join('') || '<p>Ingen treff.</p>'}</div>`;
   };
 
