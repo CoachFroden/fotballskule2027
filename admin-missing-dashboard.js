@@ -40,7 +40,6 @@
       }
       const label=day.date||day.id;
       root.innerHTML='<div class="missing-summary '+(missingTotal?'has-missing':'')+'"><strong>'+missingTotal+' barn registrerte som manglande</strong><span>'+esc(label)+'</span></div>'+
-        '<div class="missing-status"><span>☀️ Før lunsj: '+(slotActive.for?'Viser registreringar':'Ikkje starta')+'</span><span>🌤️ Etter lunsj: '+(slotActive.etter?'Viser registreringar':'Ikkje starta')+'</span></div>'+
         '<div class="missing-groups">'+sections+'</div>';
       // Set readable colours directly on these generated elements; older theme rules
       // otherwise override the page-specific stylesheet on mobile.
