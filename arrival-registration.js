@@ -12,7 +12,7 @@
   }
   window.showArrivalRegistration=async function(){
     const host=document.getElementById('content');if(!host)return;
-    try{await permitted();}catch(e){alert(e.message);return;}
+    try{await permitted();if(typeof window.refreshParticipants2027==='function')await window.refreshParticipants2027();}catch(e){alert(e.message);return;}
     if(stop){stop();stop=null;}
     document.getElementById('pageIntro').innerHTML='';
     document.getElementById('mainMenu').innerHTML='';
