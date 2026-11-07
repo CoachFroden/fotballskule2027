@@ -157,3 +157,14 @@ body.v2-enabled[data-v2-role="responsible"] #v2Dock.v2-dock>.v2-dock-button{
 body.v2-enabled[data-v2-role="responsible"] #mainMenu > button.back-button[onclick="showHome()"]{
  display:none!important;
 }
+
+/* Mobil: foresette og ringeknappar på eigne, ryddige rader. */
+@media (max-width: 600px) {
+ body.v2-enabled[data-v2-role="responsible"] #content .safety-person-card{padding:15px!important}
+ body.v2-enabled[data-v2-role="responsible"] #content .safety-person-card .safety-group{margin-bottom:8px!important}
+ body.v2-enabled[data-v2-role="responsible"] #content .safety-person-card .safety-contact-footer{margin-top:9px;padding-top:11px}
+ body.v2-enabled[data-v2-role="responsible"] #content .safety-guardian-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px;padding:10px 0;border-bottom:1px solid #e2edf3}
+ body.v2-enabled[data-v2-role="responsible"] #content .safety-guardian-row:last-child{border-bottom:0;padding-bottom:0}
+ body.v2-enabled[data-v2-role="responsible"] #content .safety-guardian-name{font-weight:600;color:#17334e!important;overflow-wrap:anywhere;flex:1 1 125px}
+ body.v2-enabled[data-v2-role="responsible"] #content .safety-phone-button{min-height:40px;padding:8px 10px;white-space:nowrap}
+}
