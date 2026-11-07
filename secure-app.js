@@ -711,8 +711,14 @@
     }
   }
 
-  window.showAdminParticipants = function () {
+  window.refreshParticipants2027 = async function () {
+    if (!isAdmin() || String(state.yearId) !== '2027') return;
+    await loadYear(state.yearId);
+  };
+
+  window.showAdminParticipants = async function () {
     if (!isAdmin()) return;
+    try { await loadYear(state.yearId); } catch (error) { console.error('Oppdatering av deltakarlista:',error); }
     setIntro('Deltakarar', 'Sensitive opplysningar er skilde frå data instruktørane kan lese.', `Fotballskule ${state.yearId}`);
     setMenu([], back('Administrasjon', 'showAdmin()'));
     content().innerHTML = `<div class="welcome-box participant-admin-page">${String(state.yearId) === '2027' && state.year?.status !== 'archived' ? '<button class="menu-button compact success" onclick="showManualRegistration2027()">＋ Legg til deltakar</button>' : ''}<div class="toolbar"><input id="participantSearch" type="search" placeholder="Søk namn…" oninput="renderAdminParticipants()"><select id="participantGroup" onchange="renderAdminParticipants()"><option value="">Alle grupper</option>${[1,2,3,4,5,6,7,8].map(g => `<option value="${g}">Gruppe ${g}</option>`).join('')}</select></div><div id="adminParticipantList"></div></div>`;
