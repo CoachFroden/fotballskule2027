@@ -37,7 +37,7 @@
         missingTotal+=missing.length;
         if(missing.length){
           sections+='<section class="missing-group"><h3>Gruppe '+group+' <span>'+missing.length+' meldt manglande</span></h3>'+
-            missing.map(p=>{const unregistered=firstDay&&!arrived.has(p.id);const slots=['for','etter'].filter(slot=>slotActive[slot]&&maps[slot].get(p.id)!==true);return '<div class="missing-person '+(unregistered?'missing-unregistered':'')+'"><strong>'+esc(p.name)+'</strong><small>'+(unregistered?'⚠ Ikkje registrert ved ankomst · Må registrerast først':slots.map(slot=>slot==='for'?'Før lunsj':'Etter lunsj').join(' og '))+'</small>'+(unregistered?'':'<button type="button" data-mark="'+esc(p.id)+'" data-group="'+group+'">✓ Marker møtt</button>')+'</div>';}).join('')+'</section>';
+            missing.map(p=>{const unregistered=firstDay&&!arrived.has(p.id);const slots=['for','etter'].filter(slot=>slotActive[slot]&&maps[slot].get(p.id)!==true);return '<div class="missing-person '+(unregistered?'missing-unregistered':'')+'"><strong>'+esc(p.name)+'</strong><small>'+(unregistered?'⚠ Ikkje registrert ved ankomst · Må registrerast først':slots.map(slot=>slot==='for'?'Før lunsj':'Etter lunsj').join(' og '))+'</small>'+(unregistered?'':slots.map(slot=>'<button type="button" data-mark="'+esc(p.id)+'" data-group="'+group+'" data-slot="'+slot+'">✓ Møtt '+(slot==='for'?'før':'etter')+' lunsj</button>').join(''))+'</div>';}).join('')+'</section>';
         }
 
       }
@@ -64,20 +64,10 @@
             const arrival=await ref.collection('arrivalRegistration').doc(id).get();
             if(arrival.data()?.registered!==true){alert('Barnet må registrerast ved ankomst først.');await load(day.id);return;}
           }
-          const groupIndex=groups.indexOf(Number(group));
-          const slots=['for','etter'].filter(slot=>slotActive[slot]);
-          const pending=slots.filter(slot=>{
-            const index=slot==='for'?0:1;
-            const doc=docs[groupIndex*2+index].docs.find(d=>d.id===id);
-            return doc?.data().present!==true;
-          });
-          if(!pending.length){await load(day.id);return;}
-          const batch=db.batch();
-          pending.forEach(slot=>{
-            const entry=ref.collection('attendance').doc(day.id+'_'+slot+'_g'+group).collection('entries').doc(id);
-            batch.set(entry,{present:true,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:u.uid},{merge:true});
-          });
-          await batch.commit();
+          const slot=button.dataset.slot;
+          if(!['for','etter'].includes(slot)||!slotActive[slot])throw Error('Ugyldig økt.');
+          const entry=ref.collection('attendance').doc(day.id+'_'+slot+'_g'+group).collection('entries').doc(id);
+          await entry.set({present:true,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:u.uid},{merge:true});
           await load(day.id);
         }catch(e){alert('Kunne ikkje lagre: '+e.message);button.disabled=false;}
       }));
