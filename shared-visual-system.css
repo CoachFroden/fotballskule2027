@@ -127,3 +127,15 @@ body.v2-enabled #content .safety-person-card .safety-phone-actions{display:flex;
 body.v2-enabled #content .safety-person-card .safety-phone-button{display:inline-flex;align-items:center;gap:6px;background:#176c65!important;color:#fff!important;text-decoration:none;border-radius:10px;padding:10px 12px;min-height:42px;font-size:13px;font-weight:750}
 body.v2-enabled #content .safety-person-card .safety-phone-button span{color:#fff!important}
 @media(max-width:420px){body.v2-enabled #content .safety-filter-panel{grid-template-columns:1fr!important}body.v2-enabled #content .safety-filter-panel>label,body.v2-enabled #content .safety-filter-panel>input{grid-column:1}body.v2-enabled #content .safety-summary-row .contact-card{padding:13px!important}}
+
+
+/* Four equal navigation slots for responsible role; no phantom fifth column. */
+body.v2-enabled[data-v2-role="responsible"] #v2Dock.v2-dock{
+ display:grid!important;
+ grid-template-columns:repeat(4,minmax(0,1fr))!important;
+ grid-auto-flow:row!important;
+ grid-auto-columns:auto!important;
+}
+body.v2-enabled[data-v2-role="responsible"] #v2Dock.v2-dock>.v2-dock-button{
+ width:100%!important;min-width:0!important;box-sizing:border-box!important;
+}
