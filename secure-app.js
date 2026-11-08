@@ -723,8 +723,8 @@
     if (!isAdmin()) return;
     try { await loadYear(state.yearId); } catch (error) { console.error('Oppdatering av deltakarlista:',error); }
     setIntro('Deltakarar', 'Sensitive opplysningar er skilde frå data instruktørane kan lese.', `Fotballskule ${state.yearId}`);
-    setMenu([], back('Administrasjon', 'showAdmin()'));
-    content().innerHTML = `<div class="welcome-box participant-admin-page">${String(state.yearId) === '2027' && state.year?.status !== 'archived' ? '<div class="participant-admin-top-actions"><button class="menu-button compact success" onclick="showManualRegistration2027()">＋ Legg til deltakar</button><button type="button" class="participant-admin-restore-toggle" onclick="showDeletedParticipants2027()">↩ Vis sletta deltakarar</button></div>' : ''}<div class="toolbar"><input id="participantSearch" type="search" placeholder="Søk namn…" oninput="renderAdminParticipants()"><select id="participantGroup" onchange="renderAdminParticipants()"><option value="">Alle grupper</option>${[1,2,3,4,5,6,7,8].map(g => `<option value="${g}">Gruppe ${g}</option>`).join('')}</select></div><div id="adminParticipantList"></div></div>`;
+    setMenu([]);
+    content().innerHTML = `<div class="welcome-box participant-admin-page">${String(state.yearId) === '2027' && state.year?.status !== 'archived' ? '<div class="participant-admin-top-actions"><button type="button" class="participant-admin-add" onclick="showManualRegistration2027()">＋ Legg til deltakar</button><button type="button" class="participant-admin-restore-toggle" onclick="showDeletedParticipants2027()">↩ Vis sletta deltakarar</button></div>' : ''}<div class="toolbar"><input id="participantSearch" type="search" placeholder="Søk namn…" oninput="renderAdminParticipants()"><select id="participantGroup" onchange="renderAdminParticipants()"><option value="">Alle grupper</option>${[1,2,3,4,5,6,7,8].map(g => `<option value="${g}">Gruppe ${g}</option>`).join('')}</select></div><div id="adminParticipantList"></div></div>`;
     renderAdminParticipants();
   };
 
