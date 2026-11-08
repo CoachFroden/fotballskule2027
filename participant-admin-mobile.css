@@ -51,3 +51,10 @@ body:has(.participant-admin-page) .participant-restore-row small{font-size:11px;
 body:has(.participant-admin-page) .participant-restore-row button{flex-shrink:0;min-height:36px;background:#e5f5e9;color:#17643c;border:1px solid #8bc3a1;border-radius:8px;padding:7px 9px;font-size:12px;font-weight:750}
 body:has(.participant-admin-page) .participant-restore-row button:disabled{opacity:.6}
 @media(max-width:450px){body:has(.participant-admin-page) .participant-restore-heading{flex-wrap:wrap}}
+
+/* Små, ulike handlingsknappar på deltakarsida. */
+body:has(.participant-admin-page) .participant-admin-top-actions{display:flex!important;flex-wrap:wrap!important;gap:7px!important;margin:0 0 10px!important}
+body:has(.participant-admin-page) .participant-admin-top-actions .participant-admin-add,
+body:has(.participant-admin-page) .participant-admin-top-actions .participant-admin-restore-toggle{display:inline-flex!important;align-items:center!important;justify-content:center!important;width:auto!important;min-width:0!important;min-height:32px!important;max-height:36px!important;margin:0!important;padding:6px 10px!important;border-radius:7px!important;font-size:11px!important;line-height:1.15!important;font-weight:750!important;box-shadow:none!important;white-space:normal!important;cursor:pointer}
+body:has(.participant-admin-page) .participant-admin-top-actions .participant-admin-add{background:#237a51!important;border:1px solid #237a51!important;color:#fff!important}
+body:has(.participant-admin-page) .participant-admin-top-actions .participant-admin-restore-toggle{background:#e8edf3!important;border:1px solid #bacbd9!important;color:#35546d!important}
