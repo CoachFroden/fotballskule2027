@@ -826,7 +826,7 @@
     const participant = state.participants.find(p => p.formsId === formsId);
     if (!participant) return;
     const name = participant.name || 'deltakaren';
-    if (!confirm('Slette '+name+' frå fotballskulen?\\n\\nPåmeldinga blir bevart i Firebase, men blir sperra frå ny import. Dette fjernar også deltakaren frå oppmøtelistene.')) return;
+    if (!confirm('Slette '+name+' frå fotballskulen?\n\nPåmeldinga blir bevart i Firebase, men blir sperra frå ny import. Dette fjernar også deltakaren frå oppmøtelistene.')) return;
     const button = document.querySelector('.participant-admin-delete');
     try {
       if (button) button.disabled = true;
@@ -843,7 +843,7 @@
       showAdminParticipants();
     } catch (error) {
       console.error('Slett deltakar:',error);
-      alert('Kunne ikkje fullføre slettinga: '+error.message+'\\nPrøv å opne deltakarlista på nytt.');
+      alert('Kunne ikkje fullføre slettinga: '+error.message+'\nPrøv å opne deltakarlista på nytt.');
       if (button) button.disabled = false;
     }
   };
@@ -905,7 +905,7 @@
       alert('Programdagen '+date+' er lagra.');
     } catch (error) {
       console.error('Kunne ikkje lagre programdag:', error);
-      alert('Kunne ikkje lagre programdagen: '+(error?.message || 'Ukjend feil')+'\\n\\nKontroller at du er innlogga som administrator og prøv igjen.');
+      alert('Kunne ikkje lagre programdagen: '+(error?.message || 'Ukjend feil')+'\n\nKontroller at du er innlogga som administrator og prøv igjen.');
       saveButtons.forEach(button => { button.disabled = false; button.textContent = button.dataset.originalText || 'Lagre'; });
     }
   };
