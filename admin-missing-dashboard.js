@@ -33,11 +33,11 @@
       for(let gi=0;gi<groups.length;gi++){
         const group=groups[gi],members=people.filter(p=>Number(p.group)===group);
         const maps={for:new Map(docs[gi*2].docs.map(d=>[d.id,d.data().present])),etter:new Map(docs[gi*2+1].docs.map(d=>[d.id,d.data().present]))};
-        const missing=members.filter(p=>(firstDay&&!arrived.has(p.id))||['for','etter'].some(slot=>slotActive[slot]&&maps[slot].get(p.id)!==true));
+        const missing=members.filter(p=>(!arrived.has(p.id))||['for','etter'].some(slot=>slotActive[slot]&&maps[slot].get(p.id)!==true));
         missingTotal+=missing.length;
         if(missing.length){
           sections+='<section class="missing-group"><h3>Gruppe '+group+' <span>'+missing.length+' meldt manglande</span></h3>'+
-            missing.map(p=>{const unregistered=firstDay&&!arrived.has(p.id);const slots=['for','etter'].filter(slot=>slotActive[slot]&&maps[slot].get(p.id)!==true);return '<div class="missing-person '+(unregistered?'missing-unregistered':'')+'"><strong>'+esc(p.name)+'</strong><small>'+(unregistered?'⚠ Ikkje registrert ved ankomst · Må registrerast først':slots.map(slot=>slot==='for'?'Før lunsj':'Etter lunsj').join(' og '))+'</small>'+(unregistered?'':'<button type="button" data-mark="'+esc(p.id)+'" data-group="'+group+'" data-slots="'+slots.join(',')+'" data-name="'+esc(p.name)+'">✓ Marker møtt</button>')+'</div>';}).join('')+'</section>';
+            missing.map(p=>{const unregistered=!arrived.has(p.id);const slots=['for','etter'].filter(slot=>slotActive[slot]&&maps[slot].get(p.id)!==true);return '<div class="missing-person '+(unregistered?'missing-unregistered':'')+'"><strong>'+esc(p.name)+'</strong><small>'+(unregistered?'⚠ Ikkje registrert ved ankomst · Må registrerast først':slots.map(slot=>slot==='for'?'Før lunsj':'Etter lunsj').join(' og '))+'</small>'+(unregistered?'':'<button type="button" data-mark="'+esc(p.id)+'" data-group="'+group+'" data-slots="'+slots.join(',')+'" data-name="'+esc(p.name)+'">✓ Marker møtt</button>')+'</div>';}).join('')+'</section>';
         }
 
       }
