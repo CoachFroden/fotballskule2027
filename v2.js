@@ -267,7 +267,7 @@
     if (role === 'responsible') {
       return [
         action('🎒', 'Registrering', 'Innsjekk første dag', 'showArrivalRegistration', 'green', 'arrival'),
-        action('🚑', 'Tryggleik & kontakt', 'Allergi, helse og ring foresatte', 'showResponsibleSafety', 'red', 'safety'),
+        action('👟', 'Deltakarar', 'Namn, allergi og føresette', 'showResponsibleParticipants', 'red', 'more'),
         action('🧭', 'Dagens ansvar', 'Felles arbeidsplan gjennom dagen', 'showResponsibleDaily', 'green', 'more'),
         action('🔄', 'Instruktørplan', 'Kven har kva gruppe', 'showInstructorSchedule', 'violet', 'plan'),
         action('📅', 'Dagsprogram', 'Tid, mat og beskjedar', 'showDays', 'orange', 'more'),
@@ -286,7 +286,7 @@
   }
 
   function responsibleQuickHome(data) {
-    const alert = data.healthCount ? '<div class="responsible-home-alert"><span>!</span><p><strong>Viktig helseinformasjon</strong><small>'+esc(data.healthCount)+' deltakarar har registrert helse- eller allergiinformasjon. Sjå Tryggleik og kontakt.</small></p></div>' : '';
+    const alert = data.healthCount ? '<div class="responsible-home-alert"><span>!</span><p><strong>Viktig helseinformasjon</strong><small>'+esc(data.healthCount)+' deltakarar har registrert helse- eller allergiinformasjon. Sjå Deltakarar.</small></p></div>' : '';
     return '<div class="instructor-mobile-home instructor-stadium responsible-stadium">'+
       '<section class="instructor-welcome instructor-hero">'+
         '<div class="instructor-hero-glow" aria-hidden="true"></div><div class="instructor-pitch" aria-hidden="true"><i></i><b></b></div>'+
@@ -299,8 +299,9 @@
       '<div class="instructor-action-intro"><div><span>DIN ARBEIDSFLATE</span><h2>Det viktigaste i dag</h2></div><span class="instructor-action-line"></span></div>'+
       '<div class="instructor-primary-grid">'+
         '<button class="instructor-primary instructor-attendance" type="button" onclick="showArrivalRegistration()"><span class="instructor-action-symbol" aria-hidden="true">🎒</span><span class="instructor-action-copy"><strong>Registrering</strong><small>Innsjekk første dag</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
-        '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showResponsibleSafety\',\'safety\')"><span class="instructor-action-symbol" aria-hidden="true">✚</span><span class="instructor-action-copy"><strong>Tryggleik og kontakt</strong><small>Helse, allergi og føresette</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
+
         '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showResponsibleParticipants\',\'more\')"><span class="instructor-action-symbol" aria-hidden="true">👟</span><span class="instructor-action-copy"><strong>Deltakarar</strong><small>Namn, allergi og føresette</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
+        '<button class="instructor-primary instructor-attendance" type="button" onclick="v2Open(\'showDays\',\'more\')"><span class="instructor-action-symbol" aria-hidden="true">📅</span><span class="instructor-action-copy"><strong>Program &amp; meny</strong><small>Aktivitetar, tider og mat</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
         '<button class="instructor-primary instructor-exercises" type="button" onclick="v2Open(\'showResponsibleDaily\',\'responsibility\')"><span class="instructor-action-symbol" aria-hidden="true">✓</span><span class="instructor-action-copy"><strong>Dagens ansvar</strong><small>Oppgåver og plan gjennom dagen</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
         '<button class="instructor-primary responsible-staff-action" type="button" onclick="v2Open(\'showResponsibleAdults\',\'more\')"><span class="instructor-action-symbol" aria-hidden="true">♙</span><span class="instructor-action-copy"><strong>Kven er på plass?</strong><small>Vaksne, roller og kontakt</small></span><span class="instructor-action-arrow" aria-hidden="true">↗</span></button>'+
       '</div><div class="instructor-bottom-note"><span>✦</span> SAMAN SKAPAR VI FOTBALLGLEDE <span>✦</span></div></div>';
