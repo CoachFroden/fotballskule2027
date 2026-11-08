@@ -18,9 +18,19 @@
       return;
     }
 
-    dock.classList.add('has-admin-more');
+    // v2.js now renders the admin More button itself. Never append a duplicate.
+    const nativeMore = [...dock.querySelectorAll('.v2-dock-button')]
+      .find(button => !button.hasAttribute('data-v2-admin-more') && button.textContent.trim().endsWith('Meir'));
+    const legacyMore = dock.querySelector('[data-v2-admin-more]');
+    if (nativeMore) {
+      legacyMore?.remove();
+      dock.classList.remove('has-admin-more');
+      return;
+    }
 
-    let more = dock.querySelector('[data-v2-admin-more]');
+    // Fallback for older cached v2.js versions.
+    dock.classList.add('has-admin-more');
+    let more = legacyMore;
     if (!more) {
       more = document.createElement('button');
       more.type = 'button';
@@ -28,12 +38,9 @@
       more.dataset.v2AdminMore = 'true';
       more.setAttribute('aria-label', 'Meir og logg ut');
       more.innerHTML = '<span class="v2-dock-icon">•••</span><span class="v2-dock-label">Meir</span>';
-      more.addEventListener('click', () => {
-        if (typeof window.v2ShowMore === 'function') window.v2ShowMore();
-      });
+      more.addEventListener('click', () => window.v2ShowMore?.());
       dock.appendChild(more);
     }
-
     more.classList.toggle('is-active', isAdminMorePage());
   }
 
