@@ -152,16 +152,16 @@
     picker.innerHTML = `
       <div class="v2-day-admin-picker-head">
         <div>
-          <span class="v2-day-admin-kicker">📅 Programdagar</span>
-          <strong>Vel dagen du vil jobbe med</strong>
-          <small>Berre éin dag er open om gongen.</small>
+          <span class="v2-day-admin-kicker">PROGRAM OG MENY</span>
+          <strong>Programdagar</strong>
+          <small>Vel ein dag for å redigere program og mat.</small>
         </div>
         ${form ? '<button class="v2-day-new" type="button" onclick="v2NewAdminDay()"><span>＋</span> Ny dag</button>' : ''}
       </div>
       <div class="v2-day-pills" aria-label="Vel programdag">
         ${days.length ? days.map(day => `
           <button class="v2-admin-day-pill" type="button" data-day-id="${escapeHtml(day.id)}" onclick="v2OpenAdminDay('${escapeHtml(day.id)}')">
-            <span class="v2-admin-day-ball">⚽</span>
+            <span class="v2-admin-day-ball">📅</span>
             <span><strong>${escapeHtml(day.date)}</strong>${day.title ? `<small>${escapeHtml(day.title)}</small>` : ''}</span>
             <span class="v2-admin-day-arrow">›</span>
           </button>`).join('') : '<p class="v2-day-empty">Ingen programdagar er registrerte enno.</p>'}
