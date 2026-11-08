@@ -48,11 +48,13 @@
     ]);
     const day = {id:dayId,date:dayId,...(daySnap.data() || {})};
     const people = peopleSnap.docs.map(d => ({id:d.id,...d.data()})).filter(p => Number(p.group) === Number(group)).sort((a,b) => String(a.name||'').localeCompare(String(b.name||''),'no'));
-    const before = new Map(beforeSnap.docs.map(d => [d.id,d.data().present===true]));
-    const after = new Map(afterSnap.docs.map(d => [d.id,d.data().present===true]));
-    const archived = yearSnap.data()?.status === 'archived';
     const orderedDays=daysSnap.docs.map(d=>({id:d.id,date:d.data().date||d.id})).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
     const firstDay=orderedDays[0]?.id===dayId;
+    const arrivalTimes = new Map(arrivalsSnap.docs.map(d => [d.id,d.data().registeredAt?.toMillis?.()||0]));
+    const validAttendance = d => d.data().present===true && (!firstDay || (arrivalTimes.has(d.id) && !!d.data().updatedAt?.toMillis?.() && d.data().updatedAt.toMillis() >= (arrivalTimes.get(d.id)||0)));
+    const before = new Map(beforeSnap.docs.map(d => [d.id,validAttendance(d)]));
+    const after = new Map(afterSnap.docs.map(d => [d.id,validAttendance(d)]));
+    const archived = yearSnap.data()?.status === 'archived';
     active = {day,archived,firstDay,registered:new Set(arrivalsSnap.docs.map(d=>d.id))};
     beforeOverride = false;
     correctionMode = false;
@@ -64,7 +66,7 @@
       '<div class="combined-foot"><strong id="combinedCount"></strong><span id="combinedAfterHint"></span></div><button id="combinedBeforeUnlock" class="combined-unlock" type="button" hidden>🔓 Lås opp før lunsj</button><button id="combinedCorrectionMode" class="combined-unlock" type="button">✏️ Rediger låst liste</button></section>';
     const host = document.querySelector('.combined-checklist');
     function refreshArrival(){if(!host?.isConnected||!active)return;host.querySelectorAll('.combined-row[data-person]').forEach(row=>{const locked=active.firstDay&&!active.registered.has(row.dataset.person);row.classList.toggle('arrival-locked',locked);const warning=row.querySelector('.arrival-warning');if(warning)warning.hidden=!locked;row.querySelectorAll('input[type=checkbox]').forEach(box=>{if(locked)box.checked=false;else box.checked=(box.classList.contains('combined-before')?before:after).get(row.dataset.person)===true;});});update();refreshLock();}
-    if(firstDay){arrivalListener=ref.collection('arrivalRegistration').where('registered','==',true).onSnapshot(s=>{if(active?.day.id!==dayId)return;active.registered=new Set(s.docs.map(d=>d.id));refreshArrival();},e=>console.error('Ankomstregistrering:',e));}
+    if(firstDay){arrivalListener=ref.collection('arrivalRegistration').where('registered','==',true).onSnapshot(s=>{if(active?.day.id!==dayId)return;active.registered=new Set(s.docs.map(d=>d.id));s.docs.forEach(d=>{const t=d.data().registeredAt?.toMillis?.()||0;const prior=arrivalTimes.get(d.id)||0;if(t!==prior){arrivalTimes.set(d.id,t);if(firstDay){before.set(d.id,false);after.set(d.id,false);}}});refreshArrival();},e=>console.error('Ankomstregistrering:',e));}
     host.querySelector('#combinedBeforeUnlock').addEventListener('click', () => { beforeOverride = !beforeOverride; refreshLock(); });
     host.querySelector('#combinedCorrectionMode').addEventListener('click', () => { correctionMode = !correctionMode; refreshLock(); });
     const update = () => { const all=host.querySelectorAll('.combined-row').length;const eligible=box=>box.checked&&(!active.firstDay||active.registered.has(box.dataset.id));const b=[...host.querySelectorAll('.combined-before')].filter(eligible).length;const a=[...host.querySelectorAll('.combined-after')].filter(eligible).length; document.getElementById('combinedCount').textContent='Før: '+b+'/'+all+' · Etter: '+a+'/'+all; };
@@ -80,6 +82,7 @@
         if (!correctionMode && slot==='etter' && (day.date!==today() || minutes(day.lunchTime)===null || clock()<minutes(day.lunchTime))) throw Error('Etter lunsj er ikkje open enno');
         if(active.firstDay){const arrival=await ref.collection('arrivalRegistration').doc(box.dataset.id).get();if(arrival.data()?.registered!==true)throw Error('Barnet er ikkje registrert ved ankomst');}
         await ref.collection('attendance').doc(sessionKey(slot)).collection('entries').doc(box.dataset.id).set({present:current,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:auth.currentUser.uid},{merge:true});
+        (slot==='for'?before:after).set(box.dataset.id,current);
         update();
       } catch(err) {
         box.checked=!current;
