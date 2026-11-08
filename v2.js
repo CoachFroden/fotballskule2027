@@ -261,8 +261,7 @@
         action('🎒', 'Registrering', 'Innsjekk første dag', 'showArrivalRegistration', 'green', 'arrival'),
         action('🚨', 'Mangler no', 'Oppmøte og føresette', 'showSimpleMissingAdmin', 'red', 'missing'),
         action('👟', 'Deltakarar', 'Søk, allergi og kontakt', 'showAdminParticipants', '', 'admin'),
-        action('📅', 'Program & meny', 'Rediger det alle skal sjå', 'showAdminDays', 'orange', 'admin'),
-        action('🛡️', 'Administrasjon', 'Import, årgangar og persondata', 'showAdmin', '', 'admin')
+        action('📅', 'Program & meny', 'Rediger det alle skal sjå', 'showAdminDays', 'orange', 'admin')
       ];
     }
     if (role === 'responsible') {
@@ -626,8 +625,6 @@
     ] : role === 'admin' ? [
       ['📅', 'Program & meny', 'showAdminDays'],
       ['🔄', 'Instruktørplan', 'showInstructorScheduleAdmin'],
-      ['👟', 'Deltakarar', 'showAdminParticipants'],
-      ['🛡️', 'Administrasjon', 'showAdmin'],
       ['👀', 'Sjå som instruktør', 'v2PreviewInstructorFromMore'],
       ['👀', 'Sjå som ansvarleg', 'v2PreviewResponsibleFromMore']
     ] : [
