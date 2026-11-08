@@ -19,7 +19,8 @@
       if(!day){root.innerHTML='<p>Ingen programdagar er registrerte.</p>';return;}
       selectedDay=day.id;
       const firstDay=days[0]?.id===day.id;
-      const arrived=new Set(arrivalsSnap.docs.map(d=>d.id));
+      const arrivalTimes=new Map(arrivalsSnap.docs.map(d=>[d.id,d.data().registeredAt?.toMillis?.()||0]));
+      const arrived=new Set(arrivalTimes.keys());
       const people=peopleSnap.docs.map(d=>({id:d.id,...d.data()})).filter(p=>Number(p.group)>0);
       const priv=new Map(privSnap.docs.map(d=>[d.id,d.data()]));
       const groups=[...new Set(people.map(p=>Number(p.group)))].sort((a,b)=>a-b);
@@ -32,7 +33,8 @@
       let missingTotal=0,sections='';
       for(let gi=0;gi<groups.length;gi++){
         const group=groups[gi],members=people.filter(p=>Number(p.group)===group);
-        const maps={for:new Map(docs[gi*2].docs.map(d=>[d.id,d.data().present])),etter:new Map(docs[gi*2+1].docs.map(d=>[d.id,d.data().present]))};
+        const validEntry=d=>d.data().present===true && (!firstDay || (arrived.has(d.id) && !!d.data().updatedAt?.toMillis?.() && d.data().updatedAt.toMillis() >= (arrivalTimes.get(d.id)||0)));
+        const maps={for:new Map(docs[gi*2].docs.map(d=>[d.id,validEntry(d)])),etter:new Map(docs[gi*2+1].docs.map(d=>[d.id,validEntry(d)]))};
         const missing=members.filter(p=>(!arrived.has(p.id))||['for','etter'].some(slot=>slotActive[slot]&&maps[slot].get(p.id)!==true));
         missingTotal+=missing.length;
         if(missing.length){
