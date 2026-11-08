@@ -163,6 +163,40 @@
       </div>`;
   }
 
+  window.showResponsibleParticipants = async function () {
+    if (await getRole() !== 'responsible' && !window.v2IsPreviewRole?.('responsible')) return window.showHome();
+    const year = currentYear();
+    const intro = document.getElementById('pageIntro');
+    const menu = document.getElementById('mainMenu');
+    const content = document.getElementById('content');
+    if (!intro || !menu || !content || !year) return;
+    intro.innerHTML = '<div class="hero-card"><p class="hero-kicker">Ansvarleg · Fotballskule '+esc(year)+'</p><h2>Deltakarar</h2><p>Finn barn, viktige omsyn og kontakt til føresette.</p></div>';
+    menu.innerHTML = '';
+    content.innerHTML = '<div class="welcome-box responsible-participant-page"><p>Hentar deltakarar…</p></div>';
+    try {
+      const rows = await loadResponsibleSafetyData();
+      content.innerHTML = '<div class="welcome-box responsible-participant-page"><div class="responsible-participant-search"><input type="search" id="responsibleParticipantSearch" placeholder="Søk etter namn…" aria-label="Søk deltakar" oninput="filterResponsibleParticipants()"><span id="responsibleParticipantCount"></span></div><div id="responsibleParticipantRows"></div><p class="responsible-participant-privacy">🔒 Kontakt- og helseopplysningar er berre for ansvarlege og skal ikkje delast vidare.</p></div>';
+      window.filterResponsibleParticipants = function () {
+        const q = String(document.getElementById('responsibleParticipantSearch')?.value || '').trim().toLocaleLowerCase('no');
+        const filtered = rows.filter(p => String(p.name || '').toLocaleLowerCase('no').includes(q));
+        document.getElementById('responsibleParticipantCount').textContent = filtered.length+' deltakarar';
+        document.getElementById('responsibleParticipantRows').innerHTML = filtered.map(p => {
+          const priv = p.private || {};
+          const allergy = String(priv.allergy || '').trim();
+          const notes = healthInfo(priv);
+          const guardian = String(priv.guardian || '').trim();
+          const phones = extractPhones(guardian);
+          const phonesHtml = phones.map(phone => '<a href="tel:'+esc(phone)+'">'+esc(phone)+'</a>').join(' · ');
+          return '<details class="responsible-participant-item"><summary><strong>'+esc(p.name || 'Utan namn')+'</strong><span class="responsible-participant-markers">'+(allergy ? '<span class="responsible-participant-alert red" title="Allergi">Allergi</span>' : '')+(notes ? '<span class="responsible-participant-alert amber" title="Andre omsyn">Omsyn</span>' : '')+'<small>Gr. '+esc(p.group || '-')+'</small></span></summary><div class="responsible-participant-info">'+(allergy ? '<p><strong>Allergi:</strong> '+esc(allergy)+'</p>' : '')+(notes ? '<p><strong>Andre omsyn:</strong> '+esc(notes)+'</p>' : '')+'<p><strong>Føresette:</strong> '+(guardian ? esc(guardian) : 'Ikkje registrert')+'</p>'+(phonesHtml ? '<p><strong>Ring:</strong> '+phonesHtml+'</p>' : '')+'</div></details>';
+        }).join('') || '<p>Ingen treff.</p>';
+      };
+      window.filterResponsibleParticipants();
+    } catch (error) {
+      console.error('Deltakarar for ansvarlege:', error);
+      content.innerHTML = '<div class="welcome-box"><p>Kunne ikkje hente deltakarane. Kontroller tilgangen til Firebase.</p></div>';
+    }
+  };
+
   window.showResponsibleSafety = async function () {
     if (await getRole() !== 'responsible' && !window.v2IsPreviewRole?.('responsible')) return window.showHome();
 
