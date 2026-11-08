@@ -385,7 +385,7 @@
         <span class="v2-role-pill"><span class="v2-live-dot"></span>${esc(ROLE[role]?.label || role)}</span>
         ${archived ? '<span class="v2-state-pill">Arkivert</span>' : ''}
         ${yearSelect(data, role)}
-        ${role === 'admin' ? previewControls() : ''}
+
       </div>
     </section>`;
   }
@@ -436,13 +436,13 @@
         return;
       }
       if (displayRole === 'instructor') {
-        content.innerHTML = `${previewControls()}${instructorQuickHome(data)}`;
+        content.innerHTML = instructorQuickHome(data);
         renderDock(displayRole, 'home');
         return;
       }
       content.innerHTML = `<div class="match-shell"><div class="v2-home">
         ${renderHero(role, data)}
-        ${role === 'admin' && previewRole ? previewControls() : ''}
+
         ${roleNotice(displayRole, data)}
         <section class="v2-section match-actions">
           <div class="v2-section-head"><div><h2>På laget</h2><p>Alt du treng, eitt trykk unna</p></div></div>
@@ -477,7 +477,8 @@
       ['home', '⌂', 'Heim', 'showHome'],
       ['missing', '!', 'Mangler', 'showSimpleMissingAdmin'],
       ['admin', '⚙', 'Admin', 'showAdmin'],
-      ['feedback', '◇', 'Svar', 'showSimpleFeedbackAdmin']
+      ['feedback', '◇', 'Svar', 'showSimpleFeedbackAdmin'],
+      ['more', '•••', 'Meir', 'v2ShowMore']
     ];
     if (role === 'responsible') return [
       ['home', '⌂', 'Heim', 'showHome'],
@@ -603,6 +604,9 @@
     }catch(error){console.error(error);target.innerHTML='<div class="welcome-box"><p>Kunne ikkje hente kontaktpersonane. Kontroller tilgangen eller prøv igjen.</p></div>';}
   };
 
+  window.v2PreviewInstructorFromMore = function () { return window.v2PreviewRole('instructor'); };
+  window.v2PreviewResponsibleFromMore = function () { return window.v2PreviewRole('responsible'); };
+
   window.v2ShowMore = async function () {
     const role = await getRole();
     if (!role) return;
@@ -612,7 +616,7 @@
     if (!intro || !menu || !content) return;
 
     intro.innerHTML = `<div class="hero-card"><p class="hero-kicker">${esc(ROLE[role]?.label || '')}</p><h2>Meir</h2><p>Alt det nyttige som ikkje treng å ta plass på hovudskjermen.</p></div>`;
-    menu.innerHTML = '<button class="back-button" type="button" onclick="showHome()">← Framside</button>';
+    menu.innerHTML = '';
 
     const rows = role === 'responsible' ? [
       ['📅', 'Dagsprogram og meny', 'showDays'],
@@ -622,7 +626,9 @@
       ['📅', 'Program & meny', 'showAdminDays'],
       ['🔄', 'Instruktørplan', 'showInstructorScheduleAdmin'],
       ['👟', 'Deltakarar', 'showAdminParticipants'],
-      ['🛡️', 'Administrasjon', 'showAdmin']
+      ['🛡️', 'Administrasjon', 'showAdmin'],
+      ['👀', 'Sjå som instruktør', 'v2PreviewInstructorFromMore'],
+      ['👀', 'Sjå som ansvarleg', 'v2PreviewResponsibleFromMore']
     ] : [
       ['📅', 'Fast dagsprogram og meny', 'showDays'],
       ['📋', 'Instruksar for instruktørar', 'showInstructorInstructions'],
